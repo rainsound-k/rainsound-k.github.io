@@ -2,13 +2,13 @@ title:             rainsound's blog
 email:             rainsound128@gmail.com
 description:       개발 공부 중입니다.
 author:            Sungwoo Kang
-baseurl:           "/"
+baseurl:           ""
 url:               "http://rainsound-k.github.io"
 
 # Social Profiles
-twitter_username:  
+twitter_username:
 github_username:   rainsound-k
-facebook_username: 
+facebook_username:
 
 # Build settings
 markdown:          kramdown
