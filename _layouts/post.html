@@ -1,6 +1,5 @@
 ---
 layout: default
-comments: true
 ---
 
 <!-- Page Header -->
@@ -34,7 +33,7 @@ comments: true
           {{ content }}
 
           <hr>
-          <script id="dsq-count-scr" src="//rainsound-k.disqus.com/count.js" async></script>
+          {% include comments.html %}
           <hr>
           <div class="clearfix">
 
