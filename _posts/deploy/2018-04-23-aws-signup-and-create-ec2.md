@@ -107,47 +107,35 @@ AWS와 비슷한 서비스로 구글의 `Google Cloud Platform`, 마이크로소
 
 #### 2.8. 인스턴스 생성 완료
 * 축하합니다! 인스턴스 생성이 완료되었습니다. 알아보기 쉽게 `name`에 이름을 입력해줍니다.
-
 ![그림17](/img/posts/2018-4-23/17.png){: width="100%" height="100%"}
 
 #### 2.9. 키 페어 관리
 이 후 모든 내용은 Linux/Mac OS 기준으로 진행합니다.
 
 * 터미널을 실행 후 아래 명령어를 입력해 봅니다.
-
 ```shell
-cd .ssh/
+$  cd .ssh/
 ```
-
 * `no such file or directory` 가 나오면 아래 명령어로 `.ssh` 폴더를 새로 생성해줍니다.
-
 ```shell
-mkdir .ssh
+$  mkdir .ssh
 ```
-
-
 * 그 후 위에 ```cd .ssh/``` 명령어로 접속 후 아래 명령어로 폴더를 열어줍니다.
-
 ```shell
-open .
+$  open .
 ```
-
 * 폴더가 열렸으면 아까 다운로드 받은 프라이빗 키 파일(~~~.pem)을 `.ssh` 폴더 안으로 넣어 줍니다.
 * 그 후 다시 터미널 `.ssh` 폴더에서 아래 명령어로 키 파일을 사용자 자신만 볼 수 있게 권한을 변경해줍니다.
-
 ```shell
-chmod 400 ~~~.pem
+$  chmod 400 ~~~.pem
 ```
-
 ![그림18](/img/posts/2018-4-23/18.png){: width="100%" height="100%"}
 
 #### 2.10. 원격으로 인스턴스에 접속
 원격으로 인스턴스에 연결하기 위해서는 터미널에 아래의 명령어를 사용합니다.
-
 ```shell
-ssh -i pem경로 user-name@public-dns-name
+$  ssh -i pem경로 user-name@public-dns-name
 ```
-
 * **pem경로** 는 `~/.ssh/~~~.pem `
 * **user-name** 의 경우 아직 인스턴스의 user를 따로 설정하지 않았기 때문에 default 값을 따릅니다. default 값은 아래와 같습니다.
 	* Amazon Linux AMI의 경우, `ec2-user`
@@ -158,14 +146,11 @@ ssh -i pem경로 user-name@public-dns-name
 	* SUSE AMI의 경우, `ec2-user` 또는 `root`
 	* Ubuntu AMI의 경우, `ubuntu` 또는 `root`
 * **public-dns-name** 은 aws 사이트에서 `퍼블릭 DNS(IPv4)` 값을 가져옵니다.
-
 ![그림19](/img/posts/2018-4-23/19.png){: width="100%" height="100%"}
 따라서 최종적으로 제 기준 경로는 아래와 같습니다.
-
 ```shell
-ssh -i ~/.ssh/examplekey.pem ubuntu@ec2-52-78-234-247.ap-northeast-2.compute.amazonaws.com
+$  ssh -i ~/.ssh/examplekey.pem ubuntu@ec2-52-78-234-247.ap-northeast-2.compute.amazonaws.com
 ```
-
 위의 명령어를 터미널에 치면, 아래와 같이 인스턴스로 원격 접속한 것을 확인할 수 있습니다.
 
 ![그림20](/img/posts/2018-4-23/20.png){: width="100%" height="100%"}

@@ -4,6 +4,7 @@
  * Copyright 2011-2018 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
+ @import url(https://fonts.googleapis.com/earlyaccess/notosanskr.css);
 :root {
     --blue: #007bff;
     --indigo: #6610f2;
@@ -31,8 +32,8 @@
     --breakpoint-md: 768px;
     --breakpoint-lg: 992px;
     --breakpoint-xl: 1200px;
-    --font-family-sans-serif: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-    --font-family-monospace: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    --font-family-sans-serif: 'Noto Sans KR',sans-serif, Arial;
+    --font-family-monospace: 'Noto Sans KR',sans-serif, Arial;
 }
 *,
 ::after,
@@ -65,9 +66,9 @@ section {
 }
 body {
     margin: 0;
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-family: 'Noto Sans KR',sans-serif, Arial;
     font-size: 1rem;
-    font-weight: 400;
+    font-weight: 300;
     line-height: 1.5;
     color: #212529;
     text-align: left;
@@ -80,6 +81,9 @@ hr {
     box-sizing: content-box;
     height: 0;
     overflow: visible;
+}
+body a{
+  font-weight: 500;
 }
 h1,
 h2,
@@ -134,7 +138,7 @@ dfn {
 }
 b,
 strong {
-    font-weight: bolder;
+    font-weight: 500;
 }
 small {
     font-size: 80%;
@@ -159,7 +163,7 @@ a {
     -webkit-text-decoration-skip: objects;
 }
 a:hover {
-    color: #0056b3;
+    color: #e4e4e4;
     text-decoration: underline;
 }
 a:not([href]):not([tabindex]) {
@@ -461,13 +465,21 @@ code,
 kbd,
 pre,
 samp {
-    font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    font-family: 'Noto Sans KR',sans-serif, Arial;
 }
 code {
     font-size: 87.5%;
     color: #e83e8c;
+    font-weight: 400;
     word-break: break-word;
 }
+code.highlighter-rouge {
+  font-size: 87.5%;
+  color: #e83e8c;
+  font-weight: 500;
+  word-break: break-word;
+}
+
 a > code {
     color: inherit;
 }
@@ -5093,7 +5105,7 @@ button.close {
     z-index: 1070;
     display: block;
     margin: 0;
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-family: 'Noto Sans KR',sans-serif, Arial;
     font-style: normal;
     font-weight: 400;
     line-height: 1.5;
@@ -5201,7 +5213,7 @@ button.close {
     z-index: 1060;
     display: block;
     max-width: 276px;
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-family: 'Noto Sans KR',sans-serif, Arial;
     font-style: normal;
     font-weight: 400;
     line-height: 1.5;
