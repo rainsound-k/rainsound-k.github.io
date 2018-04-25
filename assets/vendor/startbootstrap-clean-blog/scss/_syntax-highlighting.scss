@@ -19,13 +19,13 @@
   .cp    { color: #999; font-weight: bold } // Comment.Preproc
   .c1    { color: #c4c4ba; font-style: italic } // Comment.Single
   .cs    { color: #fbff3d; font-weight: bold; font-style: italic } // Comment.Special
-  .gd    { color: #000; background-color: #fdd } // Generic.Deleted
-  .gd .x { color: #000; background-color: #faa } // Generic.Deleted.Specific
+  .gd    { color: #ffffff; background-color: #ff5b5b } // Generic.Deleted
+  .gd .x { color: #ffffff; background-color: #ff6a6a } // Generic.Deleted.Specific
   .ge    { font-style: italic } // Generic.Emph
   .gr    { color: #ff4040 } // Generic.Error
   .gh    { color: #f7e043 } // Generic.Heading
-  .gi    { color: #000; background-color: #dfd } // Generic.Inserted
-  .gi .x { color: #000; background-color: #afa } // Generic.Inserted.Specific
+  .gi    { color: #ffffff; background-color: #6fff6f } // Generic.Inserted
+  .gi .x { color: #ffffff; background-color: #61ff61 } // Generic.Inserted.Specific
   .go    { color: #ffce7c } // Generic.Output
   .gp    { color: #ffce7c } // Generic.Prompt
   .gs    { font-weight: bold } // Generic.Strong
