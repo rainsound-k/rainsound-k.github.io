@@ -11,7 +11,7 @@ image: '/img/posts/2018-4-24/1.png'
 
 
 ## EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기(1/2)
-`이전 포스트` : [AWS 가입 및 EC2 인스턴스 생성](https://rainsound-k.github.io/2018/04/23/AWS-%EA%B0%80%EC%9E%85-%EB%B0%8F-EC2-%EC%9D%B8%EC%8A%A4%ED%84%B4%EC%8A%A4-%EC%83%9D%EC%84%B1.html)
+`이전 포스트` : [AWS 가입 및 EC2 인스턴스 생성](https://rainsound-k.github.io/2018/04/23/aws-signup-and-create-ec2.html)
 
 위에서 만든 EC2 인스턴스의 가상환경을 세팅하고, Nginx와 uWSGI를 이용해 Django 앱을 배포하는 방법에 대해서 다룰 예정입니다.
 
