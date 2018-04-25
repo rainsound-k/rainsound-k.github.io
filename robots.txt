@@ -1,0 +1,6 @@
+<!-- robots.txt 파일 내용 -->
+# robotstxt.org
+
+User-agent: *
+Allow:/
+Sitemap: https://rainsound-k.github.io/sitemap.xml

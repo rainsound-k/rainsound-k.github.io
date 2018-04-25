@@ -255,6 +255,8 @@ DEPENDENCIES
   github-pages
   jekyll-feed (~> 0.6)
   jekyll-paginate (~> 1.1.0)
+  jekyll-seo-tag
+  jekyll-sitemap
   jekyll-theme-clean-blog!
   rake (~> 10.0)
 
