@@ -174,6 +174,6 @@ ssh -i ~/.ssh/examplekey.pem ubuntu@ec2-52-78-234-247.ap-northeast-2.compute.ama
 이번 포스팅에서는 AWS에 가입해 EC2 인스턴스를 생성하는 방법에 대해서 알아보았습니다.
 Nginx + uWSGI로 Django 앱 배포하는 방법은 다음 포스트에서 확인 가능합니다.
 
-`다음 포스트` : [EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2](https://rainsound-k.github.io/2018/04/24/instance-setting-and-django-deploy-part1.html)
+`다음 포스트` : [EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)](https://rainsound-k.github.io/2018/04/24/instance-setting-and-django-deploy-part1.html)
 
 <br>
