@@ -15,7 +15,7 @@ background: '/img/bg-post.jpg'
       <h6 class="post-subtitle">{{ post.excerpt | strip_html | truncatewords: 15 }}</h6>
       {% endif %}
     </a>
-    <p class="post-meta">Posted on {{ page.date | date: '%B %d, %Y' }}</p>
+    <p class="post-meta">Posted on {{ post.date | date: '%B %d, %Y' }}</p>
   </article>
 
   <hr>
