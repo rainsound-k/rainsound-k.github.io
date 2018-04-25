@@ -17,9 +17,7 @@ layout: default
             {% if page.subtitle %}
             <h2 class="subheading">{{ page.subtitle }}</h2>
             {% endif %}
-            <span class="meta">Posted by
-              <a href="#">{{ post.author }}</a>
-              on {{ page.date | date: '%B %d, %Y' }}</span>
+            <span class="meta">Posted on {{ page.date | date: '%B %d, %Y' }}</span>
             </div>
           </div>
         </div>

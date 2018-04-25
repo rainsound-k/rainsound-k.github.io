@@ -18,8 +18,9 @@
     }
   }
   > .post-meta {
-    font-size: 18px;
+    font-size: 16px;
     font-style: italic;
+    font-weight: 200;
     margin-top: 0;
     color: $gray-600;
     > a {
@@ -35,7 +36,7 @@
   @media only screen and (min-width: 768px) {
     > a {
       > .post-title {
-        font-size: 36px;
+        font-size: 30px;
       }
     }
   }
