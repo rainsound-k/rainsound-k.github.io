@@ -41,15 +41,7 @@ layout: default
             <h6 class="post-subtitle">{{ post.excerpt | strip_html | truncatewords: 15 }}</h6>
             {% endif %}
           </a>
-          <p class="post-meta">
-            <!-- {% if post.author %}
-            {{ post.author }}
-            {% else %}
-            {{ site.author }}
-            {% endif %}
-            on -->
-            <!-- {{ post.date | date: '%y년 %m월 %e일' }} -->
-          Posted on {{ post.date | date: '%B %d, %Y' }}</p>
+          <p class="post-meta">Posted on {{ post.date | date: '%B %d, %Y' }}</p>
           </article>
 
 

@@ -162,6 +162,14 @@ a {
     background-color: transparent;
     -webkit-text-decoration-skip: objects;
 }
+.dropdown-list {
+  padding-bottom: 5px;
+  text-align: center;
+}
+.dropdown-list a {
+  color: #515151;
+  text-shadow: none !important;
+}
 a:hover {
     color: #e4e4e4;
     text-decoration: underline;
@@ -2994,16 +3002,17 @@ tbody.collapse.show {
     z-index: 1000;
     display: none;
     float: left;
-    min-width: 10rem;
-    padding: 0.5rem 0;
-    margin: 0.125rem 0 0;
+    /* min-width: 200px; */
+    min-width: 120px;
+    padding: 10px 20px;
+    margin: 0;
     font-size: 1rem;
     color: #212529;
     text-align: left;
     list-style: none;
     background-color: #fff;
     background-clip: padding-box;
-    border: 1px solid rgba(0,0,0,.15);
+    opacity: 0.8;
     border-radius: 0.25rem;
 }
 .dropup .dropdown-menu {
@@ -3631,6 +3640,13 @@ tbody.collapse.show {
     color: #495057;
     background-color: #fff;
     border-color: #dee2e6 #dee2e6 #fff;
+}
+.nav-item a {
+  text-decoration: none;
+}
+.nav-item a:hover {
+  text-decoration: none;
+  color: #e4e4e4;
 }
 .nav-tabs .dropdown-menu {
     margin-top: -1px;
@@ -8256,5 +8272,7 @@ a.text-dark:hover {
     .table-bordered th {
         border: 1px solid #ddd!important;
     }
-}
+
+
+
 /*# sourceMappingURL=bootstrap.min.css.map */

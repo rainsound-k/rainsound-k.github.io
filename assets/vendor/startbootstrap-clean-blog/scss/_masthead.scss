@@ -29,11 +29,11 @@ header.masthead {
   .site-heading {
     text-align: center;
     h1 {
-      font-size: 50px;
+      font-size: 40px;
       margin-top: 0;
     }
     .subheading {
-      font-size: 24px;
+      font-size: 21px;
       font-weight: 300;
       line-height: 1.1;
       display: block;
@@ -44,11 +44,14 @@ header.masthead {
       h1 {
         font-size: 80px;
       }
+      .subheading {
+        font-size: 26px;
+      }
     }
   }
   .post-heading {
     h1 {
-      font-size: 35px;
+      font-size: 30px;
     }
     .meta,
     .subheading {
@@ -56,7 +59,7 @@ header.masthead {
       display: block;
     }
     .subheading {
-      font-size: 24px;
+      font-size: 20px;
       font-weight: 300;
       margin: 10px 0 30px;
       @include sans-serif-font;
@@ -75,7 +78,12 @@ header.masthead {
         font-size: 40px;
       }
       .subheading {
-        font-size: 22px;
+        font-size: 24px;
+      }
+      .post-heading {
+        h1 {
+          font-size: 35px;
+        }
       }
     }
   }

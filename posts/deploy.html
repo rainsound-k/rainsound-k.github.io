@@ -1,0 +1,36 @@
+---
+layout: page
+title: Posts - Deploy
+description: Deploy 관련 글의 목록입니다.
+background: '/img/bg-post.jpg'
+---
+<h3>Deploy</h3>
+{% assign no_exists = true %}
+{% assign deploy_count = 0 %}
+{% for post in site.posts %}
+  {% if post.category == 'Deploy' %}
+    {% assign no_exists = false %}
+    {% assign deploy_count = deploy_count | plus: 1 %}
+    <article class="post-preview">
+      <a href="{{ post.url | prepend: site.baseurl | replace: '//', '/' }}">
+        <h5 class="post-title">{{ post.title }}</h5>
+        {% if post.subtitle %}
+        <h6 class="post-subtitle">{{ post.subtitle }}</h6>
+        {% else %}
+        <h6 class="post-subtitle">{{ post.excerpt | strip_html | truncatewords: 15 }}</h6>
+        {% endif %}
+      </a>
+      <p class="post-meta">Posted on {{ post.date | date: '%B %d, %Y' }}</p>
+    </article>
+    <hr>
+  {% endif %}
+{% endfor %}
+
+{% if no_exists %}
+  <article class="post-preview">
+    <a href=""><h6 class="post-subtitle">아직 글이 없습니다.</h6></a>
+  </article>
+{% endif %}
+
+
+{{ deploy_count }}
