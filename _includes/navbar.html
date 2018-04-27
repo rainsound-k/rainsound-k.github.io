@@ -8,30 +8,25 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
-
-      {% assign links = site.data.navigation %}
-      {% for link in links %}
-        {% if link.sublinks %}
-          <li class="dropdown nav-item">
-              <a href="{{ site.baseurl }}{{ link.url }}" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ link.title }} <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                  {% for sublink in link.sublinks %}
-                      {% if sublink.title == 'separator' %}
-                          <li role="separator" class="divider"></li>
-                      {% else %}
-                          <li class="dropdown-list">
-                              <a href="{{ site.baseurl }}{{ sublink.url }}">{{ sublink.category }}</a>
-                          </li>
-                      {% endif %}
-                  {% endfor %}
-              </ul>
-          </li>
-      {% else %}
-      <li class="nav-item">
-        <a href="{{ site.baseurl }}{{ link.url }}" class="nav-link">{{ link.title }}</a>
-      </li>
-      {% endif %}
-      {% endfor %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{"/" | relative_url }}">Home</a>
+        </li>
+        <li class="dropdown nav-item">
+          <a href="{{ site.baseurl }}{{ link.url }}" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Posts<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li class="dropdown-list">
+              <a href="{{ site.url }}/posts">All Posts</a>
+            </li>
+            {% for category in site.categories %}
+              <li class="dropdown-list">
+                <a href="{{ site.url }}/category/{{ category | first | url_encode }}/index.html">{{ category | first }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{"/contact" | relative_url }}">Contact</a>
+        </li>
       </ul>
     </div>
   </div>

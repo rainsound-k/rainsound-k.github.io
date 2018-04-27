@@ -25,6 +25,11 @@
       }
     }
   }
+  .dropdown-list {
+    @media only screen and (min-width: 992px) {
+      text-align: center;
+    }
+  }
   @media only screen and (min-width: 992px) {
     border-bottom: 1px solid transparent;
     background: transparent;

@@ -164,7 +164,7 @@ a {
 }
 .dropdown-list {
   padding-bottom: 5px;
-  text-align: center;
+  text-align: left;
 }
 .dropdown-list a {
   color: #515151;
@@ -3003,7 +3003,7 @@ tbody.collapse.show {
     display: none;
     float: left;
     /* min-width: 200px; */
-    min-width: 120px;
+    min-width: 130px;
     padding: 10px 20px;
     margin: 0;
     font-size: 1rem;

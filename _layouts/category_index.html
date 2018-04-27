@@ -1,0 +1,57 @@
+---
+layout: page
+title: page.title
+description: 관련 글의 목록입니다.
+background: '/img/bg-post.jpg'
+---
+{% if page.paginator %}
+
+  <!-- Pagination is active -->
+  {% assign paginator = page.paginator %}
+  <h3>{{ page.title }} (총 {{ paginator.total_posts }}개의 글)</h3>
+  <section>
+    <!-- Show post excerpts for the current page -->
+    {% for post in paginator.posts limit:paginator.per_page %}
+      <article class="post-preview">
+        <a href="{{ post.url | prepend: site.baseurl | replace: '//', '/' }}">
+          <h5 class="post-title">{{ post.title }}</h5>
+          {% if post.subtitle %}
+          <h6 class="post-subtitle">{{ post.subtitle }}</h6>
+          {% else %}
+          <h6 class="post-subtitle">{{ post.excerpt | strip_html | truncatewords: 15 }}</h6>
+          {% endif %}
+        </a>
+        <p class="post-meta">Posted on {{ post.date | date: '%B %d, %Y' }}</p>
+      </article>
+      <hr>
+    {% endfor %}
+  </section>
+  <!-- Show navigation next/previous page links if applicable -->
+  {% if paginator.total_pages > 1 %}
+    <div class="clearfix">
+      {% if paginator.previous_page %}
+        <a class="btn btn-primary float-left" href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&larr; 최신<span class="d-none d-md-inline"> 글</span></a>
+      {% endif %}
+      {% if paginator.next_page %}
+        <a class="btn btn-primary float-right" href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">예전<span class="d-none d-md-inline"> 글</span> &rarr;</a>
+      {% endif %}
+    </div>
+  {% endif %}
+
+{% else %}
+
+  <!-- Pagination is not active -->
+  <h1>Category index for &ldquo;{{ page.title }}&rdquo;</h1>
+
+  <section>
+    <!-- Show excerpts for all posts in this category -->
+    {% for post in page.posts %}
+      <article>
+        <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
+        <h5>{{ post.date }}</h5>
+        <p>{{ post.excerpt }}</p>
+      </article>
+    {% endfor %}
+  </section>
+
+{% endif %}
