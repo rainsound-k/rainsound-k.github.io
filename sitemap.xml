@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>http://localhost:4000/deploy1212/2018/04/24/aws-signup-and-create-ec2.html</loc>
+<loc>http://localhost:4000/deploy/2018/04/24/aws-signup-and-create-ec2.html</loc>
 <lastmod>2018-04-24T01:55:13+09:00</lastmod>
 </url>
 <url>
-<loc>http://localhost:4000/deploy1212/2018/04/25/instance-setting-and-django-deploy-part1.html</loc>
+<loc>http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html</loc>
 <lastmod>2018-04-25T02:30:26+09:00</lastmod>
 </url>
 <url>
@@ -18,7 +18,7 @@
 <loc>http://localhost:4000/</loc>
 </url>
 <url>
-<loc>http://localhost:4000/category/Deploy1212/</loc>
+<loc>http://localhost:4000/category/Deploy/</loc>
 </url>
 <url>
 <loc>http://localhost:4000/googleeb959656f17a5606.html</loc>
