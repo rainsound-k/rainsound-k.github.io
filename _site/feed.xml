@@ -1,4 +1,116 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-04-28T12:46:18+09:00</updated><id>http://localhost:4000/</id><title type="html">rainsound 개발 노트</title><subtitle>개발 공부하면서 까먹지 않기 위해 기록하는 블로그입니다.</subtitle><author><name>rainsound</name></author><entry><title type="html">EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)</title><link href="http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html" rel="alternate" type="text/html" title="EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)" /><published>2018-04-25T02:30:26+09:00</published><updated>2018-04-25T02:30:26+09:00</updated><id>http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1</id><content type="html" xml:base="http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html">&lt;h2 id=&quot;ec2-가상환경-세팅과-nginx--uwsgi로-django-앱-배포하기12&quot;&gt;EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기(1/2)&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-04-28T12:54:28+09:00</updated><id>http://localhost:4000/</id><title type="html">rainsound 개발 노트</title><subtitle>개발 공부하면서 까먹지 않기 위해 기록하는 블로그입니다.</subtitle><author><name>rainsound</name></author><entry><title type="html">EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)</title><link href="http://localhost:4000/deploy/2018/04/25/test.html" rel="alternate" type="text/html" title="EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)" /><published>2018-04-25T02:30:26+09:00</published><updated>2018-04-25T02:30:26+09:00</updated><id>http://localhost:4000/deploy/2018/04/25/test</id><content type="html" xml:base="http://localhost:4000/deploy/2018/04/25/test.html">&lt;h2 id=&quot;ec2-가상환경-세팅과-nginx--uwsgi로-django-앱-배포하기12&quot;&gt;EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기(1/2)&lt;/h2&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;이전 포스트&lt;/code&gt; : &lt;a href=&quot;https://rainsound-k.github.io/2018/04/23/aws-signup-and-create-ec2.html&quot;&gt;AWS 가입 및 EC2 인스턴스 생성&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;위에서 만든 EC2 인스턴스의 가상환경을 세팅하고, Nginx와 uWSGI를 이용해 Django 앱을 배포하는 방법에 대해서 다룰 예정입니다.&lt;/p&gt;
+
+&lt;h3 id=&quot;1-ec2-인스턴스-가상환경-세팅&quot;&gt;1. EC2 인스턴스 가상환경 세팅&lt;/h3&gt;
+&lt;p&gt;인스턴스 환경을 현재 사용중인 로컬 컴퓨터의 환경과 같게 만들어주기 위해서 세팅해줍니다.&lt;/p&gt;
+
+&lt;h4 id=&quot;11-pyenv-설치&quot;&gt;1.1 pyenv 설치&lt;/h4&gt;
+&lt;p&gt;터미널로 가상환경에 접속합니다.   &lt;strong&gt;로컬이 아니라 &lt;code class=&quot;highlighter-rouge&quot;&gt;가상환경&lt;/code&gt;입니다!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;참고로 가상환경 접속은 아래 명령어로 가능합니다.
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; ssh &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; pem경로 user-name@public-dns-name
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;locale 오류(한글 깨짐 현상) fix
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;vi /etc/default/locale
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;ul&gt;
+      &lt;li&gt;맨 아랫줄에 아래 내용 입력 후 esc를 누르고 &lt;code class=&quot;highlighter-rouge&quot;&gt;:wq&lt;/code&gt; 로 저장
+        &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;LC_CTYPE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;en_US.UTF-8&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;LC_ALL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;en_US.UTF-8&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;LANG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;en_US.UTF-8&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+        &lt;p&gt;&lt;img src=&quot;/img/posts/2018-4-24/2.png&quot; alt=&quot;그림2&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;가상환경 재접속
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; ssh &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; pem경로 user-name@public-dns-name
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;apt-get 업데이트
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get update
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;apt-get 업그레이드
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get dist-upgrade
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/pyenv/pyenv/wiki/Common-build-problems&quot;&gt;Common build problems&lt;/a&gt;에 나온 내용부터 설치
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get install &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; make build-essential libssl-dev zlib1g-dev libbz2-dev &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+xz-utils tk-dev
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;pyenv 설치
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; curl &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;12-zsh-설치&quot;&gt;1.2 zsh 설치&lt;/h4&gt;
+&lt;p&gt;좀 더 사용성을 좋게 하기 위해 기본 &lt;code class=&quot;highlighter-rouge&quot;&gt;bash&lt;/code&gt;을 &lt;code class=&quot;highlighter-rouge&quot;&gt;zsh&lt;/code&gt;로 변경합니다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;zsh 설치
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get install zsh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;oh-my-zsh 설치
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; curl &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; http://install.ohmyz.sh | sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;기본 쉘을 &lt;code class=&quot;highlighter-rouge&quot;&gt;bash&lt;/code&gt;에서 &lt;code class=&quot;highlighter-rouge&quot;&gt;zsh&lt;/code&gt;로 변경
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;chsh ubuntu &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;which zsh&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;종료 후 재접속
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; ssh &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; pem경로 user-name@public-dns-name
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;zshrc에 pyenv 관련 내용 추가
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; vi ~/.zshrc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;ul&gt;
+      &lt;li&gt;2번째 줄 &lt;code class=&quot;highlighter-rouge&quot;&gt;export PATH ~&lt;/code&gt; 부분 주석 해제
+&lt;img src=&quot;/img/posts/2018-4-24/3.png&quot; alt=&quot;그림3&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/li&gt;
+      &lt;li&gt;맨 아래 부분에 아래 내용 추가
+        &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/home/ubuntu/.pyenv/bin:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;eval&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;pyenv init -&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;eval&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;pyenv virtualenv-init -&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+        &lt;p&gt;&lt;img src=&quot;/img/posts/2018-4-24/4.png&quot; alt=&quot;그림4&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;esc 키를 누른 후 &lt;code class=&quot;highlighter-rouge&quot;&gt;:wq&lt;/code&gt; 를 입력해 저장&lt;/li&gt;
+      &lt;li&gt;zshrc 새로고침
+        &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; ~/.zshrc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+        &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;13-srv-폴더-권한-수정&quot;&gt;1.3 /srv 폴더 권한 수정&lt;/h4&gt;
+&lt;p&gt;로컬의 파일을 이제 가상환경에 옮길 차례입니다. 파일은 가상환경의 &lt;code class=&quot;highlighter-rouge&quot;&gt;/srv&lt;/code&gt; 폴더로 옮겨야하는데, 권한이 필요합니다. 옮길 수 있도록 아래 명령어로 권한을 &lt;code class=&quot;highlighter-rouge&quot;&gt;ubuntu&lt;/code&gt;로 변경합니다. (참고 : &lt;a href=&quot;https://ko.wikipedia.org/wiki/%ED%8C%8C%EC%9D%BC%EC%8B%9C%EC%8A%A4%ED%85%9C_%EA%B3%84%EC%B8%B5%EA%B5%AC%EC%A1%B0_%ED%91%9C%EC%A4%80&quot;&gt;리눅스 폴더 구조&lt;/a&gt;)&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;chown &lt;span class=&quot;nt&quot;&gt;-R&lt;/span&gt; ubuntu:ubuntu /srv
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;이어서 가상환경에 배포하기 위해 Django를 세팅하고, Nginx와 uWSGI를 이용해 배포하는 방법에 대해서 알아보겠습니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;</content><author><name>rainsound</name></author><summary type="html">EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기(1/2) 이전 포스트 : AWS 가입 및 EC2 인스턴스 생성</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/img/posts/2018-4-24/1.png" /></entry><entry><title type="html">EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)</title><link href="http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html" rel="alternate" type="text/html" title="EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)" /><published>2018-04-25T02:30:26+09:00</published><updated>2018-04-25T02:30:26+09:00</updated><id>http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1</id><content type="html" xml:base="http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html">&lt;h2 id=&quot;ec2-가상환경-세팅과-nginx--uwsgi로-django-앱-배포하기12&quot;&gt;EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기(1/2)&lt;/h2&gt;
 &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;이전 포스트&lt;/code&gt; : &lt;a href=&quot;https://rainsound-k.github.io/2018/04/23/aws-signup-and-create-ec2.html&quot;&gt;AWS 가입 및 EC2 인스턴스 생성&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;위에서 만든 EC2 인스턴스의 가상환경을 세팅하고, Nginx와 uWSGI를 이용해 Django 앱을 배포하는 방법에 대해서 다룰 예정입니다.&lt;/p&gt;
