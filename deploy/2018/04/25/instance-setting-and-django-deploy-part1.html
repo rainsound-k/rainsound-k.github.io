@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="naver-site-verification" content="1de4763b6c45694b961629fb08ace3e5bfc1023e"/>
+  <title>
+    EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2) - rainsound 개발 노트
+    
+  </title>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118116411-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-118116411-1');
+  </script>
+  <meta name="description" content="EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기(1/2) 이전 포스트 : AWS 가입 및 EC2 인스턴스 생성">
+  <link rel="shortcut icon" type="image/png" href="/img/faviconcon.png">
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/vendor/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+  <link rel="canonical" href="http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html">
+  <link rel="alternate" type="application/rss+xml" title="rainsound 개발 노트" href="/feed.xml">
+  <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2) | rainsound 개발 노트</title>
+<meta name="generator" content="Jekyll v3.7.3" />
+<meta property="og:title" content="EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)" />
+<meta name="author" content="rainsound" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="EC2 인스턴스의 가상환경을 세팅하고, Nginx와 uWSGI를 이용해 Django 앱을 배포하는 방법에 대해서 다룹니다." />
+<meta property="og:description" content="EC2 인스턴스의 가상환경을 세팅하고, Nginx와 uWSGI를 이용해 Django 앱을 배포하는 방법에 대해서 다룹니다." />
+<link rel="canonical" href="http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html" />
+<meta property="og:url" content="http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html" />
+<meta property="og:site_name" content="rainsound 개발 노트" />
+<meta property="og:image" content="http://localhost:4000/img/posts/2018-4-24/1.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-04-25T02:30:26+09:00" />
+<script type="application/ld+json">
+{"url":"http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html","image":"http://localhost:4000/img/posts/2018-4-24/1.png","headline":"EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)","dateModified":"2018-04-25T02:30:26+09:00","datePublished":"2018-04-25T02:30:26+09:00","description":"EC2 인스턴스의 가상환경을 세팅하고, Nginx와 uWSGI를 이용해 Django 앱을 배포하는 방법에 대해서 다룹니다.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html"},"author":{"@type":"Person","name":"rainsound"},"@type":"BlogPosting","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+  <body>
+
+    <!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="/">rainsound 개발 노트</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      Menu
+      <i class="fa fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="dropdown nav-item">
+          <a href="" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Posts<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li class="dropdown-list">
+              <a href="http://localhost:4000/posts">All Posts</a>
+            </li>
+            
+              <li class="dropdown-list">
+                <a href="http://localhost:4000/category/deploy/index.html">deploy</a>
+              </li>
+            
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contact">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+    <!-- Page Header -->
+
+<header class="masthead" style="background-image: url('/img/posts/2018-4-24/1.png')">
+  
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)</h1>
+            
+            <h2 class="subheading">EC2 인스턴스의 가상환경을 세팅하고, Nginx와 uWSGI를 이용해 Django 앱을 배포하는 방법에 대해서 다룹니다.</h2>
+            
+            <span class="meta">Posted on April 25, 2018</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+
+          <h2 id="ec2-가상환경-세팅과-nginx--uwsgi로-django-앱-배포하기12">EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기(1/2)</h2>
+<p><code class="highlighter-rouge">이전 포스트</code> : <a href="https://rainsound-k.github.io/2018/04/23/aws-signup-and-create-ec2.html">AWS 가입 및 EC2 인스턴스 생성</a></p>
+
+<p>위에서 만든 EC2 인스턴스의 가상환경을 세팅하고, Nginx와 uWSGI를 이용해 Django 앱을 배포하는 방법에 대해서 다룰 예정입니다.</p>
+
+<h3 id="1-ec2-인스턴스-가상환경-세팅">1. EC2 인스턴스 가상환경 세팅</h3>
+<p>인스턴스 환경을 현재 사용중인 로컬 컴퓨터의 환경과 같게 만들어주기 위해서 세팅해줍니다.</p>
+
+<h4 id="11-pyenv-설치">1.1 pyenv 설치</h4>
+<p>터미널로 가상환경에 접속합니다.   <strong>로컬이 아니라 <code class="highlighter-rouge">가상환경</code>입니다!</strong></p>
+
+<ul>
+  <li>참고로 가상환경 접속은 아래 명령어로 가능합니다.
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> ssh <span class="nt">-i</span> pem경로 user-name@public-dns-name
+</code></pre></div>    </div>
+  </li>
+  <li>locale 오류(한글 깨짐 현상) fix
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> <span class="nb">sudo </span>vi /etc/default/locale
+</code></pre></div>    </div>
+    <ul>
+      <li>맨 아랫줄에 아래 내용 입력 후 esc를 누르고 <code class="highlighter-rouge">:wq</code> 로 저장
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">LC_CTYPE</span><span class="o">=</span><span class="s2">"en_US.UTF-8"</span>
+<span class="nv">LC_ALL</span><span class="o">=</span><span class="s2">"en_US.UTF-8"</span>
+<span class="nv">LANG</span><span class="o">=</span><span class="s2">"en_US.UTF-8"</span>
+</code></pre></div>        </div>
+        <p><img src="/img/posts/2018-4-24/2.png" alt="그림2" width="100%" height="100%" /></p>
+      </li>
+    </ul>
+  </li>
+  <li>가상환경 재접속
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> <span class="nb">exit</span>
+</code></pre></div>    </div>
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> ssh <span class="nt">-i</span> pem경로 user-name@public-dns-name
+</code></pre></div>    </div>
+  </li>
+  <li>apt-get 업데이트
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> <span class="nb">sudo </span>apt-get update
+</code></pre></div>    </div>
+  </li>
+  <li>apt-get 업그레이드
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> <span class="nb">sudo </span>apt-get dist-upgrade
+</code></pre></div>    </div>
+  </li>
+  <li><a href="https://github.com/pyenv/pyenv/wiki/Common-build-problems">Common build problems</a>에 나온 내용부터 설치
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> <span class="nb">sudo </span>apt-get install <span class="nt">-y</span> make build-essential libssl-dev zlib1g-dev libbz2-dev <span class="se">\</span>
+libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev <span class="se">\</span>
+xz-utils tk-dev
+</code></pre></div>    </div>
+  </li>
+  <li>pyenv 설치
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> curl <span class="nt">-L</span> https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+</code></pre></div>    </div>
+    <p><br /></p>
+  </li>
+</ul>
+
+<h4 id="12-zsh-설치">1.2 zsh 설치</h4>
+<p>좀 더 사용성을 좋게 하기 위해 기본 <code class="highlighter-rouge">bash</code>을 <code class="highlighter-rouge">zsh</code>로 변경합니다.</p>
+
+<ul>
+  <li>zsh 설치
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> <span class="nb">sudo </span>apt-get install zsh
+</code></pre></div>    </div>
+  </li>
+  <li>oh-my-zsh 설치
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> curl <span class="nt">-L</span> http://install.ohmyz.sh | sh
+</code></pre></div>    </div>
+  </li>
+  <li>기본 쉘을 <code class="highlighter-rouge">bash</code>에서 <code class="highlighter-rouge">zsh</code>로 변경
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> <span class="nb">sudo </span>chsh ubuntu <span class="nt">-s</span> <span class="sb">`</span>which zsh<span class="sb">`</span>
+</code></pre></div>    </div>
+  </li>
+  <li>종료 후 재접속
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> <span class="nb">exit</span>
+</code></pre></div>    </div>
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> ssh <span class="nt">-i</span> pem경로 user-name@public-dns-name
+</code></pre></div>    </div>
+  </li>
+  <li>zshrc에 pyenv 관련 내용 추가
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> vi ~/.zshrc
+</code></pre></div>    </div>
+    <ul>
+      <li>2번째 줄 <code class="highlighter-rouge">export PATH ~</code> 부분 주석 해제
+<img src="/img/posts/2018-4-24/3.png" alt="그림3" width="100%" height="100%" /></li>
+      <li>맨 아래 부분에 아래 내용 추가
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"/home/ubuntu/.pyenv/bin:</span><span class="nv">$PATH</span><span class="s2">"</span>
+<span class="nb">eval</span> <span class="s2">"</span><span class="k">$(</span>pyenv init -<span class="k">)</span><span class="s2">"</span>
+<span class="nb">eval</span> <span class="s2">"</span><span class="k">$(</span>pyenv virtualenv-init -<span class="k">)</span><span class="s2">"</span>
+</code></pre></div>        </div>
+        <p><img src="/img/posts/2018-4-24/4.png" alt="그림4" width="100%" height="100%" /></p>
+      </li>
+      <li>esc 키를 누른 후 <code class="highlighter-rouge">:wq</code> 를 입력해 저장</li>
+      <li>zshrc 새로고침
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> <span class="nb">source</span> ~/.zshrc
+</code></pre></div>        </div>
+        <p><br /></p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="13-srv-폴더-권한-수정">1.3 /srv 폴더 권한 수정</h4>
+<p>로컬의 파일을 이제 가상환경에 옮길 차례입니다. 파일은 가상환경의 <code class="highlighter-rouge">/srv</code> 폴더로 옮겨야하는데, 권한이 필요합니다. 옮길 수 있도록 아래 명령어로 권한을 <code class="highlighter-rouge">ubuntu</code>로 변경합니다. (참고 : <a href="https://ko.wikipedia.org/wiki/%ED%8C%8C%EC%9D%BC%EC%8B%9C%EC%8A%A4%ED%85%9C_%EA%B3%84%EC%B8%B5%EA%B5%AC%EC%A1%B0_%ED%91%9C%EC%A4%80">리눅스 폴더 구조</a>)</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> <span class="nb">sudo </span>chown <span class="nt">-R</span> ubuntu:ubuntu /srv
+</code></pre></div></div>
+<p><br /></p>
+
+<hr />
+<p><br /></p>
+
+<p>이어서 가상환경에 배포하기 위해 Django를 세팅하고, Nginx와 uWSGI를 이용해 배포하는 방법에 대해서 알아보겠습니다.</p>
+
+<p><br /></p>
+
+
+          <div class="clearfix">
+            
+            <a class="btn btn-primary float-left" href="/deploy/2018/04/24/aws-signup-and-create-ec2.html" data-toggle="tooltip" data-placement="top" title="AWS 가입 및 EC2 인스턴스 생성">&larr; 이전<span class="d-none d-md-inline"> 글</span></a>
+            
+            
+          </div>
+          <br>
+          <br>
+          <br>
+          
+
+<div id="disqus_thread"></div>
+<script>
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://rainsound-k.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Footer -->
+
+<hr>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <ul class="list-inline text-center">
+          
+          
+          
+          <li class="list-inline-item">
+            <a href="https://github.com/rainsound-k">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="copyright text-muted">Copyright &copy; rainsound 2018</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/startbootstrap-clean-blog/js/clean-blog.min.js"></script>
+
+<script src="/assets/scripts.js"></script>
+
+
+
+    <script id="dsq-count-scr" src="//rainsound-k.disqus.com/count.js" async></script>
+  </body>
+
+</html>

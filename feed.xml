@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-04-28T12:46:18+09:00</updated><id>http://localhost:4000/</id><title type="html">rainsound 개발 노트</title><subtitle>개발 공부하면서 까먹지 않기 위해 기록하는 블로그입니다.</subtitle><author><name>rainsound</name></author><entry><title type="html">EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)</title><link href="http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html" rel="alternate" type="text/html" title="EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)" /><published>2018-04-25T02:30:26+09:00</published><updated>2018-04-25T02:30:26+09:00</updated><id>http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1</id><content type="html" xml:base="http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html">&lt;h2 id=&quot;ec2-가상환경-세팅과-nginx--uwsgi로-django-앱-배포하기12&quot;&gt;EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기(1/2)&lt;/h2&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;이전 포스트&lt;/code&gt; : &lt;a href=&quot;https://rainsound-k.github.io/2018/04/23/aws-signup-and-create-ec2.html&quot;&gt;AWS 가입 및 EC2 인스턴스 생성&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;위에서 만든 EC2 인스턴스의 가상환경을 세팅하고, Nginx와 uWSGI를 이용해 Django 앱을 배포하는 방법에 대해서 다룰 예정입니다.&lt;/p&gt;
+
+&lt;h3 id=&quot;1-ec2-인스턴스-가상환경-세팅&quot;&gt;1. EC2 인스턴스 가상환경 세팅&lt;/h3&gt;
+&lt;p&gt;인스턴스 환경을 현재 사용중인 로컬 컴퓨터의 환경과 같게 만들어주기 위해서 세팅해줍니다.&lt;/p&gt;
+
+&lt;h4 id=&quot;11-pyenv-설치&quot;&gt;1.1 pyenv 설치&lt;/h4&gt;
+&lt;p&gt;터미널로 가상환경에 접속합니다.   &lt;strong&gt;로컬이 아니라 &lt;code class=&quot;highlighter-rouge&quot;&gt;가상환경&lt;/code&gt;입니다!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;참고로 가상환경 접속은 아래 명령어로 가능합니다.
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; ssh &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; pem경로 user-name@public-dns-name
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;locale 오류(한글 깨짐 현상) fix
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;vi /etc/default/locale
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;ul&gt;
+      &lt;li&gt;맨 아랫줄에 아래 내용 입력 후 esc를 누르고 &lt;code class=&quot;highlighter-rouge&quot;&gt;:wq&lt;/code&gt; 로 저장
+        &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;LC_CTYPE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;en_US.UTF-8&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;LC_ALL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;en_US.UTF-8&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;LANG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;en_US.UTF-8&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+        &lt;p&gt;&lt;img src=&quot;/img/posts/2018-4-24/2.png&quot; alt=&quot;그림2&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;가상환경 재접속
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; ssh &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; pem경로 user-name@public-dns-name
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;apt-get 업데이트
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get update
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;apt-get 업그레이드
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get dist-upgrade
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/pyenv/pyenv/wiki/Common-build-problems&quot;&gt;Common build problems&lt;/a&gt;에 나온 내용부터 설치
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get install &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; make build-essential libssl-dev zlib1g-dev libbz2-dev &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+xz-utils tk-dev
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;pyenv 설치
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; curl &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;12-zsh-설치&quot;&gt;1.2 zsh 설치&lt;/h4&gt;
+&lt;p&gt;좀 더 사용성을 좋게 하기 위해 기본 &lt;code class=&quot;highlighter-rouge&quot;&gt;bash&lt;/code&gt;을 &lt;code class=&quot;highlighter-rouge&quot;&gt;zsh&lt;/code&gt;로 변경합니다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;zsh 설치
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get install zsh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;oh-my-zsh 설치
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; curl &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; http://install.ohmyz.sh | sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;기본 쉘을 &lt;code class=&quot;highlighter-rouge&quot;&gt;bash&lt;/code&gt;에서 &lt;code class=&quot;highlighter-rouge&quot;&gt;zsh&lt;/code&gt;로 변경
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;chsh ubuntu &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;which zsh&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;종료 후 재접속
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; ssh &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; pem경로 user-name@public-dns-name
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;zshrc에 pyenv 관련 내용 추가
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; vi ~/.zshrc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;ul&gt;
+      &lt;li&gt;2번째 줄 &lt;code class=&quot;highlighter-rouge&quot;&gt;export PATH ~&lt;/code&gt; 부분 주석 해제
+&lt;img src=&quot;/img/posts/2018-4-24/3.png&quot; alt=&quot;그림3&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/li&gt;
+      &lt;li&gt;맨 아래 부분에 아래 내용 추가
+        &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/home/ubuntu/.pyenv/bin:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;eval&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;pyenv init -&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;eval&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;pyenv virtualenv-init -&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+        &lt;p&gt;&lt;img src=&quot;/img/posts/2018-4-24/4.png&quot; alt=&quot;그림4&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;esc 키를 누른 후 &lt;code class=&quot;highlighter-rouge&quot;&gt;:wq&lt;/code&gt; 를 입력해 저장&lt;/li&gt;
+      &lt;li&gt;zshrc 새로고침
+        &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; ~/.zshrc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+        &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;13-srv-폴더-권한-수정&quot;&gt;1.3 /srv 폴더 권한 수정&lt;/h4&gt;
+&lt;p&gt;로컬의 파일을 이제 가상환경에 옮길 차례입니다. 파일은 가상환경의 &lt;code class=&quot;highlighter-rouge&quot;&gt;/srv&lt;/code&gt; 폴더로 옮겨야하는데, 권한이 필요합니다. 옮길 수 있도록 아래 명령어로 권한을 &lt;code class=&quot;highlighter-rouge&quot;&gt;ubuntu&lt;/code&gt;로 변경합니다. (참고 : &lt;a href=&quot;https://ko.wikipedia.org/wiki/%ED%8C%8C%EC%9D%BC%EC%8B%9C%EC%8A%A4%ED%85%9C_%EA%B3%84%EC%B8%B5%EA%B5%AC%EC%A1%B0_%ED%91%9C%EC%A4%80&quot;&gt;리눅스 폴더 구조&lt;/a&gt;)&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;chown &lt;span class=&quot;nt&quot;&gt;-R&lt;/span&gt; ubuntu:ubuntu /srv
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;이어서 가상환경에 배포하기 위해 Django를 세팅하고, Nginx와 uWSGI를 이용해 배포하는 방법에 대해서 알아보겠습니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;</content><author><name>rainsound</name></author><summary type="html">EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기(1/2) 이전 포스트 : AWS 가입 및 EC2 인스턴스 생성</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/img/posts/2018-4-24/1.png" /></entry><entry><title type="html">AWS 가입 및 EC2 인스턴스 생성</title><link href="http://localhost:4000/deploy/2018/04/24/aws-signup-and-create-ec2.html" rel="alternate" type="text/html" title="AWS 가입 및 EC2 인스턴스 생성" /><published>2018-04-24T01:55:13+09:00</published><updated>2018-04-24T01:55:13+09:00</updated><id>http://localhost:4000/deploy/2018/04/24/aws-signup-and-create-ec2</id><content type="html" xml:base="http://localhost:4000/deploy/2018/04/24/aws-signup-and-create-ec2.html">&lt;h2 id=&quot;aws-가입-및-ec2-인스턴스-생성&quot;&gt;AWS 가입 및 EC2 인스턴스 생성&lt;/h2&gt;
+&lt;p&gt;이 포스팅에서는 AWS에 가입하는 방법부터, EC2 인스턴스를 생성하는 방법에 대해서 다룹니다.&lt;/p&gt;
+&lt;h3 id=&quot;1-aws-가입&quot;&gt;1. AWS 가입&lt;/h3&gt;
+&lt;p&gt;AWS는 &lt;code class=&quot;highlighter-rouge&quot;&gt;Amazon Web Services&lt;/code&gt;의 약자로 아마존닷컴이 제공하는 각종 원격 컴퓨팅 서비스입니다. AWS에서 컴퓨팅 파워, 데이터베이스 스토리지, 콘텐츠 전송 및 기타 기능을 원격으로 할 수 있습니다.&lt;/p&gt;
+
+&lt;p&gt;AWS와 비슷한 서비스로 구글의 &lt;code class=&quot;highlighter-rouge&quot;&gt;Google Cloud Platform&lt;/code&gt;, 마이크로소프트의 &lt;code class=&quot;highlighter-rouge&quot;&gt;Azure&lt;/code&gt;가 있는데 이번에는 AWS 이용 방법에 대해서 알아보겠습니다.&lt;/p&gt;
+&lt;h4 id=&quot;11-httpsawsamazoncomko-사이트-접속&quot;&gt;1.1. &lt;a href=&quot;https://aws.amazon.com/ko&quot;&gt;https://aws.amazon.com/ko&lt;/a&gt; 사이트 접속&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/posts/2018-4-23/1.png&quot; alt=&quot;그림1&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;12-이메일-입력-후-계정-정보-입력&quot;&gt;1.2. 이메일 입력 후 계정 정보 입력&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;계정 유형은 기업이 아닐 경우 개인으로 선택하고, 주소는 모두 영어로 기입합니다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/posts/2018-4-23/2.png&quot; alt=&quot;그림2&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;13-결제-정보-입력&quot;&gt;1.3. 결제 정보 입력&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;AWS는 기본적으로 새로운 계정에게 &lt;code class=&quot;highlighter-rouge&quot;&gt;프리 티어&lt;/code&gt;라는 1년 무료 플랜을 제공하나, 프리 티어의 한도를 초과하거나 1년이 지날 경우는 과금이 되므로 주의해야합니다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/posts/2018-4-23/3.png&quot; alt=&quot;그림3&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;14-전화-인증&quot;&gt;1.4. 전화 인증&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;전화 번호를 입력 후 &lt;code class=&quot;highlighter-rouge&quot;&gt;지금 전화하기&lt;/code&gt; 버튼을 누르고 ARS가 걸려오면 화면에 보이는 번호를 입력합니다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/posts/2018-4-23/4.png&quot; alt=&quot;그림4&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;15-지원-플랜-선택-후-가입-완료&quot;&gt;1.5. 지원 플랜 선택 후 가입 완료&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;상황에 맞게 플랜을 선택하면 되나, 지금은 테스트이므로 &lt;code class=&quot;highlighter-rouge&quot;&gt;기본 플랜&lt;/code&gt;을 선택하겠습니다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/posts/2018-4-23/5.png&quot; alt=&quot;그림5&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;2-ec2-인스턴스-생성&quot;&gt;2. EC2 인스턴스 생성&lt;/h3&gt;
+&lt;p&gt;먼저 EC2의 개념은 &lt;a href=&quot;https://ko.wikipedia.org/wiki/%EC%95%84%EB%A7%88%EC%A1%B4_%EC%9D%BC%EB%9E%98%EC%8A%A4%ED%8B%B1_%EC%BB%B4%ED%93%A8%ED%8A%B8_%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C&quot;&gt;위키백과&lt;/a&gt;에 잘 나와 있습니다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;아마존 일래스틱 컴퓨트 클라우드(Amazon Elastic Compute Cloud)는
+아마존닷컴의 클라우드 컴퓨팅 플랫폼 아마존 웹 서비스의 중앙부를 이루며,
+사용자가 가상 컴퓨터를 임대 받아 그 위에 자신만의 컴퓨터 애플리케이션들을 실행할 수 있게 한다.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;즉 이 EC2를 사용하면 자신의 앱을 돌리기 위해 서버용 컴퓨터를 개인마다 갖고 있을 필요 없이, 아마존닷컴의 &lt;code class=&quot;highlighter-rouge&quot;&gt;인스턴스&lt;/code&gt;라 불리는 가상 머신을 임대 받아 자신의 앱을 돌릴 수 있습니다.&lt;/p&gt;
+
+&lt;p&gt;그럼 AWS에서 이 EC2에 인스턴스를 생성하는 방법에 대해서 알아보겠습니다.&lt;/p&gt;
+
+&lt;h4 id=&quot;21-지역-변경&quot;&gt;2.1. 지역 변경&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;우선 로그인 후, 우측 상단에 &lt;code class=&quot;highlighter-rouge&quot;&gt;미국 동부(오하이오)&lt;/code&gt;로 되어 있는 지역을 &lt;code class=&quot;highlighter-rouge&quot;&gt;아시아 태평양(서울)&lt;/code&gt;로 변경해줍니다. 이는 서버를 어느 지역으로 설정할 것인지 정하는 것인데, 한국에서 돌린다면 한국 서버가 가장 빠르고 지연속도가 낮습니다. 참고로 한국 서버를 지원한건 이제 2년 조금 넘었습니다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/posts/2018-4-23/6.png&quot; alt=&quot;그림6&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;22-ec2-메뉴-선택-및-인스턴스-생성&quot;&gt;2.2. EC2 메뉴 선택 및 인스턴스 생성&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;검색창에 &lt;code class=&quot;highlighter-rouge&quot;&gt;EC2&lt;/code&gt;를 검색해서 접속합니다. 접속 후 &lt;code class=&quot;highlighter-rouge&quot;&gt;인스턴스 시작&lt;/code&gt; 버튼을 눌러줍니다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/posts/2018-4-23/7.png&quot; alt=&quot;그림7&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;
+&lt;img src=&quot;/img/posts/2018-4-23/8.png&quot; alt=&quot;그림8&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;23-amiamazon-machine-image-선택&quot;&gt;2.3. AMI(Amazon Machine Image) 선택&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;AMI는 인스턴스에 어떤 소프트웨어를 구축해 놓을지 정하는 것입니다. 배포하려는 앱이 어떤 서버인지에 따라 선택해주시면 됩니다. 저는 Django 앱을 배포하기 위해 &lt;code class=&quot;highlighter-rouge&quot;&gt;Ubuntu Server 16.04 LTS&lt;/code&gt; 를 선택하겠습니다.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;참고로 무료로 사용하실 분들은 반드시 &lt;code class=&quot;highlighter-rouge&quot;&gt;프리티어 사용 가능&lt;/code&gt; 중에 선택해주세요!&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/posts/2018-4-23/9.png&quot; alt=&quot;그림9&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;24-인스턴스-유형-선택&quot;&gt;2.4. 인스턴스 유형 선택&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;인스턴스 유형은 가상 머신의 성능을 선택하는 것입니다. 상황에 맞게 선택해주시면 되며 성능이 높을수록 당연히 가격이 올라갑니다. 무료로 사용하실 분은 두번째 &lt;code class=&quot;highlighter-rouge&quot;&gt;프리티어 사용 가능&lt;/code&gt; 항목을 선택해주시면 됩니다. 유형 선택 후 &lt;code class=&quot;highlighter-rouge&quot;&gt;다음: 인스턴스 세부 정보 구성&lt;/code&gt;을 눌러줍니다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/posts/2018-4-23/10.png&quot; alt=&quot;그림10&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;25-보안-그룹-구성&quot;&gt;2.5. 보안 그룹 구성&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;1 ~ 5번 항목까지 다음을 눌러주시고, 보안 그룹 구성으로 옵니다. 여기서 보안 그룹 이름과 설명을 나중에 알아보기 쉽게 바꿔 주고, &lt;code class=&quot;highlighter-rouge&quot;&gt;검토 및 시작&lt;/code&gt;을 눌러줍니다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/posts/2018-4-23/11.png&quot; alt=&quot;그림11&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;26-키-페어-생성&quot;&gt;2.6. 키 페어 생성&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;키 페어는 나중에 원격으로 이 인스턴스에 접속하기 위해서 반드시 필요합니다. &lt;code class=&quot;highlighter-rouge&quot;&gt;새 키 페어 생성&lt;/code&gt;을 누른 후 키 페어 이름을 작성하고 &lt;code class=&quot;highlighter-rouge&quot;&gt;키 페어 다운로드&lt;/code&gt;로 다운로드 해줍니다.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;키 페어는 한 번 발급 받은 후, 다시 받을 방법이 없으므로 반드시 잘 보관해야합니다!!&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;키 페어 관리 방법과 사용 방법은 아래에서 다룰 예정이니, 그 때까지 잘 보관해주세요!&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/posts/2018-4-23/12.png&quot; alt=&quot;그림12&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;27-예상-요금-알림-받기&quot;&gt;2.7. 예상 요금 알림 받기&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;인스턴스가 생성되는 동안, 예상 요금을 이메일로 알림 받을 수 있도록 세팅해보겠습니다. 먼저 예상 요금 알림 받기 항목에서 &lt;code class=&quot;highlighter-rouge&quot;&gt;결제 알림 생성&lt;/code&gt; 버튼을 눌러줍니다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/posts/2018-4-23/13.png&quot; alt=&quot;그림13&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;결제 알림 받기&lt;/code&gt;를 체크해주시고(참고로 한 번 체크를 하면 해제할 수 없으니, 따로 안받으실 분들은 안해주셔도 됩니다), &lt;code class=&quot;highlighter-rouge&quot;&gt;새로운 예산 기능을 사용해 보십시오!&lt;/code&gt; 를 눌러주세요.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/posts/2018-4-23/14.png&quot; alt=&quot;그림14&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;예산 작성&lt;/code&gt; 버튼을 누른 후, 자신의 예산 상황에 맞게 작성하신 후 마지막에 알림 받을 이메일 주소를 입력해주시면 됩니다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/posts/2018-4-23/15.png&quot; alt=&quot;그림15&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;
+&lt;img src=&quot;/img/posts/2018-4-23/16.png&quot; alt=&quot;그림16&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;28-인스턴스-생성-완료&quot;&gt;2.8. 인스턴스 생성 완료&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;축하합니다! 인스턴스 생성이 완료되었습니다. 알아보기 쉽게 &lt;code class=&quot;highlighter-rouge&quot;&gt;name&lt;/code&gt;에 이름을 입력해줍니다.
+&lt;img src=&quot;/img/posts/2018-4-23/17.png&quot; alt=&quot;그림17&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;29-키-페어-관리&quot;&gt;2.9. 키 페어 관리&lt;/h4&gt;
+&lt;p&gt;이 후 모든 내용은 Linux/Mac OS 기준으로 진행합니다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;터미널을 실행 후 아래 명령어를 입력해 봅니다.
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; .ssh/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;no such file or directory&lt;/code&gt; 가 나오면 아래 명령어로 &lt;code class=&quot;highlighter-rouge&quot;&gt;.ssh&lt;/code&gt; 폴더를 새로 생성해줍니다.
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; mkdir .ssh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;그 후 위에 &lt;code class=&quot;highlighter-rouge&quot;&gt;cd .ssh/&lt;/code&gt; 명령어로 접속 후 아래 명령어로 폴더를 열어줍니다.
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; open &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;폴더가 열렸으면 아까 다운로드 받은 프라이빗 키 파일(~~~.pem)을 &lt;code class=&quot;highlighter-rouge&quot;&gt;.ssh&lt;/code&gt; 폴더 안으로 넣어 줍니다.&lt;/li&gt;
+  &lt;li&gt;그 후 다시 터미널 &lt;code class=&quot;highlighter-rouge&quot;&gt;.ssh&lt;/code&gt; 폴더에서 아래 명령어로 키 파일을 사용자 자신만 볼 수 있게 권한을 변경해줍니다.
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; chmod 400 ~~~.pem
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;&lt;img src=&quot;/img/posts/2018-4-23/18.png&quot; alt=&quot;그림18&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;210-원격으로-인스턴스에-접속&quot;&gt;2.10. 원격으로 인스턴스에 접속&lt;/h4&gt;
+&lt;p&gt;원격으로 인스턴스에 연결하기 위해서는 터미널에 아래의 명령어를 사용합니다.&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; ssh &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; pem경로 user-name@public-dns-name
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;pem경로&lt;/strong&gt; 는 &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.ssh/~~~.pem &lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;user-name&lt;/strong&gt; 의 경우 아직 인스턴스의 user를 따로 설정하지 않았기 때문에 default 값을 따릅니다. default 값은 아래와 같습니다.
+    &lt;ul&gt;
+      &lt;li&gt;Amazon Linux AMI의 경우, &lt;code class=&quot;highlighter-rouge&quot;&gt;ec2-user&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;Centos AMI의 경우, &lt;code class=&quot;highlighter-rouge&quot;&gt;centos&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;Debian AMI의 경우, &lt;code class=&quot;highlighter-rouge&quot;&gt;admin&lt;/code&gt; 또는 &lt;code class=&quot;highlighter-rouge&quot;&gt;root&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;Fedora AMI의 경우, &lt;code class=&quot;highlighter-rouge&quot;&gt;ec2-user&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;RHEL AMI의 경우, &lt;code class=&quot;highlighter-rouge&quot;&gt;ec2-user&lt;/code&gt; 또는 &lt;code class=&quot;highlighter-rouge&quot;&gt;root&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;SUSE AMI의 경우, &lt;code class=&quot;highlighter-rouge&quot;&gt;ec2-user&lt;/code&gt; 또는 &lt;code class=&quot;highlighter-rouge&quot;&gt;root&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;Ubuntu AMI의 경우, &lt;code class=&quot;highlighter-rouge&quot;&gt;ubuntu&lt;/code&gt; 또는 &lt;code class=&quot;highlighter-rouge&quot;&gt;root&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;public-dns-name&lt;/strong&gt; 은 aws 사이트에서 &lt;code class=&quot;highlighter-rouge&quot;&gt;퍼블릭 DNS(IPv4)&lt;/code&gt; 값을 가져옵니다.
+&lt;img src=&quot;/img/posts/2018-4-23/19.png&quot; alt=&quot;그림19&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;
+따라서 최종적으로 제 기준 경로는 아래와 같습니다.
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; ssh &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; ~/.ssh/examplekey.pem ubuntu@ec2-52-78-234-247.ap-northeast-2.compute.amazonaws.com
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;위의 명령어를 터미널에 치면, 아래와 같이 인스턴스로 원격 접속한 것을 확인할 수 있습니다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;&lt;img src=&quot;/img/posts/2018-4-23/20.png&quot; alt=&quot;그림20&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;br /&gt;
+이번 포스팅에서는 AWS에 가입해 EC2 인스턴스를 생성하는 방법에 대해서 알아보았습니다.
+Nginx + uWSGI로 Django 앱 배포하는 방법은 다음 포스트에서 확인 가능합니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;다음 포스트&lt;/code&gt; : &lt;a href=&quot;https://rainsound-k.github.io/2018/04/24/instance-setting-and-django-deploy-part1.html&quot;&gt;EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;</content><author><name>rainsound</name></author><summary type="html">AWS 가입 및 EC2 인스턴스 생성 이 포스팅에서는 AWS에 가입하는 방법부터, EC2 인스턴스를 생성하는 방법에 대해서 다룹니다. 1. AWS 가입 AWS는 Amazon Web Services의 약자로 아마존닷컴이 제공하는 각종 원격 컴퓨팅 서비스입니다. AWS에서 컴퓨팅 파워, 데이터베이스 스토리지, 콘텐츠 전송 및 기타 기능을 원격으로 할 수 있습니다.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/img/posts/2018-4-23/1.png" /></entry></feed>
