@@ -15,11 +15,11 @@
           <a href="{{ site.baseurl }}{{ link.url }}" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Posts<span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li class="dropdown-list">
-              <a href="{{ site.url }}/posts">All Posts</a>
+              <a href="/posts">All Posts</a>
             </li>
             {% for category in site.categories %}
               <li class="dropdown-list">
-                <a href="{{ site.url }}/category/{{ category | first | url_encode }}/index.html">{{ category | first }}</a>
+                <a href="/category/{{ category | first | url_encode }}/index.html">{{ category | first }}</a>
               </li>
             {% endfor %}
           </ul>
