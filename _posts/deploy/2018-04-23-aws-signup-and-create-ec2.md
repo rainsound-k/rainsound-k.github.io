@@ -7,7 +7,7 @@ description: "AWS에 가입하는 방법부터, EC2 인스턴스를 생성하는
 date:   2018-04-23 12:55:13 -0400
 background: '/img/posts/2018-4-23/1.png'
 image: '/img/posts/2018-4-23/1.png'
-categories: [Deploy]
+categories: [Deploy1212]
 ---
 
 

@@ -7,7 +7,7 @@ description: "EC2 인스턴스의 가상환경을 세팅하고, Nginx와 uWSGI�
 date:   2018-04-24 13:30:26 -0400
 background: '/img/posts/2018-4-24/1.png'
 image: '/img/posts/2018-4-24/1.png'
-categories: [Deploy]
+categories: [Deploy1212]
 ---
 
 
