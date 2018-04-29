@@ -45,7 +45,7 @@ header.masthead .overlay { position: absolute; top: 0; left: 0; height: 100%; wi
 header.masthead .page-heading, header.masthead .post-heading, header.masthead .site-heading { padding: 200px 0 150px; color: white; }
 @media only screen and (min-width: 768px) { header.masthead .page-heading, header.masthead .post-heading, header.masthead .site-heading { padding: 200px 0; } }
 header.masthead .page-heading, header.masthead .site-heading { text-align: center; }
-header.masthead .page-heading h1, header.masthead .site-heading h1 { font-size: 40px; margin-top: 0; }
+header.masthead .page-heading h1, header.masthead .site-heading h1 { font-size: 35px; margin-top: 0; }
 header.masthead .page-heading .subheading, header.masthead .site-heading .subheading { font-size: 21px; font-weight: 300; line-height: 1.1; display: block; margin: 10px 0 0; font-family: 'Noto Sans KR',sans-serif, Arial; }
 @media only screen and (min-width: 768px) { header.masthead .page-heading h1, header.masthead .site-heading h1 { font-size: 75px; }
   header.masthead .page-heading .subheading, header.masthead .site-heading .subheading { font-size: 26px; } }

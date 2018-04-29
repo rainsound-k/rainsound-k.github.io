@@ -15,11 +15,17 @@
           <a href="{{ site.baseurl }}{{ link.url }}" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Posts<span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li class="dropdown-list">
-              <a href="/posts">All Posts</a>
+              <a href="/posts">All Posts ({{ site.posts | size }})</a>
             </li>
-            {% for category in site.categories %}
+            {% capture tags %}
+              {% for tag in site.categories %}
+                {{ tag[0] }}
+              {% endfor %}
+            {% endcapture %}
+            {% assign sortedtags = tags | split:' ' | sort %}
+            {% for tag in sortedtags %}
               <li class="dropdown-list">
-                <a href="/category/{{ category | first | url_encode }}/index.html">{{ category | first }}</a>
+                <a href="/category/{{ tag }}/index.html">{{ tag }} ({{ site.categories[tag] | size }})</a>
               </li>
             {% endfor %}
           </ul>
