@@ -504,11 +504,12 @@ kbd kbd {
     font-weight: 700;
 }
 pre {
-  padding: 8px 12px;
+    padding: 8px 12px;
     display: block;
     font-size: 80%;
     color: #212529;
     border: 1px solid #e8e8e8;
+    white-space: pre-wrap;
 }
 pre code {
     font-size: inherit;
