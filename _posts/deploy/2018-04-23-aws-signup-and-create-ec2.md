@@ -162,4 +162,6 @@ Nginx + uWSGI로 Django 앱 배포하는 방법은 다음 포스트에서 확인
 
 `다음 포스트` : [EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)](https://rainsound-k.github.io/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html)
 
+> 개인 공부하면서 작성한 글이라 잘못된 내용이 있을 수 있습니다. 잘못된 내용은 편하게 말씀해주시면 수정하겠습니다:)
+
 <br>

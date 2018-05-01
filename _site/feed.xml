@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-04-30T19:52:46+09:00</updated><id>http://localhost:4000/</id><title type="html">rainsound 개발 노트</title><subtitle>개발 공부하면서 까먹지 않기 위해 기록하는 블로그입니다.</subtitle><author><name>rainsound</name></author><entry><title type="html">EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)</title><link href="http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html" rel="alternate" type="text/html" title="EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)" /><published>2018-04-25T02:30:26+09:00</published><updated>2018-04-25T02:30:26+09:00</updated><id>http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1</id><content type="html" xml:base="http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html">&lt;h2 id=&quot;ec2-가상환경-세팅과-nginx--uwsgi로-django-앱-배포하기12&quot;&gt;EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기(1/2)&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-01T10:15:36+09:00</updated><id>http://localhost:4000/</id><title type="html">rainsound 개발 노트</title><subtitle>개발 공부하면서 까먹지 않기 위해 기록하는 블로그입니다.</subtitle><author><name>rainsound</name></author><entry><title type="html">EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)</title><link href="http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html" rel="alternate" type="text/html" title="EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)" /><published>2018-04-25T02:30:26+09:00</published><updated>2018-04-25T02:30:26+09:00</updated><id>http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1</id><content type="html" xml:base="http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html">&lt;h2 id=&quot;ec2-가상환경-세팅과-nginx--uwsgi로-django-앱-배포하기12&quot;&gt;EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기(1/2)&lt;/h2&gt;
 &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;이전 포스트&lt;/code&gt; : &lt;a href=&quot;https://rainsound-k.github.io/deploy/2018/04/24/aws-signup-and-create-ec2.html&quot;&gt;AWS 가입 및 EC2 인스턴스 생성&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;위에서 만든 EC2 인스턴스의 가상환경을 세팅하고, Nginx와 uWSGI를 이용해 Django 앱을 배포하는 방법에 대해서 다룰 예정입니다.&lt;/p&gt;
@@ -109,6 +109,10 @@ xz-utils tk-dev
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;p&gt;이어서 가상환경에 배포하기 위해 Django를 세팅하고, Nginx와 uWSGI를 이용해 배포하는 방법에 대해서 알아보겠습니다.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;개인 공부하면서 작성한 글이라 잘못된 내용이 있을 수 있습니다. 잘못된 내용은 편하게 말씀해주시면 수정하겠습니다:)&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;</content><author><name>rainsound</name></author><summary type="html">EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기(1/2) 이전 포스트 : AWS 가입 및 EC2 인스턴스 생성</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/img/posts/2018-4-24/1.png" /></entry><entry><title type="html">AWS 가입 및 EC2 인스턴스 생성</title><link href="http://localhost:4000/deploy/2018/04/24/aws-signup-and-create-ec2.html" rel="alternate" type="text/html" title="AWS 가입 및 EC2 인스턴스 생성" /><published>2018-04-24T01:55:13+09:00</published><updated>2018-04-24T01:55:13+09:00</updated><id>http://localhost:4000/deploy/2018/04/24/aws-signup-and-create-ec2</id><content type="html" xml:base="http://localhost:4000/deploy/2018/04/24/aws-signup-and-create-ec2.html">&lt;h2 id=&quot;aws-가입-및-ec2-인스턴스-생성&quot;&gt;AWS 가입 및 EC2 인스턴스 생성&lt;/h2&gt;
 &lt;p&gt;이 포스팅에서는 AWS에 가입하는 방법부터, EC2 인스턴스를 생성하는 방법에 대해서 다룹니다.&lt;/p&gt;
@@ -291,5 +295,9 @@ xz-utils tk-dev
 Nginx + uWSGI로 Django 앱 배포하는 방법은 다음 포스트에서 확인 가능합니다.&lt;/p&gt;
 
 &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;다음 포스트&lt;/code&gt; : &lt;a href=&quot;https://rainsound-k.github.io/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html&quot;&gt;EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;개인 공부하면서 작성한 글이라 잘못된 내용이 있을 수 있습니다. 잘못된 내용은 편하게 말씀해주시면 수정하겠습니다:)&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;</content><author><name>rainsound</name></author><summary type="html">AWS 가입 및 EC2 인스턴스 생성 이 포스팅에서는 AWS에 가입하는 방법부터, EC2 인스턴스를 생성하는 방법에 대해서 다룹니다. 1. AWS 가입 AWS는 Amazon Web Services의 약자로 아마존닷컴이 제공하는 각종 원격 컴퓨팅 서비스입니다. AWS에서 컴퓨팅 파워, 데이터베이스 스토리지, 콘텐츠 전송 및 기타 기능을 원격으로 할 수 있습니다.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/img/posts/2018-4-23/1.png" /></entry></feed>
