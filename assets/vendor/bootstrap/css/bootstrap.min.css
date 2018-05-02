@@ -3010,8 +3010,7 @@ tbody.collapse.show {
     z-index: 1000;
     display: none;
     float: left;
-    /* min-width: 200px; */
-    min-width: 130px;
+    min-width: 155px;
     padding: 10px 20px;
     margin: 0;
     font-size: 1rem;
