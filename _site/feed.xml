@@ -1,10 +1,152 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-02T16:43:41+09:00</updated><id>http://localhost:4000/</id><title type="html">rainsound 개발 노트</title><subtitle>개발 공부하면서 까먹지 않기 위해 기록하는 블로그입니다.</subtitle><author><name>rainsound</name></author><entry><title type="html">Jekyll 블로그에서 포스트 안에 같은 카테고리 글 목록 추가</title><link href="http://localhost:4000/jekyll-blog/2018/05/02/more-posts-by-page.html" rel="alternate" type="text/html" title="Jekyll 블로그에서 포스트 안에 같은 카테고리 글 목록 추가" /><published>2018-05-02T09:45:33+09:00</published><updated>2018-05-02T09:45:33+09:00</updated><id>http://localhost:4000/jekyll-blog/2018/05/02/more-posts-by-page</id><content type="html" xml:base="http://localhost:4000/jekyll-blog/2018/05/02/more-posts-by-page.html">&lt;h2 id=&quot;jekyll-블로그에서-포스트-안에-같은-카테고리-글-목록-추가&quot;&gt;Jekyll 블로그에서 포스트 안에 같은 카테고리 글 목록 추가&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-02T18:19:54+09:00</updated><id>http://localhost:4000/</id><title type="html">rainsound 개발 노트</title><subtitle>개발 공부하면서 까먹지 않기 위해 기록하는 블로그입니다.</subtitle><author><name>rainsound</name></author><entry><title type="html">Jekyll 블로그 plugin 적용하고 page not found(404) 에러 해결하기</title><link href="http://localhost:4000/jekyll-blog/2018/05/02/apply-custom-plugin.html" rel="alternate" type="text/html" title="Jekyll 블로그 plugin 적용하고 page not found(404) 에러 해결하기" /><published>2018-05-02T11:00:33+09:00</published><updated>2018-05-02T11:00:33+09:00</updated><id>http://localhost:4000/jekyll-blog/2018/05/02/apply-custom-plugin</id><content type="html" xml:base="http://localhost:4000/jekyll-blog/2018/05/02/apply-custom-plugin.html">&lt;h2 id=&quot;jekyll-블로그-plugin-적용하고-page-not-found404-에러-해결하기&quot;&gt;Jekyll 블로그 plugin 적용하고 page not found(404) 에러 해결하기&lt;/h2&gt;
+&lt;p&gt;Jekyll 블로그에 &lt;a href=&quot;https://github.com/field-theory/jekyll-category-pages&quot;&gt;jekyll-category-pages&lt;/a&gt; 플러그인을 가이드를 보고 설치한 후, 로컬에서 정상 작동되는 것을 확인하고 평소처럼 github에 push를 하였는데 post의 링크가 제대로 연결이 안되서 아래처럼 page not found(404) 에러가 발생하였습니다.
+&lt;img src=&quot;/img/posts/2018-5-1/5.png&quot; alt=&quot;그림5&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;로컬에서는 정상 작동되기 때문에 원인을 찾기 힘들었는데, 열심히 구글링 한 결과 Github Pages에서 지원하는 &lt;a href=&quot;https://pages.github.com/versions&quot;&gt;Jekyll plugin&lt;/a&gt;이 따로 있다는 것을 발견했습니다.&lt;/p&gt;
+
+&lt;p&gt;일반 post의 글들은 Jekyll에서 알아서 판단해 site를 빌드해서 보여주기 때문에 괜찮지만 custom plugin을 사용한 경우라면 보안상의 이유로 빌드 할때 &lt;a href=&quot;https://help.shopify.com/themes/liquid/tags&quot;&gt;liquid tags&lt;/a&gt;를 인식하지 못하기 떄문에 생기는 이유라고 합니다.&lt;/p&gt;
+
+&lt;p&gt;해결책은 로컬에서 빌드하면 생기는 &lt;code class=&quot;highlighter-rouge&quot;&gt;_site&lt;/code&gt; 폴더를 github에 함께 push를 해줘야 하는데 구체적인 방법은 아래에서 설명하겠습니다.&lt;/p&gt;
+
+&lt;h3 id=&quot;1-전체-흐름&quot;&gt;1. 전체 흐름&lt;/h3&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;_site&lt;/code&gt; 폴더를 포함한 전체 프로젝트는 &lt;code class=&quot;highlighter-rouge&quot;&gt;source&lt;/code&gt; branch에서 관리.
+&lt;img src=&quot;/img/posts/2018-5-1/6.png&quot; alt=&quot;그림6&quot; /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;master&lt;/code&gt; branch에서는 &lt;code class=&quot;highlighter-rouge&quot;&gt;_site&lt;/code&gt; 안에 파일들만 관리.
+&lt;img src=&quot;/img/posts/2018-5-1/7.png&quot; alt=&quot;그림7&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;_site&lt;/code&gt; 폴더에 &lt;code class=&quot;highlighter-rouge&quot;&gt;.nojekyll&lt;/code&gt; 파일 생성
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; touch .nojekyll
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;.gitignore&lt;/code&gt;에서 &lt;code class=&quot;highlighter-rouge&quot;&gt;_site&lt;/code&gt; 주석 처리
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; vi .gitignore
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;### Jekyll ###
+# _site/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;esc&lt;/code&gt; 누른 후 &lt;code class=&quot;highlighter-rouge&quot;&gt;:wq&lt;/code&gt;로 저장&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;git add
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; git add .gitignore _site
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;git commit
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; git commit &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'custom plugin 적용 준비'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;source&lt;/code&gt; branch 생성
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; git checkout &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;git push
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; git push &lt;span class=&quot;nt&quot;&gt;--all&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;github repository 에서 설정 누른 후 &lt;code class=&quot;highlighter-rouge&quot;&gt;default branch&lt;/code&gt; 변경
+&lt;img src=&quot;/img/posts/2018-5-1/8.png&quot; alt=&quot;그림8&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;로컬 remote 저장소의 &lt;code class=&quot;highlighter-rouge&quot;&gt;default branch&lt;/code&gt; 적용
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; git remote set-head origin &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;로컬과 remote의 &lt;code class=&quot;highlighter-rouge&quot;&gt;master&lt;/code&gt; branch 삭제
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; git push origin :master
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; git branch &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; master
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;2-자동화&quot;&gt;2. 자동화&lt;/h3&gt;
+&lt;p&gt;위의 수많은 과정을 post를 작성할 때마다 반복한다고 생각하면, 헷갈릴뿐더러 굉장히 번거롭습니다. 언제나 그랬듯이 자동화하는 방법에 대해서 알아보겠습니다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Jekyll 폴더에 &lt;code class=&quot;highlighter-rouge&quot;&gt;publish.sh&lt;/code&gt; 작성
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; vi publish.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;아래 내용 작성&lt;/p&gt;
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+git checkout &lt;span class=&quot;nb&quot;&gt;source
+&lt;/span&gt;git branch &lt;span class=&quot;nt&quot;&gt;-D&lt;/span&gt; master
+git checkout &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; master
+git filter-branch &lt;span class=&quot;nt&quot;&gt;--subdirectory-filter&lt;/span&gt; _site/ &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;
+git push &lt;span class=&quot;nt&quot;&gt;--all&lt;/span&gt;
+git checkout &lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;esc&lt;/code&gt; 누른 후 &lt;code class=&quot;highlighter-rouge&quot;&gt;:wq&lt;/code&gt;로 저장&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;.zshrc&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;.bash_profile&lt;/code&gt; 설정&lt;br /&gt;
+&lt;strong&gt;1. zsh일 경우&lt;/strong&gt;
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; vi ~/.zshrc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;맨 하단에 아래 내용 작성&lt;/p&gt;
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;run-jekyll&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;bundle exec jekyll serve&quot;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;publish-jekyll&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;bash publish.sh&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;esc&lt;/code&gt; 누른 후 &lt;code class=&quot;highlighter-rouge&quot;&gt;:wq&lt;/code&gt;로 저장&lt;/p&gt;
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; ~/.zshrc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;&lt;strong&gt;2. bash일 경우&lt;/strong&gt;&lt;/p&gt;
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; vi ~/.bash_profile
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;맨 하단에 아래 내용 작성&lt;/p&gt;
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;run-jekyll&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;bundle exec jekyll serve&quot;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;publish-jekyll&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;bash publish.sh&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;esc&lt;/code&gt; 누른 후 &lt;code class=&quot;highlighter-rouge&quot;&gt;:wq&lt;/code&gt;로 저장&lt;/p&gt;
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; ~/.bash_profile
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;3-최종-배포-방법&quot;&gt;3. 최종 배포 방법&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;로컬에서 post 작성 및 수정&lt;/li&gt;
+  &lt;li&gt;Jekyll 블로그 폴더로 이동&lt;/li&gt;
+  &lt;li&gt;Jekyll 실행
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; run-jekyll
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;control + c&lt;/code&gt; 로 실행되고 있는 Jekyll 종료&lt;/li&gt;
+  &lt;li&gt;git add
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; git add &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;git commit
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; git commit &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'commit message'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;배포
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; publish-jekyll
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;끝!
+&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h5 id=&quot;참고-링크&quot;&gt;참고 링크&lt;/h5&gt;
+&lt;ul&gt;
+  &lt;li&gt;https://stackoverflow.com/questions/28249255/how-do-i-configure-github-to-use-non-supported-jekyll-site-plugins/28252200#28252200&lt;/li&gt;
+  &lt;li&gt;http://gumpcha.github.io/blog/github-pages-with-jekyll-custom-plugin&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;개인 공부하면서 작성한 글이라 잘못된 내용이 있을 수 있습니다. 잘못된 내용은 편하게 말씀해주시면 수정하겠습니다:)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;</content><author><name>rainsound</name></author><summary type="html">Jekyll 블로그 plugin 적용하고 page not found(404) 에러 해결하기 Jekyll 블로그에 jekyll-category-pages 플러그인을 가이드를 보고 설치한 후, 로컬에서 정상 작동되는 것을 확인하고 평소처럼 github에 push를 하였는데 post의 링크가 제대로 연결이 안되서 아래처럼 page not found(404) 에러가 발생하였습니다.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/img/posts/2018-5-1/5.png" /></entry><entry><title type="html">Jekyll 블로그에서 포스트 안에 같은 카테고리 글 목록 추가</title><link href="http://localhost:4000/jekyll-blog/2018/05/02/more-posts-by-page.html" rel="alternate" type="text/html" title="Jekyll 블로그에서 포스트 안에 같은 카테고리 글 목록 추가" /><published>2018-05-02T09:45:33+09:00</published><updated>2018-05-02T09:45:33+09:00</updated><id>http://localhost:4000/jekyll-blog/2018/05/02/more-posts-by-page</id><content type="html" xml:base="http://localhost:4000/jekyll-blog/2018/05/02/more-posts-by-page.html">&lt;h2 id=&quot;jekyll-블로그에서-포스트-안에-같은-카테고리-글-목록-추가&quot;&gt;Jekyll 블로그에서 포스트 안에 같은 카테고리 글 목록 추가&lt;/h2&gt;
 &lt;p&gt;Jekyll 블로그의 좋은 점이 많지만, 아쉬운 점 하나는 페이지 하단에 같은 카테고리의 다른 글들의 목록이 아래처럼 나오지 않는 점입니다.
 &lt;img src=&quot;/img/posts/2018-5-1/4.png&quot; alt=&quot;그림4&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;물론 테마에 따라 해당 기능을 지원하는 테마도 있겠지만, 제가 사용하는 &lt;a href=&quot;https://github.com/BlackrockDigital/startbootstrap-clean-blog-jekyll&quot;&gt;clean blog 테마&lt;/a&gt;에서는 따로 지원을 안해서 만들어보겠습니다.&lt;/p&gt;
 
-&lt;p&gt;여러가지 디자인이 있겠지만 아래처럼 &lt;code class=&quot;highlighter-rouge&quot;&gt;tistory 블로그&lt;/code&gt;의 디자인이 깔끔해보여서 똑같이 만들어보겠습니다. 참고로 &lt;code class=&quot;highlighter-rouge&quot;&gt;categories&lt;/code&gt;를 별도로 사용 중일 때 가능합니다. Jekyll에 내장된 categories를 이용하셔도 되고, 저의 경우는 &lt;a href=&quot;https://github.com/field-theory/jekyll-category-pages&quot;&gt;jekyll-category-pages&lt;/a&gt; 플러그인을 별도로 사용 중입니다. 하지만 Jekyll에서 지원하는 플러그인이 아닌 다른 플러그인을 사용하면, github에 다른 방식으로 push 해야하는데, 이건 다른 포스팅에서 다뤄보겠습니다.&lt;/p&gt;
+&lt;p&gt;여러가지 디자인이 있겠지만 아래처럼 &lt;code class=&quot;highlighter-rouge&quot;&gt;tistory 블로그&lt;/code&gt;의 디자인이 깔끔해보여서 똑같이 만들어보겠습니다. 참고로 &lt;code class=&quot;highlighter-rouge&quot;&gt;categories&lt;/code&gt;를 별도로 사용 중일 때 가능합니다. Jekyll에 내장된 categories를 이용하셔도 되고, 저의 경우는 &lt;a href=&quot;https://github.com/field-theory/jekyll-category-pages&quot;&gt;jekyll-category-pages&lt;/a&gt; 플러그인을 별도로 사용 중입니다. 하지만 Jekyll에서 지원하는 플러그인이 아닌 다른 플러그인을 사용하면, github에 다른 방식으로 push 해야하는데, 방법은 &lt;a href=&quot;https://rainsound-k.github.io/jekyll-blog/2018/05/02/apply-custom-plugin.html&quot;&gt;다른 포스팅&lt;/a&gt;에 적어놓았습니다.&lt;/p&gt;
 
 &lt;h3 id=&quot;1-html-작성&quot;&gt;1. HTML 작성&lt;/h3&gt;
 &lt;p&gt;우선 HTML 먼저 작성하겠습니다. &lt;code class=&quot;highlighter-rouge&quot;&gt;_includes&lt;/code&gt; 폴더나 &lt;code class=&quot;highlighter-rouge&quot;&gt;_layouts&lt;/code&gt; 폴더에 있는 자신의 &lt;code class=&quot;highlighter-rouge&quot;&gt;post&lt;/code&gt;의 기본 템플릿을 열어 원하는 위치에 아래 내용을 추가합니다.&lt;/p&gt;

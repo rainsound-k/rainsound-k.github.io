@@ -18,7 +18,7 @@ Jekyll 블로그의 좋은 점이 많지만, 아쉬운 점 하나는 페이지 �
 
 물론 테마에 따라 해당 기능을 지원하는 테마도 있겠지만, 제가 사용하는 [clean blog 테마](https://github.com/BlackrockDigital/startbootstrap-clean-blog-jekyll)에서는 따로 지원을 안해서 만들어보겠습니다.
 
-여러가지 디자인이 있겠지만 아래처럼 `tistory 블로그`의 디자인이 깔끔해보여서 똑같이 만들어보겠습니다. 참고로 `categories`를 별도로 사용 중일 때 가능합니다. Jekyll에 내장된 categories를 이용하셔도 되고, 저의 경우는 [jekyll-category-pages]( https://github.com/field-theory/jekyll-category-pages) 플러그인을 별도로 사용 중입니다. 하지만 Jekyll에서 지원하는 플러그인이 아닌 다른 플러그인을 사용하면, github에 다른 방식으로 push 해야하는데, 이건 다른 포스팅에서 다뤄보겠습니다.
+여러가지 디자인이 있겠지만 아래처럼 `tistory 블로그`의 디자인이 깔끔해보여서 똑같이 만들어보겠습니다. 참고로 `categories`를 별도로 사용 중일 때 가능합니다. Jekyll에 내장된 categories를 이용하셔도 되고, 저의 경우는 [jekyll-category-pages]( https://github.com/field-theory/jekyll-category-pages) 플러그인을 별도로 사용 중입니다. 하지만 Jekyll에서 지원하는 플러그인이 아닌 다른 플러그인을 사용하면, github에 다른 방식으로 push 해야하는데, 방법은 [다른 포스팅](https://rainsound-k.github.io/jekyll-blog/2018/05/02/apply-custom-plugin.html)에 적어놓았습니다.
 
 ### 1. HTML 작성
 우선 HTML 먼저 작성하겠습니다. `_includes` 폴더나 `_layouts` 폴더에 있는 자신의 `post`의 기본 템플릿을 열어 원하는 위치에 아래 내용을 추가합니다.
