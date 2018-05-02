@@ -72,13 +72,13 @@
           <a href="" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Posts<span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li class="dropdown-list">
-              <a href="/posts">All Posts (2)</a>
+              <a href="/posts">All Posts (3)</a>
             </li>
             
             
             
               <li class="dropdown-list">
-                <a href="/category/Deploy/index.html">Deploy (2)</a>
+                <a href="/category/Deploy/index.html">Deploy (3)</a>
               </li>
             
           </ul>
@@ -124,38 +124,37 @@
 <p>AWS와 비슷한 서비스로 구글의 <code class="highlighter-rouge">Google Cloud Platform</code>, 마이크로소프트의 <code class="highlighter-rouge">Azure</code>가 있는데 이번에는 AWS 이용 방법에 대해서 알아보겠습니다.</p>
 <h4 id="11-httpsawsamazoncomko-사이트-접속">1.1. <a href="https://aws.amazon.com/ko">https://aws.amazon.com/ko</a> 사이트 접속</h4>
 
-<p><img src="/img/posts/2018-4-23/1.png" alt="그림1" width="100%" height="100%" /></p>
+<p><img src="/img/posts/2018-4-23/1.png" alt="그림1" /></p>
 
 <h4 id="12-이메일-입력-후-계정-정보-입력">1.2. 이메일 입력 후 계정 정보 입력</h4>
 <ul>
   <li>계정 유형은 기업이 아닐 경우 개인으로 선택하고, 주소는 모두 영어로 기입합니다.</li>
 </ul>
 
-<p><img src="/img/posts/2018-4-23/2.png" alt="그림2" width="100%" height="100%" /></p>
+<p><img src="/img/posts/2018-4-23/2.png" alt="그림2" /></p>
 
 <h4 id="13-결제-정보-입력">1.3. 결제 정보 입력</h4>
 <ul>
   <li>AWS는 기본적으로 새로운 계정에게 <code class="highlighter-rouge">프리 티어</code>라는 1년 무료 플랜을 제공하나, 프리 티어의 한도를 초과하거나 1년이 지날 경우는 과금이 되므로 주의해야합니다.</li>
 </ul>
 
-<p><img src="/img/posts/2018-4-23/3.png" alt="그림3" width="100%" height="100%" /></p>
+<p><img src="/img/posts/2018-4-23/3.png" alt="그림3" /></p>
 
 <h4 id="14-전화-인증">1.4. 전화 인증</h4>
 <ul>
   <li>전화 번호를 입력 후 <code class="highlighter-rouge">지금 전화하기</code> 버튼을 누르고 ARS가 걸려오면 화면에 보이는 번호를 입력합니다.</li>
 </ul>
 
-<p><img src="/img/posts/2018-4-23/4.png" alt="그림4" width="100%" height="100%" /></p>
+<p><img src="/img/posts/2018-4-23/4.png" alt="그림4" /></p>
 
 <h4 id="15-지원-플랜-선택-후-가입-완료">1.5. 지원 플랜 선택 후 가입 완료</h4>
 <ul>
   <li>상황에 맞게 플랜을 선택하면 되나, 지금은 테스트이므로 <code class="highlighter-rouge">기본 플랜</code>을 선택하겠습니다.</li>
 </ul>
 
-<p><img src="/img/posts/2018-4-23/5.png" alt="그림5" width="100%" height="100%" /></p>
+<p><img src="/img/posts/2018-4-23/5.png" alt="그림5" /></p>
 
-<p><br />
-<br /></p>
+<p><br /><br /></p>
 
 <h3 id="2-ec2-인스턴스-생성">2. EC2 인스턴스 생성</h3>
 <p>먼저 EC2의 개념은 <a href="https://ko.wikipedia.org/wiki/%EC%95%84%EB%A7%88%EC%A1%B4_%EC%9D%BC%EB%9E%98%EC%8A%A4%ED%8B%B1_%EC%BB%B4%ED%93%A8%ED%8A%B8_%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C">위키백과</a>에 잘 나와 있습니다.</p>
@@ -174,15 +173,15 @@
   <li>우선 로그인 후, 우측 상단에 <code class="highlighter-rouge">미국 동부(오하이오)</code>로 되어 있는 지역을 <code class="highlighter-rouge">아시아 태평양(서울)</code>로 변경해줍니다. 이는 서버를 어느 지역으로 설정할 것인지 정하는 것인데, 한국에서 돌린다면 한국 서버가 가장 빠르고 지연속도가 낮습니다. 참고로 한국 서버를 지원한건 이제 2년 조금 넘었습니다.</li>
 </ul>
 
-<p><img src="/img/posts/2018-4-23/6.png" alt="그림6" width="100%" height="100%" /></p>
+<p><img src="/img/posts/2018-4-23/6.png" alt="그림6" /></p>
 
 <h4 id="22-ec2-메뉴-선택-및-인스턴스-생성">2.2. EC2 메뉴 선택 및 인스턴스 생성</h4>
 <ul>
   <li>검색창에 <code class="highlighter-rouge">EC2</code>를 검색해서 접속합니다. 접속 후 <code class="highlighter-rouge">인스턴스 시작</code> 버튼을 눌러줍니다.</li>
 </ul>
 
-<p><img src="/img/posts/2018-4-23/7.png" alt="그림7" width="100%" height="100%" />
-<img src="/img/posts/2018-4-23/8.png" alt="그림8" width="100%" height="100%" /></p>
+<p><img src="/img/posts/2018-4-23/7.png" alt="그림7" />
+<img src="/img/posts/2018-4-23/8.png" alt="그림8" /></p>
 
 <h4 id="23-amiamazon-machine-image-선택">2.3. AMI(Amazon Machine Image) 선택</h4>
 <ul>
@@ -190,21 +189,21 @@
   <li><strong>참고로 무료로 사용하실 분들은 반드시 <code class="highlighter-rouge">프리티어 사용 가능</code> 중에 선택해주세요!</strong></li>
 </ul>
 
-<p><img src="/img/posts/2018-4-23/9.png" alt="그림9" width="100%" height="100%" /></p>
+<p><img src="/img/posts/2018-4-23/9.png" alt="그림9" /></p>
 
 <h4 id="24-인스턴스-유형-선택">2.4. 인스턴스 유형 선택</h4>
 <ul>
   <li>인스턴스 유형은 가상 머신의 성능을 선택하는 것입니다. 상황에 맞게 선택해주시면 되며 성능이 높을수록 당연히 가격이 올라갑니다. 무료로 사용하실 분은 두번째 <code class="highlighter-rouge">프리티어 사용 가능</code> 항목을 선택해주시면 됩니다. 유형 선택 후 <code class="highlighter-rouge">다음: 인스턴스 세부 정보 구성</code>을 눌러줍니다.</li>
 </ul>
 
-<p><img src="/img/posts/2018-4-23/10.png" alt="그림10" width="100%" height="100%" /></p>
+<p><img src="/img/posts/2018-4-23/10.png" alt="그림10" /></p>
 
 <h4 id="25-보안-그룹-구성">2.5. 보안 그룹 구성</h4>
 <ul>
   <li>1 ~ 5번 항목까지 다음을 눌러주시고, 보안 그룹 구성으로 옵니다. 여기서 보안 그룹 이름과 설명을 나중에 알아보기 쉽게 바꿔 주고, <code class="highlighter-rouge">검토 및 시작</code>을 눌러줍니다.</li>
 </ul>
 
-<p><img src="/img/posts/2018-4-23/11.png" alt="그림11" width="100%" height="100%" /></p>
+<p><img src="/img/posts/2018-4-23/11.png" alt="그림11" /></p>
 
 <h4 id="26-키-페어-생성">2.6. 키 페어 생성</h4>
 <ul>
@@ -213,32 +212,32 @@
   <li>키 페어 관리 방법과 사용 방법은 아래에서 다룰 예정이니, 그 때까지 잘 보관해주세요!</li>
 </ul>
 
-<p><img src="/img/posts/2018-4-23/12.png" alt="그림12" width="100%" height="100%" /></p>
+<p><img src="/img/posts/2018-4-23/12.png" alt="그림12" /></p>
 
 <h4 id="27-예상-요금-알림-받기">2.7. 예상 요금 알림 받기</h4>
 <ul>
   <li>인스턴스가 생성되는 동안, 예상 요금을 이메일로 알림 받을 수 있도록 세팅해보겠습니다. 먼저 예상 요금 알림 받기 항목에서 <code class="highlighter-rouge">결제 알림 생성</code> 버튼을 눌러줍니다.</li>
 </ul>
 
-<p><img src="/img/posts/2018-4-23/13.png" alt="그림13" width="100%" height="100%" /></p>
+<p><img src="/img/posts/2018-4-23/13.png" alt="그림13" /></p>
 
 <ul>
   <li><code class="highlighter-rouge">결제 알림 받기</code>를 체크해주시고(참고로 한 번 체크를 하면 해제할 수 없으니, 따로 안받으실 분들은 안해주셔도 됩니다), <code class="highlighter-rouge">새로운 예산 기능을 사용해 보십시오!</code> 를 눌러주세요.</li>
 </ul>
 
-<p><img src="/img/posts/2018-4-23/14.png" alt="그림14" width="100%" height="100%" /></p>
+<p><img src="/img/posts/2018-4-23/14.png" alt="그림14" /></p>
 
 <ul>
   <li><code class="highlighter-rouge">예산 작성</code> 버튼을 누른 후, 자신의 예산 상황에 맞게 작성하신 후 마지막에 알림 받을 이메일 주소를 입력해주시면 됩니다.</li>
 </ul>
 
-<p><img src="/img/posts/2018-4-23/15.png" alt="그림15" width="100%" height="100%" />
-<img src="/img/posts/2018-4-23/16.png" alt="그림16" width="100%" height="100%" /></p>
+<p><img src="/img/posts/2018-4-23/15.png" alt="그림15" />
+<img src="/img/posts/2018-4-23/16.png" alt="그림16" /></p>
 
 <h4 id="28-인스턴스-생성-완료">2.8. 인스턴스 생성 완료</h4>
 <ul>
   <li>축하합니다! 인스턴스 생성이 완료되었습니다. 알아보기 쉽게 <code class="highlighter-rouge">name</code>에 이름을 입력해줍니다.
-<img src="/img/posts/2018-4-23/17.png" alt="그림17" width="100%" height="100%" /></li>
+<img src="/img/posts/2018-4-23/17.png" alt="그림17" /></li>
 </ul>
 
 <h4 id="29-키-페어-관리">2.9. 키 페어 관리</h4>
@@ -261,7 +260,7 @@
   <li>그 후 다시 터미널 <code class="highlighter-rouge">.ssh</code> 폴더에서 아래 명령어로 키 파일을 사용자 자신만 볼 수 있게 권한을 변경해줍니다.
     <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> chmod 400 ~~~.pem
 </code></pre></div>    </div>
-    <p><img src="/img/posts/2018-4-23/18.png" alt="그림18" width="100%" height="100%" /></p>
+    <p><img src="/img/posts/2018-4-23/18.png" alt="그림18" /></p>
   </li>
 </ul>
 
@@ -283,7 +282,7 @@
     </ul>
   </li>
   <li><strong>public-dns-name</strong> 은 aws 사이트에서 <code class="highlighter-rouge">퍼블릭 DNS(IPv4)</code> 값을 가져옵니다.
-<img src="/img/posts/2018-4-23/19.png" alt="그림19" width="100%" height="100%" />
+<img src="/img/posts/2018-4-23/19.png" alt="그림19" />
 따라서 최종적으로 제 기준 경로는 아래와 같습니다.
     <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> ssh <span class="nt">-i</span> ~/.ssh/examplekey.pem ubuntu@ec2-52-78-234-247.ap-northeast-2.compute.amazonaws.com
 </code></pre></div>    </div>
@@ -291,12 +290,12 @@
   </li>
 </ul>
 
-<h2><img src="/img/posts/2018-4-23/20.png" alt="그림20" width="100%" height="100%" /></h2>
+<h2><img src="/img/posts/2018-4-23/20.png" alt="그림20" /></h2>
 <p><br />
 이번 포스팅에서는 AWS에 가입해 EC2 인스턴스를 생성하는 방법에 대해서 알아보았습니다.
 Nginx + uWSGI로 Django 앱 배포하는 방법은 다음 포스트에서 확인 가능합니다.</p>
 
-<p><code class="highlighter-rouge">다음 포스트</code> : <a href="https://rainsound-k.github.io/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html">EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)</a></p>
+<p><code class="highlighter-rouge">다음 포스트</code> : <a href="/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html">EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)</a></p>
 
 <blockquote>
   <p>개인 공부하면서 작성한 글이라 잘못된 내용이 있을 수 있습니다. 잘못된 내용은 편하게 말씀해주시면 수정하겠습니다:)</p>
@@ -308,7 +307,7 @@ Nginx + uWSGI로 Django 앱 배포하는 방법은 다음 포스트에서 확인
           <div class="clearfix">
             
             
-            <a class="btn btn-primary float-right" href="/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html" data-toggle="tooltip" data-placement="top" title="EC2 가상환경 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)">다음<span class="d-none d-md-inline"> 글</span> &rarr;</a>
+            <a class="btn btn-primary float-right" href="/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html" data-toggle="tooltip" data-placement="top" title="EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)">다음<span class="d-none d-md-inline"> 글</span> &rarr;</a>
             
           </div>
           <br>
