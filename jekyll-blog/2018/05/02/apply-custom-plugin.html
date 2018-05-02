@@ -121,12 +121,12 @@
         <div class="col-lg-8 col-md-10 mx-auto">
 
           <h2 id="jekyll-블로그-plugin-적용하고-page-not-found404-에러-해결하기">Jekyll 블로그 plugin 적용하고 page not found(404) 에러 해결하기</h2>
-<p>Jekyll 블로그에 <a href="https://github.com/field-theory/jekyll-category-pages">jekyll-category-pages</a> 플러그인을 가이드를 보고 설치한 후, 로컬에서 정상 작동되는 것을 확인하고 평소처럼 github에 push를 하였는데 post의 링크가 제대로 연결이 안되서 아래처럼 page not found(404) 에러가 발생하였습니다.
+<p>Jekyll 블로그에 <a href="https://github.com/field-theory/jekyll-category-pages" target="_blank">jekyll-category-pages</a> 플러그인을 가이드를 보고 설치한 후, 로컬에서 정상 작동되는 것을 확인하고 평소처럼 github에 push를 하였는데 post의 링크가 제대로 연결이 안되서 아래처럼 page not found(404) 에러가 발생하였습니다.
 <img src="/img/posts/2018-5-1/5.png" alt="그림5" /></p>
 
-<p>로컬에서는 정상 작동되기 때문에 원인을 찾기 힘들었는데, 열심히 구글링 한 결과 Github Pages에서 지원하는 <a href="https://pages.github.com/versions">Jekyll plugin</a>이 따로 있다는 것을 발견했습니다.</p>
+<p>로컬에서는 정상 작동되기 때문에 원인을 찾기 힘들었는데, 열심히 구글링 한 결과 Github Pages에서 지원하는 <a href="https://pages.github.com/versions" target="_blank">Jekyll plugin</a>이 따로 있다는 것을 발견했습니다.</p>
 
-<p>일반 post의 글들은 Jekyll에서 알아서 판단해 site를 빌드해서 보여주기 때문에 괜찮지만 custom plugin을 사용한 경우라면 보안상의 이유로 빌드 할때 <a href="https://help.shopify.com/themes/liquid/tags">liquid tags</a>를 인식하지 못하기 떄문에 생기는 이유라고 합니다.</p>
+<p>일반 post의 글들은 Jekyll에서 알아서 판단해 site를 빌드해서 보여주기 때문에 괜찮지만 custom plugin을 사용한 경우라면 보안상의 이유로 빌드 할때 <a href="https://help.shopify.com/themes/liquid/tags" target="_blank">liquid tags</a>를 인식하지 못하기 떄문에 생기는 이유라고 합니다.</p>
 
 <p>해결책은 로컬에서 빌드하면 생기는 <code class="highlighter-rouge">_site</code> 폴더를 github에 함께 push를 해줘야 하는데 구체적인 방법은 아래에서 설명하겠습니다.</p>
 
@@ -249,8 +249,8 @@ git checkout <span class="nb">source</span>
 
 <h5 id="참고-링크">참고 링크</h5>
 <ul>
-  <li>https://stackoverflow.com/questions/28249255/how-do-i-configure-github-to-use-non-supported-jekyll-site-plugins/28252200#28252200</li>
-  <li>http://gumpcha.github.io/blog/github-pages-with-jekyll-custom-plugin</li>
+  <li><a href="https://stackoverflow.com/questions/28249255/how-do-i-configure-github-to-use-non-supported-jekyll-site-plugins/28252200#28252200" target="_blank">https://stackoverflow.com</a></li>
+  <li><a href="http://gumpcha.github.io/blog/github-pages-with-jekyll-custom-plugin" target="_blank">http://gumpcha.github.io</a></li>
 </ul>
 
 <p><br /><br /></p>

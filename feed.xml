@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-02T18:19:54+09:00</updated><id>http://localhost:4000/</id><title type="html">rainsound 개발 노트</title><subtitle>개발 공부하면서 까먹지 않기 위해 기록하는 블로그입니다.</subtitle><author><name>rainsound</name></author><entry><title type="html">Jekyll 블로그 plugin 적용하고 page not found(404) 에러 해결하기</title><link href="http://localhost:4000/jekyll-blog/2018/05/02/apply-custom-plugin.html" rel="alternate" type="text/html" title="Jekyll 블로그 plugin 적용하고 page not found(404) 에러 해결하기" /><published>2018-05-02T11:00:33+09:00</published><updated>2018-05-02T11:00:33+09:00</updated><id>http://localhost:4000/jekyll-blog/2018/05/02/apply-custom-plugin</id><content type="html" xml:base="http://localhost:4000/jekyll-blog/2018/05/02/apply-custom-plugin.html">&lt;h2 id=&quot;jekyll-블로그-plugin-적용하고-page-not-found404-에러-해결하기&quot;&gt;Jekyll 블로그 plugin 적용하고 page not found(404) 에러 해결하기&lt;/h2&gt;
-&lt;p&gt;Jekyll 블로그에 &lt;a href=&quot;https://github.com/field-theory/jekyll-category-pages&quot;&gt;jekyll-category-pages&lt;/a&gt; 플러그인을 가이드를 보고 설치한 후, 로컬에서 정상 작동되는 것을 확인하고 평소처럼 github에 push를 하였는데 post의 링크가 제대로 연결이 안되서 아래처럼 page not found(404) 에러가 발생하였습니다.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-02T18:32:58+09:00</updated><id>http://localhost:4000/</id><title type="html">rainsound 개발 노트</title><subtitle>개발 공부하면서 까먹지 않기 위해 기록하는 블로그입니다.</subtitle><author><name>rainsound</name></author><entry><title type="html">Jekyll 블로그 plugin 적용하고 page not found(404) 에러 해결하기</title><link href="http://localhost:4000/jekyll-blog/2018/05/02/apply-custom-plugin.html" rel="alternate" type="text/html" title="Jekyll 블로그 plugin 적용하고 page not found(404) 에러 해결하기" /><published>2018-05-02T11:00:33+09:00</published><updated>2018-05-02T11:00:33+09:00</updated><id>http://localhost:4000/jekyll-blog/2018/05/02/apply-custom-plugin</id><content type="html" xml:base="http://localhost:4000/jekyll-blog/2018/05/02/apply-custom-plugin.html">&lt;h2 id=&quot;jekyll-블로그-plugin-적용하고-page-not-found404-에러-해결하기&quot;&gt;Jekyll 블로그 plugin 적용하고 page not found(404) 에러 해결하기&lt;/h2&gt;
+&lt;p&gt;Jekyll 블로그에 &lt;a href=&quot;https://github.com/field-theory/jekyll-category-pages&quot; target=&quot;_blank&quot;&gt;jekyll-category-pages&lt;/a&gt; 플러그인을 가이드를 보고 설치한 후, 로컬에서 정상 작동되는 것을 확인하고 평소처럼 github에 push를 하였는데 post의 링크가 제대로 연결이 안되서 아래처럼 page not found(404) 에러가 발생하였습니다.
 &lt;img src=&quot;/img/posts/2018-5-1/5.png&quot; alt=&quot;그림5&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;로컬에서는 정상 작동되기 때문에 원인을 찾기 힘들었는데, 열심히 구글링 한 결과 Github Pages에서 지원하는 &lt;a href=&quot;https://pages.github.com/versions&quot;&gt;Jekyll plugin&lt;/a&gt;이 따로 있다는 것을 발견했습니다.&lt;/p&gt;
+&lt;p&gt;로컬에서는 정상 작동되기 때문에 원인을 찾기 힘들었는데, 열심히 구글링 한 결과 Github Pages에서 지원하는 &lt;a href=&quot;https://pages.github.com/versions&quot; target=&quot;_blank&quot;&gt;Jekyll plugin&lt;/a&gt;이 따로 있다는 것을 발견했습니다.&lt;/p&gt;
 
-&lt;p&gt;일반 post의 글들은 Jekyll에서 알아서 판단해 site를 빌드해서 보여주기 때문에 괜찮지만 custom plugin을 사용한 경우라면 보안상의 이유로 빌드 할때 &lt;a href=&quot;https://help.shopify.com/themes/liquid/tags&quot;&gt;liquid tags&lt;/a&gt;를 인식하지 못하기 떄문에 생기는 이유라고 합니다.&lt;/p&gt;
+&lt;p&gt;일반 post의 글들은 Jekyll에서 알아서 판단해 site를 빌드해서 보여주기 때문에 괜찮지만 custom plugin을 사용한 경우라면 보안상의 이유로 빌드 할때 &lt;a href=&quot;https://help.shopify.com/themes/liquid/tags&quot; target=&quot;_blank&quot;&gt;liquid tags&lt;/a&gt;를 인식하지 못하기 떄문에 생기는 이유라고 합니다.&lt;/p&gt;
 
 &lt;p&gt;해결책은 로컬에서 빌드하면 생기는 &lt;code class=&quot;highlighter-rouge&quot;&gt;_site&lt;/code&gt; 폴더를 github에 함께 push를 해줘야 하는데 구체적인 방법은 아래에서 설명하겠습니다.&lt;/p&gt;
 
@@ -127,8 +127,8 @@ git checkout &lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt;
 
 &lt;h5 id=&quot;참고-링크&quot;&gt;참고 링크&lt;/h5&gt;
 &lt;ul&gt;
-  &lt;li&gt;https://stackoverflow.com/questions/28249255/how-do-i-configure-github-to-use-non-supported-jekyll-site-plugins/28252200#28252200&lt;/li&gt;
-  &lt;li&gt;http://gumpcha.github.io/blog/github-pages-with-jekyll-custom-plugin&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/28249255/how-do-i-configure-github-to-use-non-supported-jekyll-site-plugins/28252200#28252200&quot; target=&quot;_blank&quot;&gt;https://stackoverflow.com&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://gumpcha.github.io/blog/github-pages-with-jekyll-custom-plugin&quot; target=&quot;_blank&quot;&gt;http://gumpcha.github.io&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
@@ -144,9 +144,9 @@ git checkout &lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt;
 &lt;p&gt;Jekyll 블로그의 좋은 점이 많지만, 아쉬운 점 하나는 페이지 하단에 같은 카테고리의 다른 글들의 목록이 아래처럼 나오지 않는 점입니다.
 &lt;img src=&quot;/img/posts/2018-5-1/4.png&quot; alt=&quot;그림4&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;물론 테마에 따라 해당 기능을 지원하는 테마도 있겠지만, 제가 사용하는 &lt;a href=&quot;https://github.com/BlackrockDigital/startbootstrap-clean-blog-jekyll&quot;&gt;clean blog 테마&lt;/a&gt;에서는 따로 지원을 안해서 만들어보겠습니다.&lt;/p&gt;
+&lt;p&gt;물론 테마에 따라 해당 기능을 지원하는 테마도 있겠지만, 제가 사용하는 &lt;a href=&quot;https://github.com/BlackrockDigital/startbootstrap-clean-blog-jekyll&quot; target=&quot;_blank&quot;&gt;clean blog 테마&lt;/a&gt;에서는 따로 지원을 안해서 만들어보겠습니다.&lt;/p&gt;
 
-&lt;p&gt;여러가지 디자인이 있겠지만 아래처럼 &lt;code class=&quot;highlighter-rouge&quot;&gt;tistory 블로그&lt;/code&gt;의 디자인이 깔끔해보여서 똑같이 만들어보겠습니다. 참고로 &lt;code class=&quot;highlighter-rouge&quot;&gt;categories&lt;/code&gt;를 별도로 사용 중일 때 가능합니다. Jekyll에 내장된 categories를 이용하셔도 되고, 저의 경우는 &lt;a href=&quot;https://github.com/field-theory/jekyll-category-pages&quot;&gt;jekyll-category-pages&lt;/a&gt; 플러그인을 별도로 사용 중입니다. 하지만 Jekyll에서 지원하는 플러그인이 아닌 다른 플러그인을 사용하면, github에 다른 방식으로 push 해야하는데, 방법은 &lt;a href=&quot;https://rainsound-k.github.io/jekyll-blog/2018/05/02/apply-custom-plugin.html&quot;&gt;다른 포스팅&lt;/a&gt;에 적어놓았습니다.&lt;/p&gt;
+&lt;p&gt;여러가지 디자인이 있겠지만 아래처럼 &lt;code class=&quot;highlighter-rouge&quot;&gt;tistory 블로그&lt;/code&gt;의 디자인이 깔끔해보여서 똑같이 만들어보겠습니다. 참고로 &lt;code class=&quot;highlighter-rouge&quot;&gt;categories&lt;/code&gt;를 별도로 사용 중일 때 가능합니다. Jekyll에 내장된 categories를 이용하셔도 되고, 저의 경우는 &lt;a href=&quot;https://github.com/field-theory/jekyll-category-pages&quot; target=&quot;_blank&quot;&gt;jekyll-category-pages&lt;/a&gt; 플러그인을 별도로 사용 중입니다. 하지만 Jekyll에서 지원하는 플러그인이 아닌 다른 플러그인을 사용하면, github에 다른 방식으로 push 해야하는데, 방법은 &lt;a href=&quot;/jekyll-blog/2018/05/02/apply-custom-plugin.html&quot; target=&quot;_blank&quot;&gt;다른 포스팅&lt;/a&gt;에 적어놓았습니다.&lt;/p&gt;
 
 &lt;h3 id=&quot;1-html-작성&quot;&gt;1. HTML 작성&lt;/h3&gt;
 &lt;p&gt;우선 HTML 먼저 작성하겠습니다. &lt;code class=&quot;highlighter-rouge&quot;&gt;_includes&lt;/code&gt; 폴더나 &lt;code class=&quot;highlighter-rouge&quot;&gt;_layouts&lt;/code&gt; 폴더에 있는 자신의 &lt;code class=&quot;highlighter-rouge&quot;&gt;post&lt;/code&gt;의 기본 템플릿을 열어 원하는 위치에 아래 내용을 추가합니다.&lt;/p&gt;
@@ -262,7 +262,7 @@ git checkout &lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;</content><author><name>rainsound</name></author><summary type="html">Jekyll 블로그에서 포스트 안에 같은 카테고리 글 목록 추가 Jekyll 블로그의 좋은 점이 많지만, 아쉬운 점 하나는 페이지 하단에 같은 카테고리의 다른 글들의 목록이 아래처럼 나오지 않는 점입니다.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/img/posts/2018-5-1/4.png" /></entry><entry><title type="html">EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (2/2)</title><link href="http://localhost:4000/deploy/2018/05/02/instance-setting-and-django-deploy-part2.html" rel="alternate" type="text/html" title="EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (2/2)" /><published>2018-05-02T07:50:33+09:00</published><updated>2018-05-02T07:50:33+09:00</updated><id>http://localhost:4000/deploy/2018/05/02/instance-setting-and-django-deploy-part2</id><content type="html" xml:base="http://localhost:4000/deploy/2018/05/02/instance-setting-and-django-deploy-part2.html">&lt;h2 id=&quot;ec2-인스턴스-세팅과-nginx--uwsgi로-django-앱-배포하기22&quot;&gt;EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기(2/2)&lt;/h2&gt;
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;이전 포스트&lt;/code&gt; : &lt;a href=&quot;/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html&quot;&gt;EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기(1/2)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;이전 포스트&lt;/code&gt; : &lt;a href=&quot;/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html&quot; target=&quot;_blank&quot;&gt;EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기(1/2)&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;1편에 이어서 이어서 인스턴스에 배포하기 위해 Django를 세팅하고, Nginx와 uWSGI를 이용해 배포하는 방법에 대해서 알아보겠습니다.&lt;/p&gt;
 
@@ -618,7 +618,7 @@ git checkout &lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;</content><author><name>rainsound</name></author><summary type="html">EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기(2/2) 이전 포스트 : EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기(1/2)</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/img/posts/2018-5-1/1.png" /></entry><entry><title type="html">EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)</title><link href="http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html" rel="alternate" type="text/html" title="EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)" /><published>2018-04-25T02:30:26+09:00</published><updated>2018-04-25T02:30:26+09:00</updated><id>http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1</id><content type="html" xml:base="http://localhost:4000/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html">&lt;h2 id=&quot;ec2-인스턴스-세팅과-nginx--uwsgi로-django-앱-배포하기12&quot;&gt;EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기(1/2)&lt;/h2&gt;
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;이전 포스트&lt;/code&gt; : &lt;a href=&quot;/deploy/2018/04/24/aws-signup-and-create-ec2.html&quot;&gt;AWS 가입 및 EC2 인스턴스 생성&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;이전 포스트&lt;/code&gt; : &lt;a href=&quot;/deploy/2018/04/24/aws-signup-and-create-ec2.html&quot; target=&quot;_blank&quot;&gt;AWS 가입 및 EC2 인스턴스 생성&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;위에서 만든 EC2 인스턴스의 가상환경을 세팅하고, Nginx와 uWSGI를 이용해 Django 앱을 배포하는 방법에 대해서 다룰 예정입니다.&lt;/p&gt;
 
@@ -660,7 +660,7 @@ git checkout &lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt;
     &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get dist-upgrade
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
   &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/pyenv/pyenv/wiki/Common-build-problems&quot;&gt;Common build problems&lt;/a&gt;에 나온 내용부터 설치
+  &lt;li&gt;&lt;a href=&quot;https://github.com/pyenv/pyenv/wiki/Common-build-problems&quot; target=&quot;_blank&quot;&gt;Common build problems&lt;/a&gt;에 나온 내용부터 설치
     &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get install &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; make build-essential libssl-dev zlib1g-dev libbz2-dev &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
 libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
 xz-utils tk-dev
@@ -719,7 +719,7 @@ xz-utils tk-dev
 &lt;/ul&gt;
 
 &lt;h4 id=&quot;13-srv-폴더-권한-수정&quot;&gt;1.3 /srv 폴더 권한 수정&lt;/h4&gt;
-&lt;p&gt;로컬의 파일을 이제 인스턴스에 옮길 차례입니다. 파일은 인스턴스의 &lt;code class=&quot;highlighter-rouge&quot;&gt;/srv&lt;/code&gt; 폴더로 옮겨야하는데, 권한이 필요합니다. 옮길 수 있도록 아래 명령어로 권한을 &lt;code class=&quot;highlighter-rouge&quot;&gt;ubuntu&lt;/code&gt;로 변경합니다. (참고 : &lt;a href=&quot;https://ko.wikipedia.org/wiki/%ED%8C%8C%EC%9D%BC%EC%8B%9C%EC%8A%A4%ED%85%9C_%EA%B3%84%EC%B8%B5%EA%B5%AC%EC%A1%B0_%ED%91%9C%EC%A4%80&quot;&gt;리눅스 폴더 구조&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;로컬의 파일을 이제 인스턴스에 옮길 차례입니다. 파일은 인스턴스의 &lt;code class=&quot;highlighter-rouge&quot;&gt;/srv&lt;/code&gt; 폴더로 옮겨야하는데, 권한이 필요합니다. 옮길 수 있도록 아래 명령어로 권한을 &lt;code class=&quot;highlighter-rouge&quot;&gt;ubuntu&lt;/code&gt;로 변경합니다. (참고 : &lt;a href=&quot;https://ko.wikipedia.org/wiki/%ED%8C%8C%EC%9D%BC%EC%8B%9C%EC%8A%A4%ED%85%9C_%EA%B3%84%EC%B8%B5%EA%B5%AC%EC%A1%B0_%ED%91%9C%EC%A4%80&quot; target=&quot;_blank&quot;&gt;리눅스 폴더 구조&lt;/a&gt;)&lt;/p&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;chown &lt;span class=&quot;nt&quot;&gt;-R&lt;/span&gt; ubuntu:ubuntu /srv
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
@@ -729,7 +729,7 @@ xz-utils tk-dev
 
 &lt;p&gt;이어서 인스턴스에 배포하기 위해 Django를 세팅하고, Nginx와 uWSGI를 이용해 배포하는 방법은 다음 포스트에서 확인 가능합니다.&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;다음 포스트&lt;/code&gt; : &lt;a href=&quot;/deploy/2018/05/02/instance-setting-and-django-deploy-part2.html&quot;&gt;EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (2/2)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;다음 포스트&lt;/code&gt; : &lt;a href=&quot;/deploy/2018/05/02/instance-setting-and-django-deploy-part2.html&quot; target=&quot;_blank&quot;&gt;EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (2/2)&lt;/a&gt;&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;개인 공부하면서 작성한 글이라 잘못된 내용이 있을 수 있습니다. 잘못된 내용은 편하게 말씀해주시면 수정하겠습니다:)&lt;/p&gt;
@@ -741,7 +741,7 @@ xz-utils tk-dev
 &lt;p&gt;AWS는 &lt;code class=&quot;highlighter-rouge&quot;&gt;Amazon Web Services&lt;/code&gt;의 약자로 아마존닷컴이 제공하는 각종 원격 컴퓨팅 서비스입니다. AWS에서 컴퓨팅 파워, 데이터베이스 스토리지, 콘텐츠 전송 및 기타 기능을 원격으로 할 수 있습니다.&lt;/p&gt;
 
 &lt;p&gt;AWS와 비슷한 서비스로 구글의 &lt;code class=&quot;highlighter-rouge&quot;&gt;Google Cloud Platform&lt;/code&gt;, 마이크로소프트의 &lt;code class=&quot;highlighter-rouge&quot;&gt;Azure&lt;/code&gt;가 있는데 이번에는 AWS 이용 방법에 대해서 알아보겠습니다.&lt;/p&gt;
-&lt;h4 id=&quot;11-httpsawsamazoncomko-사이트-접속&quot;&gt;1.1. &lt;a href=&quot;https://aws.amazon.com/ko&quot;&gt;https://aws.amazon.com/ko&lt;/a&gt; 사이트 접속&lt;/h4&gt;
+&lt;h4 id=&quot;11-httpsawsamazoncomko-사이트-접속&quot;&gt;1.1. &lt;a href=&quot;https://aws.amazon.com/ko&quot; target=&quot;_blank&quot;&gt;https://aws.amazon.com/ko&lt;/a&gt; 사이트 접속&lt;/h4&gt;
 
 &lt;p&gt;&lt;img src=&quot;/img/posts/2018-4-23/1.png&quot; alt=&quot;그림1&quot; /&gt;&lt;/p&gt;
 
@@ -776,7 +776,7 @@ xz-utils tk-dev
 &lt;p&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;2-ec2-인스턴스-생성&quot;&gt;2. EC2 인스턴스 생성&lt;/h3&gt;
-&lt;p&gt;먼저 EC2의 개념은 &lt;a href=&quot;https://ko.wikipedia.org/wiki/%EC%95%84%EB%A7%88%EC%A1%B4_%EC%9D%BC%EB%9E%98%EC%8A%A4%ED%8B%B1_%EC%BB%B4%ED%93%A8%ED%8A%B8_%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C&quot;&gt;위키백과&lt;/a&gt;에 잘 나와 있습니다.&lt;/p&gt;
+&lt;p&gt;먼저 EC2의 개념은 &lt;a href=&quot;https://ko.wikipedia.org/wiki/%EC%95%84%EB%A7%88%EC%A1%B4_%EC%9D%BC%EB%9E%98%EC%8A%A4%ED%8B%B1_%EC%BB%B4%ED%93%A8%ED%8A%B8_%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C&quot; target=&quot;_blank&quot;&gt;위키백과&lt;/a&gt;에 잘 나와 있습니다.&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;아마존 일래스틱 컴퓨트 클라우드(Amazon Elastic Compute Cloud)는
 아마존닷컴의 클라우드 컴퓨팅 플랫폼 아마존 웹 서비스의 중앙부를 이루며,
@@ -914,7 +914,7 @@ xz-utils tk-dev
 이번 포스팅에서는 AWS에 가입해 EC2 인스턴스를 생성하는 방법에 대해서 알아보았습니다.
 Nginx + uWSGI로 Django 앱 배포하는 방법은 다음 포스트에서 확인 가능합니다.&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;다음 포스트&lt;/code&gt; : &lt;a href=&quot;/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html&quot;&gt;EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;다음 포스트&lt;/code&gt; : &lt;a href=&quot;/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html&quot; target=&quot;_blank&quot;&gt;EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)&lt;/a&gt;&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;개인 공부하면서 작성한 글이라 잘못된 내용이 있을 수 있습니다. 잘못된 내용은 편하게 말씀해주시면 수정하겠습니다:)&lt;/p&gt;
