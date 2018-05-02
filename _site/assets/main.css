@@ -67,6 +67,19 @@ header.masthead .post-heading .meta a { color: #fff; }
 .post-preview > .post-meta > a:focus, .post-preview > .post-meta > a:hover { text-decoration: underline; color: #4e4f4f; }
 @media only screen and (min-width: 768px) { .post-preview > a > .post-title { font-size: inherit; } }
 
+.more-posts { border: 1px solid #E5E5E5; padding: 10px 10px 5px; margin: 10px 0; clear: both; display: block; }
+.more-posts table { table-layout: fixed; border-collapse: collapse; width: 100% !important; margin-top: 10px !important; display: table; border-spacing: 2px; border-color: grey; }
+
+.more-category { border-bottom: 1px solid #E5E5E5 !important; }
+.more-category > h4 { line-height: 170%; color: #737373 !important; font-size: 12px; margin: 0; padding: 2px 0 6px !important; display: inline-block; }
+.more-category .more-button { float: right; color: #909090; font-size: 12px !important; vertical-align: center; border-collapse: collapse; padding: 4px 4px 0 0; }
+
+.more-posts-title { text-align: left; font-size: 12px !important; font-weight: normal; word-break: break-all; overflow: hidden; line-height: 1.5; padding: 0 0 4px !important; display: table-cell; vertical-align: inherit; border-collapse: collapse; }
+.more-posts-title a { color: #909090; }
+.more-posts-title a:hover { color: #34373e; }
+
+.more-posts-date { text-align: right; width: 80px; font-size: 11px; padding: 0 0 4px !important; color: #909090 !important; display: table-cell; vertical-align: inherit; border-collapse: collapse; }
+
 .floating-label-form-group { font-size: 14px; position: relative; margin-bottom: 0; padding-bottom: 0.5em; border-bottom: 1px solid #dee2e6; }
 .floating-label-form-group input, .floating-label-form-group textarea { font-size: 1.5em; position: relative; z-index: 1; padding: 0; resize: none; border: none; border-radius: 0; background: none; box-shadow: none !important; font-family: 'Noto Sans KR',sans-serif, Arial; }
 .floating-label-form-group input::-webkit-input-placeholder, .floating-label-form-group textarea::-webkit-input-placeholder { color: #868e96; font-weight: 300; font-family: 'Noto Sans KR',sans-serif, Arial; }
