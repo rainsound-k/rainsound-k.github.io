@@ -205,6 +205,13 @@ figure {
 img {
     vertical-align: middle;
     border-style: none;
+    width: 100%;
+    height: 100%;
+}
+.image-caption {
+  text-align: center;
+  font-size: .8rem;
+  color: light-grey;
 }
 svg:not(:root) {
     overflow: hidden;
