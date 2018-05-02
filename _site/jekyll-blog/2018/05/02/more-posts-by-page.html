@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="naver-site-verification" content="1de4763b6c45694b961629fb08ace3e5bfc1023e"/>
+  <title>
+    Jekyll 블로그에서 포스트 안에 같은 카테고리 글 목록 추가 - rainsound 개발 노트
+    
+  </title>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118116411-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-118116411-1');
+  </script>
+  <meta name="description" content="Jekyll 블로그에서 포스트 안에 같은 카테고리 글 목록 추가 Jekyll 블로그의 좋은 점이 많지만, 아쉬운 점 하나는 페이지 하단에 같은 카테고리의 다른 글들의 목록이 아래처럼 나오지 않는 점입니다.">
+  <link rel="shortcut icon" type="image/png" href="/img/faviconcon.png">
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/vendor/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+  <link rel="canonical" href="http://localhost:4000/jekyll-blog/2018/05/02/more-posts-by-page.html">
+  <link rel="alternate" type="application/rss+xml" title="rainsound 개발 노트" href="/feed.xml">
+  <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Jekyll 블로그에서 포스트 안에 같은 카테고리 글 목록 추가 | rainsound 개발 노트</title>
+<meta name="generator" content="Jekyll v3.7.3" />
+<meta property="og:title" content="Jekyll 블로그에서 포스트 안에 같은 카테고리 글 목록 추가" />
+<meta name="author" content="rainsound" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Jekyll 블로그에서 같은 카테고리에 있는 다른 글들의 목록을 보여주는 방법에 대해서 다룹니다." />
+<meta property="og:description" content="Jekyll 블로그에서 같은 카테고리에 있는 다른 글들의 목록을 보여주는 방법에 대해서 다룹니다." />
+<link rel="canonical" href="http://localhost:4000/jekyll-blog/2018/05/02/more-posts-by-page.html" />
+<meta property="og:url" content="http://localhost:4000/jekyll-blog/2018/05/02/more-posts-by-page.html" />
+<meta property="og:site_name" content="rainsound 개발 노트" />
+<meta property="og:image" content="http://localhost:4000/img/posts/2018-5-1/4.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-05-02T09:45:33+09:00" />
+<script type="application/ld+json">
+{"url":"http://localhost:4000/jekyll-blog/2018/05/02/more-posts-by-page.html","image":"http://localhost:4000/img/posts/2018-5-1/4.png","headline":"Jekyll 블로그에서 포스트 안에 같은 카테고리 글 목록 추가","dateModified":"2018-05-02T09:45:33+09:00","datePublished":"2018-05-02T09:45:33+09:00","description":"Jekyll 블로그에서 같은 카테고리에 있는 다른 글들의 목록을 보여주는 방법에 대해서 다룹니다.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/jekyll-blog/2018/05/02/more-posts-by-page.html"},"author":{"@type":"Person","name":"rainsound"},"@type":"BlogPosting","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+  <body>
+
+    <!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="/">rainsound 개발 노트</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      Menu
+      <i class="fa fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="dropdown nav-item">
+          <a href="" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Posts<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li class="dropdown-list">
+              <a href="/posts">All Posts (4)</a>
+            </li>
+            
+            
+            
+              <li class="dropdown-list">
+                <a href="/category/Deploy/index.html">Deploy (3)</a>
+              </li>
+            
+              <li class="dropdown-list">
+                <a href="/category/Jekyll-Blog/index.html">Jekyll-Blog (1)</a>
+              </li>
+            
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contact">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+    <!-- Page Header -->
+
+<header class="masthead" style="background-image: url('/img/posts/2018-5-1/4.png')">
+  
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>Jekyll 블로그에서 포스트 안에 같은 카테고리 글 목록 추가</h1>
+            
+            <h2 class="subheading">Jekyll 블로그에서 같은 카테고리에 있는 다른 글들의 목록을 보여주는 방법에 대해서 다룹니다.</h2>
+            
+            <span class="meta">Posted on May 02, 2018</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+
+          <h2 id="jekyll-블로그에서-포스트-안에-같은-카테고리-글-목록-추가">Jekyll 블로그에서 포스트 안에 같은 카테고리 글 목록 추가</h2>
+<p>Jekyll 블로그의 좋은 점이 많지만, 아쉬운 점 하나는 페이지 하단에 같은 카테고리의 다른 글들의 목록이 아래처럼 나오지 않는 점입니다.
+<img src="/img/posts/2018-5-1/4.png" alt="그림4" /></p>
+
+<p>물론 테마에 따라 해당 기능을 지원하는 테마도 있겠지만, 제가 사용하는 <a href="https://github.com/BlackrockDigital/startbootstrap-clean-blog-jekyll">clean blog 테마</a>에서는 따로 지원을 안해서 만들어보겠습니다.</p>
+
+<p>여러가지 디자인이 있겠지만 아래처럼 <code class="highlighter-rouge">tistory 블로그</code>의 디자인이 깔끔해보여서 똑같이 만들어보겠습니다. 참고로 <code class="highlighter-rouge">categories</code>를 별도로 사용 중일 때 가능합니다. Jekyll에 내장된 categories를 이용하셔도 되고, 저의 경우는 <a href="https://github.com/field-theory/jekyll-category-pages">jekyll-category-pages</a> 플러그인을 별도로 사용 중입니다. 하지만 Jekyll에서 지원하는 플러그인이 아닌 다른 플러그인을 사용하면, github에 다른 방식으로 push 해야하는데, 이건 다른 포스팅에서 다뤄보겠습니다.</p>
+
+<h3 id="1-html-작성">1. HTML 작성</h3>
+<p>우선 HTML 먼저 작성하겠습니다. <code class="highlighter-rouge">_includes</code> 폴더나 <code class="highlighter-rouge">_layouts</code> 폴더에 있는 자신의 <code class="highlighter-rouge">post</code>의 기본 템플릿을 열어 원하는 위치에 아래 내용을 추가합니다.</p>
+
+<p><strong>’{.’에서 ‘.’은 빼고 입력해주세요!</strong></p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"more-posts"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"more-category"</span><span class="nt">&gt;</span>
+      <span class="c">&lt;!-- 하단의 더보기의 링크는 자신의 사이트에 맞게 수정 --&gt;</span>
+      <span class="nt">&lt;h4&gt;</span>'Jekyll-Blog' 카테고리의 다른 글<span class="nt">&lt;/h4&gt;</span>
+      <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"/category/{.{ page.categories }}/index.html"</span> <span class="na">class=</span><span class="s">"more-button"</span><span class="nt">&gt;</span>더보기<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;table&gt;</span>
+      <span class="nt">&lt;tbody&gt;</span>
+        <span class="c">&lt;!-- if문 도는 횟수 체크하기 위해 변수 선언 --&gt;</span>
+        {.% assign count = 0 %}
+        {.% for post in site.posts %}
+          <span class="c">&lt;!-- 전체 포스트의 카테고리가 현재 들어와 있는 페이지의 카테고리와 같은지 판단--&gt;</span>
+          {.% if post.categories == page.categories %}
+            {.% assign count = count | plus: 1 %}
+            <span class="c">&lt;!-- 글의 목록을 최대 3개만 허용 --&gt;</span>
+            {.% if count <span class="nt">&lt;</span> <span class="nt">4</span> <span class="err">%}</span>
+              <span class="err">&lt;</span><span class="na">tr</span><span class="nt">&gt;</span>
+                <span class="c">&lt;!-- 각 포스트의 링크도 자신의 사이트에 맞게 수정 --&gt;</span>
+                <span class="nt">&lt;th</span> <span class="na">class=</span><span class="s">"more-posts-title"</span><span class="nt">&gt;</span>
+                  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{.{ site.url }}{.{ post.url }}"</span><span class="nt">&gt;&lt;/a&gt;</span>
+                <span class="nt">&lt;/th&gt;</span>
+                <span class="nt">&lt;td</span> <span class="na">class=</span><span class="s">"more-posts-date"</span><span class="nt">&gt;</span>{.{ post.date | date: '%Y. %m. %d' }}<span class="nt">&lt;/td&gt;</span>
+              <span class="nt">&lt;/tr&gt;</span>
+            {.% endif %}
+          {.% endif %}
+        {.% endfor %}
+      <span class="nt">&lt;/tbody&gt;</span>
+    <span class="nt">&lt;/table&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+<p><br /><br /></p>
+
+<h3 id="2-css-파일-작성">2. css 파일 작성</h3>
+<p><code class="highlighter-rouge">assets</code> 폴더에 있는 css 파일 중 적당한 파일에 붙여넣어줍니다.</p>
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nc">.more-posts</span> <span class="p">{</span>
+    <span class="nl">border</span><span class="p">:</span> <span class="m">1px</span> <span class="nb">solid</span> <span class="m">#E5E5E5</span><span class="p">;</span>
+    <span class="nl">padding</span><span class="p">:</span> <span class="m">10px</span> <span class="m">10px</span> <span class="m">5px</span><span class="p">;</span>
+    <span class="nl">margin</span><span class="p">:</span> <span class="m">10px</span> <span class="m">0</span><span class="p">;</span>
+    <span class="nl">clear</span><span class="p">:</span> <span class="nb">both</span><span class="p">;</span>
+    <span class="nl">display</span><span class="p">:</span> <span class="nb">block</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.more-posts</span> <span class="nt">table</span> <span class="p">{</span>
+    <span class="nl">table-layout</span><span class="p">:</span> <span class="nb">fixed</span><span class="p">;</span>
+    <span class="nl">border-collapse</span><span class="p">:</span> <span class="nb">collapse</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">100%</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="nl">margin-top</span><span class="p">:</span> <span class="m">10px</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="nl">display</span><span class="p">:</span> <span class="n">table</span><span class="p">;</span>
+    <span class="nl">border-spacing</span><span class="p">:</span> <span class="m">2px</span><span class="p">;</span>
+    <span class="nl">border-color</span><span class="p">:</span> <span class="n">grey</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.more-category</span> <span class="p">{</span>
+    <span class="nl">border-bottom</span><span class="p">:</span> <span class="m">1px</span> <span class="nb">solid</span> <span class="m">#E5E5E5</span> <span class="cp">!important</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.more-category</span> <span class="o">&gt;</span> <span class="nt">h4</span> <span class="p">{</span>
+    <span class="nl">line-height</span><span class="p">:</span> <span class="m">170%</span><span class="p">;</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="m">#737373</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="nl">font-size</span><span class="p">:</span> <span class="m">12px</span><span class="p">;</span>
+    <span class="nl">margin</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="nl">padding</span><span class="p">:</span> <span class="m">2px</span> <span class="m">0</span> <span class="m">6px</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="nl">display</span><span class="p">:</span> <span class="n">inline-block</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.more-category</span> <span class="nc">.more-button</span> <span class="p">{</span>
+    <span class="nl">float</span><span class="p">:</span> <span class="nb">right</span><span class="p">;</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="m">#909090</span><span class="p">;</span>
+    <span class="nl">font-size</span><span class="p">:</span> <span class="m">12px</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="nl">vertical-align</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+    <span class="nl">border-collapse</span><span class="p">:</span> <span class="nb">collapse</span><span class="p">;</span>
+    <span class="nl">padding</span><span class="p">:</span> <span class="m">4px</span> <span class="m">4px</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.more-posts-title</span> <span class="p">{</span>
+    <span class="nl">text-align</span><span class="p">:</span> <span class="nb">left</span><span class="p">;</span>
+    <span class="nl">font-size</span><span class="p">:</span> <span class="m">12px</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="nl">font-weight</span><span class="p">:</span> <span class="nb">normal</span><span class="p">;</span>
+    <span class="nl">word-break</span><span class="p">:</span> <span class="n">break-all</span><span class="p">;</span>
+    <span class="nl">overflow</span><span class="p">:</span> <span class="nb">hidden</span><span class="p">;</span>
+    <span class="nl">line-height</span><span class="p">:</span> <span class="m">1.5</span><span class="p">;</span>
+    <span class="nl">padding</span><span class="p">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">4px</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="nl">display</span><span class="p">:</span> <span class="nb">table-cell</span><span class="p">;</span>
+    <span class="nl">vertical-align</span><span class="p">:</span> <span class="nb">inherit</span><span class="p">;</span>
+    <span class="nl">border-collapse</span><span class="p">:</span> <span class="nb">collapse</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.more-posts-title</span> <span class="nt">a</span> <span class="p">{</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="m">#909090</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.more-posts-title</span> <span class="nt">a</span><span class="nd">:hover</span> <span class="p">{</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="m">#34373e</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.more-posts-date</span> <span class="p">{</span>
+    <span class="nl">text-align</span><span class="p">:</span> <span class="nb">right</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">80px</span><span class="p">;</span>
+    <span class="nl">font-size</span><span class="p">:</span> <span class="m">11px</span><span class="p">;</span>
+    <span class="nl">padding</span><span class="p">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">4px</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="m">#909090</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="nl">display</span><span class="p">:</span> <span class="nb">table-cell</span><span class="p">;</span>
+    <span class="nl">vertical-align</span><span class="p">:</span> <span class="nb">inherit</span><span class="p">;</span>
+    <span class="nl">border-collapse</span><span class="p">:</span> <span class="nb">collapse</span><span class="p">;</span>
+  <span class="p">}</span>
+</code></pre></div></div>
+<p>HTML이나 CSS는 자신의 취향에 맞게 변경해서 사용하시면 되고, 작성 후 잘 나오는지 확인해보면 됩니다!</p>
+
+<p><br /></p>
+
+<hr />
+<p><br /></p>
+
+<blockquote>
+  <p>개인 공부하면서 작성한 글이라 잘못된 내용이 있을 수 있습니다. 잘못된 내용은 편하게 말씀해주시면 수정하겠습니다:)</p>
+</blockquote>
+
+<p><br /></p>
+
+
+          <div class="clearfix">
+            
+            <a class="btn btn-primary float-left" href="/deploy/2018/05/02/instance-setting-and-django-deploy-part2.html" data-toggle="tooltip" data-placement="top" title="EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (2/2)">&larr; 이전<span class="d-none d-md-inline"> 글</span></a>
+            
+            
+          </div>
+          <br><br><br>
+          
+
+<div id="disqus_thread"></div>
+<script>
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://rainsound-k.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+          <br><br><br>
+          <div class="more-posts">
+            <div class="more-category">
+              <h4>'Jekyll-Blog' 카테고리의 다른 글</h4>
+              <a href="/category/Jekyll-Blog/index.html" class="more-button">더보기</a>
+            </div>
+            <table>
+              <tbody>
+                
+                
+                  
+                    
+                    
+                      <tr>
+                        <th class="more-posts-title">
+                          <a href="https://rainsound-k.github.io/jekyll-blog/2018/05/02/more-posts-by-page.html">Jekyll 블로그에서 포스트 안에 같은 카테고리 글 목록 추가</a>
+                        </th>
+                        <td class="more-posts-date">2018. 05. 02</td>
+                      </tr>
+                    
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+              </tbody>
+            </table>
+          </div>
+          <br><br><br>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Footer -->
+
+<hr>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <ul class="list-inline text-center">
+          
+          
+          
+          <li class="list-inline-item">
+            <a href="https://github.com/rainsound-k">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="copyright text-muted">Copyright &copy; rainsound 2018</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/startbootstrap-clean-blog/js/clean-blog.min.js"></script>
+
+<script src="/assets/scripts.js"></script>
+
+
+
+    <script id="dsq-count-scr" src="//rainsound-k.disqus.com/count.js" async></script>
+  </body>
+
+</html>

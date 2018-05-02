@@ -43,7 +43,8 @@ layout: default
           <br><br><br>
           <div class="more-posts">
             <div class="more-category">
-              <h4>'{{ page.categories }}' 카테고리의 다른 글</h4><a href="/category/{{ page.categories }}/index.html" class="more-button">더보기</a>
+              <h4>'{{ page.categories }}' 카테고리의 다른 글</h4>
+              <a href="/category/{{ page.categories }}/index.html" class="more-button">더보기</a>
             </div>
             <table>
               <tbody>
@@ -53,7 +54,9 @@ layout: default
                     {% assign count = count | plus: 1 %}
                     {% if count < 4 %}
                       <tr>
-                        <th class="more-posts-title"><a href="https://rainsound-k.github.io{{ post.url }}">{{ post.title }}</a></th>
+                        <th class="more-posts-title">
+                          <a href="https://rainsound-k.github.io{{ post.url }}">{{ post.title }}</a>
+                        </th>
                         <td class="more-posts-date">{{ post.date | date: '%Y. %m. %d' }}</td>
                       </tr>
                     {% endif %}
