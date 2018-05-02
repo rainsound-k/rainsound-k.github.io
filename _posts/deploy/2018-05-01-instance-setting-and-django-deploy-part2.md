@@ -12,7 +12,7 @@ categories: [Deploy]
 
 
 ## EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기(2/2)
-`이전 포스트` : [EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기(1/2)](/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html)
+`이전 포스트` : [EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기(1/2)](/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html){:target="_blank"}
 
 1편에 이어서 이어서 인스턴스에 배포하기 위해 Django를 세팅하고, Nginx와 uWSGI를 이용해 배포하는 방법에 대해서 알아보겠습니다.
 

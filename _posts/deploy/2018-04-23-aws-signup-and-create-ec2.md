@@ -17,7 +17,7 @@ categories: [Deploy]
 AWS는 `Amazon Web Services`의 약자로 아마존닷컴이 제공하는 각종 원격 컴퓨팅 서비스입니다. AWS에서 컴퓨팅 파워, 데이터베이스 스토리지, 콘텐츠 전송 및 기타 기능을 원격으로 할 수 있습니다.
 
 AWS와 비슷한 서비스로 구글의 `Google Cloud Platform`, 마이크로소프트의 `Azure`가 있는데 이번에는 AWS 이용 방법에 대해서 알아보겠습니다.
-#### 1.1. [https://aws.amazon.com/ko](https://aws.amazon.com/ko) 사이트 접속
+#### 1.1. [https://aws.amazon.com/ko](https://aws.amazon.com/ko){:target="_blank"} 사이트 접속
 
 ![그림1](/img/posts/2018-4-23/1.png)
 
@@ -45,7 +45,7 @@ AWS와 비슷한 서비스로 구글의 `Google Cloud Platform`, 마이크로소
 
 
 ### 2. EC2 인스턴스 생성
-먼저 EC2의 개념은 [위키백과](https://ko.wikipedia.org/wiki/%EC%95%84%EB%A7%88%EC%A1%B4_%EC%9D%BC%EB%9E%98%EC%8A%A4%ED%8B%B1_%EC%BB%B4%ED%93%A8%ED%8A%B8_%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C)에 잘 나와 있습니다.
+먼저 EC2의 개념은 [위키백과](https://ko.wikipedia.org/wiki/%EC%95%84%EB%A7%88%EC%A1%B4_%EC%9D%BC%EB%9E%98%EC%8A%A4%ED%8B%B1_%EC%BB%B4%ED%93%A8%ED%8A%B8_%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C){:target="_blank"}에 잘 나와 있습니다.
 
 ```
 아마존 일래스틱 컴퓨트 클라우드(Amazon Elastic Compute Cloud)는
@@ -159,7 +159,7 @@ $  ssh -i ~/.ssh/examplekey.pem ubuntu@ec2-52-78-234-247.ap-northeast-2.compute.
 이번 포스팅에서는 AWS에 가입해 EC2 인스턴스를 생성하는 방법에 대해서 알아보았습니다.
 Nginx + uWSGI로 Django 앱 배포하는 방법은 다음 포스트에서 확인 가능합니다.
 
-`다음 포스트` : [EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)](/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html)
+`다음 포스트` : [EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)](/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html){:target="_blank"}
 
 > 개인 공부하면서 작성한 글이라 잘못된 내용이 있을 수 있습니다. 잘못된 내용은 편하게 말씀해주시면 수정하겠습니다:)
 

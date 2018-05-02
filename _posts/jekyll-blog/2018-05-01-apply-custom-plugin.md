@@ -12,12 +12,12 @@ categories: [Jekyll-Blog]
 
 
 ## Jekyll 블로그 plugin 적용하고 page not found(404) 에러 해결하기
-Jekyll 블로그에 [jekyll-category-pages]( https://github.com/field-theory/jekyll-category-pages) 플러그인을 가이드를 보고 설치한 후, 로컬에서 정상 작동되는 것을 확인하고 평소처럼 github에 push를 하였는데 post의 링크가 제대로 연결이 안되서 아래처럼 page not found(404) 에러가 발생하였습니다.
+Jekyll 블로그에 [jekyll-category-pages](https://github.com/field-theory/jekyll-category-pages){:target="_blank"} 플러그인을 가이드를 보고 설치한 후, 로컬에서 정상 작동되는 것을 확인하고 평소처럼 github에 push를 하였는데 post의 링크가 제대로 연결이 안되서 아래처럼 page not found(404) 에러가 발생하였습니다.
 ![그림5](/img/posts/2018-5-1/5.png)
 
-로컬에서는 정상 작동되기 때문에 원인을 찾기 힘들었는데, 열심히 구글링 한 결과 Github Pages에서 지원하는 [Jekyll plugin](https://pages.github.com/versions)이 따로 있다는 것을 발견했습니다.
+로컬에서는 정상 작동되기 때문에 원인을 찾기 힘들었는데, 열심히 구글링 한 결과 Github Pages에서 지원하는 [Jekyll plugin](https://pages.github.com/versions){:target="_blank"}이 따로 있다는 것을 발견했습니다.
 
-일반 post의 글들은 Jekyll에서 알아서 판단해 site를 빌드해서 보여주기 때문에 괜찮지만 custom plugin을 사용한 경우라면 보안상의 이유로 빌드 할때 [liquid tags](https://help.shopify.com/themes/liquid/tags)를 인식하지 못하기 떄문에 생기는 이유라고 합니다.
+일반 post의 글들은 Jekyll에서 알아서 판단해 site를 빌드해서 보여주기 때문에 괜찮지만 custom plugin을 사용한 경우라면 보안상의 이유로 빌드 할때 [liquid tags](https://help.shopify.com/themes/liquid/tags){:target="_blank"}를 인식하지 못하기 떄문에 생기는 이유라고 합니다.
 
 해결책은 로컬에서 빌드하면 생기는 `_site` 폴더를 github에 함께 push를 해줘야 하는데 구체적인 방법은 아래에서 설명하겠습니다.
 
@@ -141,8 +141,8 @@ $  publish-jekyll
 
 
 ##### 참고 링크  
-- https://stackoverflow.com/questions/28249255/how-do-i-configure-github-to-use-non-supported-jekyll-site-plugins/28252200#28252200
-- http://gumpcha.github.io/blog/github-pages-with-jekyll-custom-plugin
+- [https://stackoverflow.com](https://stackoverflow.com/questions/28249255/how-do-i-configure-github-to-use-non-supported-jekyll-site-plugins/28252200#28252200){:target="_blank"}
+- [http://gumpcha.github.io](http://gumpcha.github.io/blog/github-pages-with-jekyll-custom-plugin){:target="_blank"}
 
 
 <br><br>
