@@ -118,7 +118,7 @@ $  sudo chown -R ubuntu:ubuntu /srv
 
 이어서 인스턴스에 배포하기 위해 Django를 세팅하고, Nginx와 uWSGI를 이용해 배포하는 방법은 다음 포스트에서 확인 가능합니다.
 
-`다음 포스트` : [EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (2/2)](/deploy/2018/05/01/instance-setting-and-django-deploy-part2.html)
+`다음 포스트` : [EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (2/2)](/deploy/2018/05/02/instance-setting-and-django-deploy-part2.html)
 
 
 > 개인 공부하면서 작성한 글이라 잘못된 내용이 있을 수 있습니다. 잘못된 내용은 편하게 말씀해주시면 수정하겠습니다:)
