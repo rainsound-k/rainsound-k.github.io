@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="naver-site-verification" content="1de4763b6c45694b961629fb08ace3e5bfc1023e"/>
+  <title>
+    localhost에서 페이스북 로그인 HTTPS 적용하기 - rainsound 개발 노트
+    
+  </title>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118116411-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-118116411-1');
+  </script>
+  <meta name="description" content="localhost에서 페이스북 로그인 HTTPS 적용하기 18년 3월부터 페이스북 로그인과 같은 페이스북 앱을 사용하기 위해선 HTPPS URL이 필수이며, 19년 3월부터는 기존에 사용중인 모든 앱을 HTTPS URL만 사용하도록 마이그레이션해야 합니다.">
+  <link rel="shortcut icon" type="image/png" href="/img/faviconcon.png">
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/vendor/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+  <link rel="canonical" href="http://localhost:4000/ssl/2018/05/13/apply-localhost-ssl.html">
+  <link rel="alternate" type="application/rss+xml" title="rainsound 개발 노트" href="/feed.xml">
+  <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>localhost에서 페이스북 로그인 HTTPS 적용하기 | rainsound 개발 노트</title>
+<meta name="generator" content="Jekyll v3.7.3" />
+<meta property="og:title" content="localhost에서 페이스북 로그인 HTTPS 적용하기" />
+<meta name="author" content="rainsound" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="개발용 localhost 서버에 HTTPS(SSL) 적용시켜 페이스북 로그인 테스트하는 방법에 대해 다룹니다." />
+<meta property="og:description" content="개발용 localhost 서버에 HTTPS(SSL) 적용시켜 페이스북 로그인 테스트하는 방법에 대해 다룹니다." />
+<link rel="canonical" href="http://localhost:4000/ssl/2018/05/13/apply-localhost-ssl.html" />
+<meta property="og:url" content="http://localhost:4000/ssl/2018/05/13/apply-localhost-ssl.html" />
+<meta property="og:site_name" content="rainsound 개발 노트" />
+<meta property="og:image" content="http://localhost:4000/img/posts/2018-5-12/1.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-05-13T11:30:33+09:00" />
+<script type="application/ld+json">
+{"url":"http://localhost:4000/ssl/2018/05/13/apply-localhost-ssl.html","image":"http://localhost:4000/img/posts/2018-5-12/1.png","headline":"localhost에서 페이스북 로그인 HTTPS 적용하기","dateModified":"2018-05-13T11:30:33+09:00","datePublished":"2018-05-13T11:30:33+09:00","description":"개발용 localhost 서버에 HTTPS(SSL) 적용시켜 페이스북 로그인 테스트하는 방법에 대해 다룹니다.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/ssl/2018/05/13/apply-localhost-ssl.html"},"author":{"@type":"Person","name":"rainsound"},"@type":"BlogPosting","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+  <body>
+
+    <!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="/">rainsound 개발 노트</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      Menu
+      <i class="fa fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="dropdown nav-item">
+          <a href="" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Posts<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li class="dropdown-list">
+              <a href="/posts">All Posts (6)</a>
+            </li>
+            
+            
+            
+              <li class="dropdown-list">
+                <a href="/category/Deploy/index.html">Deploy (3)</a>
+              </li>
+            
+              <li class="dropdown-list">
+                <a href="/category/Jekyll-Blog/index.html">Jekyll-Blog (2)</a>
+              </li>
+            
+              <li class="dropdown-list">
+                <a href="/category/SSL/index.html">SSL (1)</a>
+              </li>
+            
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contact">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+    <!-- Page Header -->
+
+<header class="masthead" style="background-image: url('/img/posts/2018-5-12/1.png')">
+  
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>localhost에서 페이스북 로그인 HTTPS 적용하기</h1>
+            
+            <h2 class="subheading">개발용 localhost 서버에 HTTPS(SSL) 적용시켜 페이스북 로그인 테스트하는 방법에 대해 다룹니다.</h2>
+            
+            <span class="meta">Posted on May 13, 2018</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+
+          <h2 id="localhost에서-페이스북-로그인-https-적용하기">localhost에서 페이스북 로그인 HTTPS 적용하기</h2>
+<p>18년 3월부터 페이스북 로그인과 같은 페이스북 앱을 사용하기 위해선 <code class="highlighter-rouge">HTPPS URL</code>이 필수이며, 19년 3월부터는 기존에 사용중인 모든 앱을 <code class="highlighter-rouge">HTTPS URL</code>만 사용하도록 마이그레이션해야 합니다.
+<img src="/img/posts/2018-5-12/1.png" alt="그림1" /></p>
+
+<p>만약 <code class="highlighter-rouge">HTTP URL</code>을 그냥 사용한다면 아래와 같은 에러가 발생합니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Insecure Login Blocked: You can't get an access token or log in to this app from an insecure page. Try re-loading the page as https://
+</code></pre></div></div>
+<p><img src="/img/posts/2018-5-12/2.png" alt="그림2" /></p>
+
+<p>실제 서비스로 배포할 땐 <a href="https://letsencrypt.org" target="_blank">Let’s Encrypt</a>를 통해 HTTPS URL을 적용하겠지만, 개발 테스트를 할 때조차 적용하기는 여간 귀찮은 일이 아닙니다.</p>
+
+<p>그렇기 때문에 HTTP 기반의 <code class="highlighter-rouge">localhost</code> 서버에서 임시로 간단하게 SSL을 적용하는 방법을 알아보겠습니다.</p>
+
+<h3 id="1-django-기반-test-server">1. Django 기반 Test Server</h3>
+<p>먼저 Django 기반 localhost에 SSL을 적용하는 방법은 <a href="https://github.com/teddziuba/django-sslserver" target="_blank">Django SSL Server</a>라는 오픈소스를 이용하면 간단합니다.</p>
+
+<h4 id="11-설치">1.1 설치</h4>
+<p>아래 명령어로 설치해줍니다.</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> pip install django-sslserver
+</code></pre></div></div>
+<p><br /></p>
+
+<h4 id="12-installed_apps에-추가">1.2 INSTALLED_APPS에 추가</h4>
+<p><code class="highlighter-rouge">settings.py</code> INSTALLED_APPS에 <code class="highlighter-rouge">sslserver</code>를 추가해줍니다.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="o">...</span>
+    <span class="s">'sslserver'</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</code></pre></div></div>
+<p><br /></p>
+
+<h4 id="13-runsslserver-실행">1.3 runsslserver 실행</h4>
+<p>기존 <code class="highlighter-rouge">runserver</code>대신 <code class="highlighter-rouge">runsslserver</code>를 이용해서 서버를 작동시킵니다.</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> python manage.py runsslserver
+</code></pre></div></div>
+<p><br /></p>
+
+<h4 id="14-개인정보-보호-오류-해결">1.4 개인정보 보호 오류 해결</h4>
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">https://localhost:8000</code> 으로 접속하면 공인된 곳에서 인증서를 발급받지 않아 아래와 같은 <code class="highlighter-rouge">개인정보 보호 오류</code>가 발생합니다. 단순 테스트용 서버이므로 우선 <code class="highlighter-rouge">고급</code>을 눌러줍니다.
+<img src="/img/posts/2018-5-12/3.png" alt="그림3" /></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">localhost(안전하지 않음)(으)로 이동</code> 을 눌러서 접속합니다.
+<img src="/img/posts/2018-5-12/4.png" alt="그림4" /></p>
+  </li>
+  <li>
+    <p>HTTPS URL로 접속된 것을 확인합니다.
+<img src="/img/posts/2018-5-12/5.png" alt="그림5" />
+<br /></p>
+  </li>
+</ul>
+
+<h4 id="15-페이스북-로그인-유효한-oauth-리디렉션-uri에-주소-추가">1.5 페이스북 로그인 유효한 OAuth 리디렉션 URI에 주소 추가</h4>
+<p>아래와 같이 HTTPS URL을 <code class="highlighter-rouge">유효한 OAuth 리디렉션 URI</code>에 추가해주면 끝납니다!
+<img src="/img/posts/2018-5-12/6.png" alt="그림6" />
+<br /><br /></p>
+
+<h3 id="2-프론트엔드-기반-test-server">2. 프론트엔드 기반 Test Server</h3>
+<p>프론트엔드 기반에서 SSL 적용시키기는 Django보다는 까다롭지만 크게 어렵지 않아 금방 하실 수 있습니다.</p>
+
+<h4 id="21-ssl-인증서와-key-파일-발급">2.1 SSL 인증서와 key 파일 발급</h4>
+<p><code class="highlighter-rouge">openssl</code>을 이용해 임의의 인증서와 key 파일을 발급 받아 접속하는 방식을 사용합니다.</p>
+
+<ul>
+  <li>openssl 설치
+    <ul>
+      <li>Mac OS 기준
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> brew install openssl
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>private key 생성
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> openssl genrsa <span class="nt">-des3</span> <span class="nt">-out</span> server.key 1024
+</code></pre></div>    </div>
+    <p>이후 <code class="highlighter-rouge">Enter pass phrase for server.key:</code> 에 key 파일에 암호를 임의로 입력해줍니다.</p>
+  </li>
+  <li>CSR 파일 생성
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> openssl req <span class="nt">-new</span> <span class="nt">-key</span> server.key <span class="nt">-out</span> server.csr
+</code></pre></div>    </div>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 국가 코드 (ex KR)
+Country Name (2 letter code) []:
+
+// 도 이름. 없으면 공백 (ex Gyeonggi)
+State or Province Name (full name) []:
+
+// 도시 이름 (ex Seoul)
+Locality Name (eg, city) []:
+
+// 회사명
+Organization Name (eg, company) []:
+
+// 부서명
+Organizational Unit Name (eg, section) []:
+
+// 도메인명
+Common Name (eg, YOUR name) []:
+
+// E-mail 주소
+Email Address []:
+</code></pre></div>    </div>
+    <p><img src="/img/posts/2018-5-12/7.png" alt="그림7" /></p>
+  </li>
+  <li>시작시마다 암호를 묻는 것을 방지하기 위해 key의 암호를 제거해줍니다.
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> cp server.key server.key.org
+<span class="nv">$ </span> openssl rsa <span class="nt">-in</span> server.key.org <span class="nt">-out</span> server.key
+</code></pre></div>    </div>
+  </li>
+  <li>자체 서명된 인증서 생성
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> openssl x509 <span class="nt">-req</span> <span class="nt">-days</span> 365 <span class="nt">-in</span> server.csr <span class="nt">-signkey</span> server.key <span class="nt">-out</span> server.crt
+</code></pre></div>    </div>
+  </li>
+  <li>server.key.org, server.csr 파일 삭제 및 파일 이동
+    <ul>
+      <li>위의 절차를 완료했다면 총 4개의 파일(<code class="highlighter-rouge">server.crt</code>, <code class="highlighter-rouge">server.key</code>, <code class="highlighter-rouge">server.key.org</code>, <code class="highlighter-rouge">server.csr</code>)이 생성된 것을 확인하실 수 있습니다.</li>
+      <li>그 중 <code class="highlighter-rouge">server.key.org</code>, <code class="highlighter-rouge">server.csr</code> 파일을 삭제하고 나머지 2개의 파일을 <code class="highlighter-rouge">index.html</code>이 있는 프로젝트 루트 폴더로 이동시켜줍니다.
+<br /></li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="22-python-파일-생성">2.2 python 파일 생성</h4>
+<p>위에서 생성한 파일을 토대로 SSL Server를 만들어주는 python 파일을 프로젝트 루트 폴더에 작성해줍니다.
+<code class="highlighter-rouge">local-ssl-server.py</code></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">http.server</span>
+
+<span class="kn">import</span> <span class="nn">ssl</span>
+
+<span class="n">httpd</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">HTTPServer</span><span class="p">((</span><span class="s">'0.0.0.0'</span><span class="p">,</span> <span class="mi">3004</span><span class="p">),</span> <span class="n">http</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">SimpleHTTPRequestHandler</span><span class="p">)</span>
+
+<span class="n">httpd</span><span class="o">.</span><span class="n">socket</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">wrap_socket</span><span class="p">(</span><span class="n">httpd</span><span class="o">.</span><span class="n">socket</span><span class="p">,</span> <span class="n">certfile</span><span class="o">=</span><span class="s">'server.crt'</span><span class="p">,</span> <span class="n">keyfile</span><span class="o">=</span><span class="s">'server.key'</span><span class="p">)</span>
+
+<span class="n">httpd</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+</code></pre></div></div>
+<p>위의 코드는 <code class="highlighter-rouge">server.crt</code>, <code class="highlighter-rouge">server.key</code> 파일과 python 파일이 동등한 위치에 있다고 가정하고 작성한 것이므로, 인증서를 다른 폴더에 넣었다면 경로를 커스텀 해주시면 됩니다.
+<br /></p>
+
+<h4 id="23-python-파일로-runserver">2.3 python 파일로 runserver</h4>
+<p>기존에는 <code class="highlighter-rouge">python -m http.server 3000</code>으로 HTTP 기반의 3000번 포트를 열어줬다면, 지금 부터는 위의 작성한 python 파일로 HTTPS 기반의 3004번 포트를 열어줄 차례입니다.</p>
+
+<ul>
+  <li>runserver 실행
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> python local-ssl-server.py
+</code></pre></div>    </div>
+  </li>
+  <li><code class="highlighter-rouge">https://localhost:3004</code> 으로 접속하면 공인된 곳에서 인증서를 발급받지 않아 아래와 같은 <code class="highlighter-rouge">개인정보 보호 오류</code>가 발생합니다. 단순 테스트용 서버이므로 우선 <code class="highlighter-rouge">고급</code>을 눌러줍니다.
+<img src="/img/posts/2018-5-12/3.png" alt="그림3" /></li>
+  <li><code class="highlighter-rouge">localhost(안전하지 않음)(으)로 이동</code> 을 눌러서 접속합니다.
+<img src="/img/posts/2018-5-12/4.png" alt="그림4" /></li>
+  <li>HTTPS URL로 접속된 것을 확인합니다.
+<img src="/img/posts/2018-5-12/8.png" alt="그림8" />
+<br /></li>
+</ul>
+
+<h4 id="24-페이스북-로그인-유효한-oauth-리디렉션-uri에-주소-추가">2.4 페이스북 로그인 유효한 OAuth 리디렉션 URI에 주소 추가</h4>
+<p>아래와 같이 HTTPS URL을 <code class="highlighter-rouge">유효한 OAuth 리디렉션 URI</code>에 추가해줍니다.
+<img src="/img/posts/2018-5-12/9.png" alt="그림9" />
+<br /></p>
+
+<h4 id="25-페이스북-로그인-test">2.5 페이스북 로그인 Test</h4>
+<p>페이스북 로그인 버튼을 눌러보면 팝업창이 잘 뜨는 것을 확인하실 수 있습니다!
+<img src="/img/posts/2018-5-12/8.png" alt="그림8" />
+<img src="/img/posts/2018-5-12/10.png" alt="그림10" />
+<br /><br /></p>
+
+<h3 id="3-gitignore에-추가">3. .gitignore에 추가</h3>
+<p>인증서 파일과 python 파일을 <code class="highlighter-rouge">.gitignore</code>에 작성해서 github에 함께 올라가는 것을 방지합니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>### Custom ###
+server.crt
+server.key
+local-ssl-server.py
+</code></pre></div></div>
+<p><br /><br /><br /><br /></p>
+
+<h5 id="참고-링크">참고 링크</h5>
+<ul>
+  <li><a href="https://www.akadia.com/services/ssh_test_certificate.html" target="_blank">https://www.akadia.com/services/ssh_test_certificate.html</a></li>
+  <li><a href="http://www.hanbit.co.kr/channel/category/category_view.html?cms_code=CMS6163871474" target="_blank">http://www.hanbit.co.kr/channel/category/category_view.html?cms_code=CMS6163871474</a></li>
+</ul>
+
+<p><br /><br /></p>
+
+<hr />
+<p><br /></p>
+
+<blockquote>
+  <p>개인 공부하면서 작성한 글이라 잘못된 내용이 있을 수 있습니다. 잘못된 내용은 편하게 말씀해주시면 수정하겠습니다:)</p>
+</blockquote>
+
+<p><br /></p>
+
+
+          <div class="clearfix">
+            
+            <a class="btn btn-primary float-left" href="/jekyll-blog/2018/05/02/apply-custom-plugin.html" data-toggle="tooltip" data-placement="top" title="Jekyll 블로그 plugin 적용하고 page not found(404) 에러 해결하기">&larr; 이전<span class="d-none d-md-inline"> 글</span></a>
+            
+            
+          </div>
+          <br><br><br>
+          
+
+<div id="disqus_thread"></div>
+<script>
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://rainsound-k.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+          <br><br><br>
+          <div class="more-posts">
+            <div class="more-category">
+              <h4>'SSL' 카테고리의 다른 글</h4>
+              <a href="/category/SSL/index.html" class="more-button">더보기</a>
+            </div>
+            <table>
+              <tbody>
+                
+                
+                  
+                    
+                    
+                      <tr>
+                        <th class="more-posts-title">
+                          <a href="https://rainsound-k.github.io/ssl/2018/05/13/apply-localhost-ssl.html">localhost에서 페이스북 로그인 HTTPS 적용하기</a>
+                        </th>
+                        <td class="more-posts-date">2018. 05. 13</td>
+                      </tr>
+                    
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+              </tbody>
+            </table>
+          </div>
+          <br><br><br>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Footer -->
+
+<hr>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <ul class="list-inline text-center">
+          
+          
+          
+          <li class="list-inline-item">
+            <a href="https://github.com/rainsound-k">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="copyright text-muted">Copyright &copy; rainsound 2018</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/startbootstrap-clean-blog/js/clean-blog.min.js"></script>
+
+<script src="/assets/scripts.js"></script>
+
+
+
+    <script id="dsq-count-scr" src="//rainsound-k.disqus.com/count.js" async></script>
+  </body>
+
+</html>

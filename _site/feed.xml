@@ -1,4 +1,196 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-02T18:37:29+09:00</updated><id>http://localhost:4000/</id><title type="html">rainsound 개발 노트</title><subtitle>개발 공부하면서 까먹지 않기 위해 기록하는 블로그입니다.</subtitle><author><name>rainsound</name></author><entry><title type="html">Jekyll 블로그 plugin 적용하고 page not found(404) 에러 해결하기</title><link href="http://localhost:4000/jekyll-blog/2018/05/02/apply-custom-plugin.html" rel="alternate" type="text/html" title="Jekyll 블로그 plugin 적용하고 page not found(404) 에러 해결하기" /><published>2018-05-02T11:00:33+09:00</published><updated>2018-05-02T11:00:33+09:00</updated><id>http://localhost:4000/jekyll-blog/2018/05/02/apply-custom-plugin</id><content type="html" xml:base="http://localhost:4000/jekyll-blog/2018/05/02/apply-custom-plugin.html">&lt;h2 id=&quot;jekyll-블로그-plugin-적용하고-page-not-found404-에러-해결하기&quot;&gt;Jekyll 블로그 plugin 적용하고 page not found(404) 에러 해결하기&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-13T13:08:53+09:00</updated><id>http://localhost:4000/</id><title type="html">rainsound 개발 노트</title><subtitle>개발 공부하면서 까먹지 않기 위해 기록하는 블로그입니다.</subtitle><author><name>rainsound</name></author><entry><title type="html">localhost에서 페이스북 로그인 HTTPS 적용하기</title><link href="http://localhost:4000/ssl/2018/05/13/apply-localhost-ssl.html" rel="alternate" type="text/html" title="localhost에서 페이스북 로그인 HTTPS 적용하기" /><published>2018-05-13T11:30:33+09:00</published><updated>2018-05-13T11:30:33+09:00</updated><id>http://localhost:4000/ssl/2018/05/13/apply-localhost-ssl</id><content type="html" xml:base="http://localhost:4000/ssl/2018/05/13/apply-localhost-ssl.html">&lt;h2 id=&quot;localhost에서-페이스북-로그인-https-적용하기&quot;&gt;localhost에서 페이스북 로그인 HTTPS 적용하기&lt;/h2&gt;
+&lt;p&gt;18년 3월부터 페이스북 로그인과 같은 페이스북 앱을 사용하기 위해선 &lt;code class=&quot;highlighter-rouge&quot;&gt;HTPPS URL&lt;/code&gt;이 필수이며, 19년 3월부터는 기존에 사용중인 모든 앱을 &lt;code class=&quot;highlighter-rouge&quot;&gt;HTTPS URL&lt;/code&gt;만 사용하도록 마이그레이션해야 합니다.
+&lt;img src=&quot;/img/posts/2018-5-12/1.png&quot; alt=&quot;그림1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;만약 &lt;code class=&quot;highlighter-rouge&quot;&gt;HTTP URL&lt;/code&gt;을 그냥 사용한다면 아래와 같은 에러가 발생합니다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Insecure Login Blocked: You can't get an access token or log in to this app from an insecure page. Try re-loading the page as https://
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/img/posts/2018-5-12/2.png&quot; alt=&quot;그림2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;실제 서비스로 배포할 땐 &lt;a href=&quot;https://letsencrypt.org&quot; target=&quot;_blank&quot;&gt;Let’s Encrypt&lt;/a&gt;를 통해 HTTPS URL을 적용하겠지만, 개발 테스트를 할 때조차 적용하기는 여간 귀찮은 일이 아닙니다.&lt;/p&gt;
+
+&lt;p&gt;그렇기 때문에 HTTP 기반의 &lt;code class=&quot;highlighter-rouge&quot;&gt;localhost&lt;/code&gt; 서버에서 임시로 간단하게 SSL을 적용하는 방법을 알아보겠습니다.&lt;/p&gt;
+
+&lt;h3 id=&quot;1-django-기반-test-server&quot;&gt;1. Django 기반 Test Server&lt;/h3&gt;
+&lt;p&gt;먼저 Django 기반 localhost에 SSL을 적용하는 방법은 &lt;a href=&quot;https://github.com/teddziuba/django-sslserver&quot; target=&quot;_blank&quot;&gt;Django SSL Server&lt;/a&gt;라는 오픈소스를 이용하면 간단합니다.&lt;/p&gt;
+
+&lt;h4 id=&quot;11-설치&quot;&gt;1.1 설치&lt;/h4&gt;
+&lt;p&gt;아래 명령어로 설치해줍니다.&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; pip install django-sslserver
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;12-installed_apps에-추가&quot;&gt;1.2 INSTALLED_APPS에 추가&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;settings.py&lt;/code&gt; INSTALLED_APPS에 &lt;code class=&quot;highlighter-rouge&quot;&gt;sslserver&lt;/code&gt;를 추가해줍니다.&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;INSTALLED_APPS&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'sslserver'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;13-runsslserver-실행&quot;&gt;1.3 runsslserver 실행&lt;/h4&gt;
+&lt;p&gt;기존 &lt;code class=&quot;highlighter-rouge&quot;&gt;runserver&lt;/code&gt;대신 &lt;code class=&quot;highlighter-rouge&quot;&gt;runsslserver&lt;/code&gt;를 이용해서 서버를 작동시킵니다.&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; python manage.py runsslserver
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;14-개인정보-보호-오류-해결&quot;&gt;1.4 개인정보 보호 오류 해결&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;https://localhost:8000&lt;/code&gt; 으로 접속하면 공인된 곳에서 인증서를 발급받지 않아 아래와 같은 &lt;code class=&quot;highlighter-rouge&quot;&gt;개인정보 보호 오류&lt;/code&gt;가 발생합니다. 단순 테스트용 서버이므로 우선 &lt;code class=&quot;highlighter-rouge&quot;&gt;고급&lt;/code&gt;을 눌러줍니다.
+&lt;img src=&quot;/img/posts/2018-5-12/3.png&quot; alt=&quot;그림3&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;localhost(안전하지 않음)(으)로 이동&lt;/code&gt; 을 눌러서 접속합니다.
+&lt;img src=&quot;/img/posts/2018-5-12/4.png&quot; alt=&quot;그림4&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;HTTPS URL로 접속된 것을 확인합니다.
+&lt;img src=&quot;/img/posts/2018-5-12/5.png&quot; alt=&quot;그림5&quot; /&gt;
+&lt;br /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;15-페이스북-로그인-유효한-oauth-리디렉션-uri에-주소-추가&quot;&gt;1.5 페이스북 로그인 유효한 OAuth 리디렉션 URI에 주소 추가&lt;/h4&gt;
+&lt;p&gt;아래와 같이 HTTPS URL을 &lt;code class=&quot;highlighter-rouge&quot;&gt;유효한 OAuth 리디렉션 URI&lt;/code&gt;에 추가해주면 끝납니다!
+&lt;img src=&quot;/img/posts/2018-5-12/6.png&quot; alt=&quot;그림6&quot; /&gt;
+&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;2-프론트엔드-기반-test-server&quot;&gt;2. 프론트엔드 기반 Test Server&lt;/h3&gt;
+&lt;p&gt;프론트엔드 기반에서 SSL 적용시키기는 Django보다는 까다롭지만 크게 어렵지 않아 금방 하실 수 있습니다.&lt;/p&gt;
+
+&lt;h4 id=&quot;21-ssl-인증서와-key-파일-발급&quot;&gt;2.1 SSL 인증서와 key 파일 발급&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;openssl&lt;/code&gt;을 이용해 임의의 인증서와 key 파일을 발급 받아 접속하는 방식을 사용합니다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;openssl 설치
+    &lt;ul&gt;
+      &lt;li&gt;Mac OS 기준
+        &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; brew install openssl
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;private key 생성
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; openssl genrsa &lt;span class=&quot;nt&quot;&gt;-des3&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-out&lt;/span&gt; server.key 1024
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;이후 &lt;code class=&quot;highlighter-rouge&quot;&gt;Enter pass phrase for server.key:&lt;/code&gt; 에 key 파일에 암호를 임의로 입력해줍니다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;CSR 파일 생성
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; openssl req &lt;span class=&quot;nt&quot;&gt;-new&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-key&lt;/span&gt; server.key &lt;span class=&quot;nt&quot;&gt;-out&lt;/span&gt; server.csr
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// 국가 코드 (ex KR)
+Country Name (2 letter code) []:
+
+// 도 이름. 없으면 공백 (ex Gyeonggi)
+State or Province Name (full name) []:
+
+// 도시 이름 (ex Seoul)
+Locality Name (eg, city) []:
+
+// 회사명
+Organization Name (eg, company) []:
+
+// 부서명
+Organizational Unit Name (eg, section) []:
+
+// 도메인명
+Common Name (eg, YOUR name) []:
+
+// E-mail 주소
+Email Address []:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;&lt;img src=&quot;/img/posts/2018-5-12/7.png&quot; alt=&quot;그림7&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;시작시마다 암호를 묻는 것을 방지하기 위해 key의 암호를 제거해줍니다.
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; cp server.key server.key.org
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; openssl rsa &lt;span class=&quot;nt&quot;&gt;-in&lt;/span&gt; server.key.org &lt;span class=&quot;nt&quot;&gt;-out&lt;/span&gt; server.key
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;자체 서명된 인증서 생성
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; openssl x509 &lt;span class=&quot;nt&quot;&gt;-req&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-days&lt;/span&gt; 365 &lt;span class=&quot;nt&quot;&gt;-in&lt;/span&gt; server.csr &lt;span class=&quot;nt&quot;&gt;-signkey&lt;/span&gt; server.key &lt;span class=&quot;nt&quot;&gt;-out&lt;/span&gt; server.crt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;server.key.org, server.csr 파일 삭제 및 파일 이동
+    &lt;ul&gt;
+      &lt;li&gt;위의 절차를 완료했다면 총 4개의 파일(&lt;code class=&quot;highlighter-rouge&quot;&gt;server.crt&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;server.key&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;server.key.org&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;server.csr&lt;/code&gt;)이 생성된 것을 확인하실 수 있습니다.&lt;/li&gt;
+      &lt;li&gt;그 중 &lt;code class=&quot;highlighter-rouge&quot;&gt;server.key.org&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;server.csr&lt;/code&gt; 파일을 삭제하고 나머지 2개의 파일을 &lt;code class=&quot;highlighter-rouge&quot;&gt;index.html&lt;/code&gt;이 있는 프로젝트 루트 폴더로 이동시켜줍니다.
+&lt;br /&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;22-python-파일-생성&quot;&gt;2.2 python 파일 생성&lt;/h4&gt;
+&lt;p&gt;위에서 생성한 파일을 토대로 SSL Server를 만들어주는 python 파일을 프로젝트 루트 폴더에 작성해줍니다.
+&lt;code class=&quot;highlighter-rouge&quot;&gt;local-ssl-server.py&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;http.server&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;ssl&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;httpd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;server&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HTTPServer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'0.0.0.0'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3004&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;server&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SimpleHTTPRequestHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;httpd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ssl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wrap_socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;httpd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;certfile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'server.crt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;keyfile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'server.key'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;httpd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;serve_forever&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;위의 코드는 &lt;code class=&quot;highlighter-rouge&quot;&gt;server.crt&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;server.key&lt;/code&gt; 파일과 python 파일이 동등한 위치에 있다고 가정하고 작성한 것이므로, 인증서를 다른 폴더에 넣었다면 경로를 커스텀 해주시면 됩니다.
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;23-python-파일로-runserver&quot;&gt;2.3 python 파일로 runserver&lt;/h4&gt;
+&lt;p&gt;기존에는 &lt;code class=&quot;highlighter-rouge&quot;&gt;python -m http.server 3000&lt;/code&gt;으로 HTTP 기반의 3000번 포트를 열어줬다면, 지금 부터는 위의 작성한 python 파일로 HTTPS 기반의 3004번 포트를 열어줄 차례입니다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;runserver 실행
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; python local-ssl-server.py
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;https://localhost:3004&lt;/code&gt; 으로 접속하면 공인된 곳에서 인증서를 발급받지 않아 아래와 같은 &lt;code class=&quot;highlighter-rouge&quot;&gt;개인정보 보호 오류&lt;/code&gt;가 발생합니다. 단순 테스트용 서버이므로 우선 &lt;code class=&quot;highlighter-rouge&quot;&gt;고급&lt;/code&gt;을 눌러줍니다.
+&lt;img src=&quot;/img/posts/2018-5-12/3.png&quot; alt=&quot;그림3&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;localhost(안전하지 않음)(으)로 이동&lt;/code&gt; 을 눌러서 접속합니다.
+&lt;img src=&quot;/img/posts/2018-5-12/4.png&quot; alt=&quot;그림4&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;HTTPS URL로 접속된 것을 확인합니다.
+&lt;img src=&quot;/img/posts/2018-5-12/8.png&quot; alt=&quot;그림8&quot; /&gt;
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;24-페이스북-로그인-유효한-oauth-리디렉션-uri에-주소-추가&quot;&gt;2.4 페이스북 로그인 유효한 OAuth 리디렉션 URI에 주소 추가&lt;/h4&gt;
+&lt;p&gt;아래와 같이 HTTPS URL을 &lt;code class=&quot;highlighter-rouge&quot;&gt;유효한 OAuth 리디렉션 URI&lt;/code&gt;에 추가해줍니다.
+&lt;img src=&quot;/img/posts/2018-5-12/9.png&quot; alt=&quot;그림9&quot; /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;25-페이스북-로그인-test&quot;&gt;2.5 페이스북 로그인 Test&lt;/h4&gt;
+&lt;p&gt;페이스북 로그인 버튼을 눌러보면 팝업창이 잘 뜨는 것을 확인하실 수 있습니다!
+&lt;img src=&quot;/img/posts/2018-5-12/8.png&quot; alt=&quot;그림8&quot; /&gt;
+&lt;img src=&quot;/img/posts/2018-5-12/10.png&quot; alt=&quot;그림10&quot; /&gt;
+&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;3-gitignore에-추가&quot;&gt;3. .gitignore에 추가&lt;/h3&gt;
+&lt;p&gt;인증서 파일과 python 파일을 &lt;code class=&quot;highlighter-rouge&quot;&gt;.gitignore&lt;/code&gt;에 작성해서 github에 함께 올라가는 것을 방지합니다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;### Custom ###
+server.crt
+server.key
+local-ssl-server.py
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;참고-링크&quot;&gt;참고 링크&lt;/h5&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.akadia.com/services/ssh_test_certificate.html&quot; target=&quot;_blank&quot;&gt;https://www.akadia.com/services/ssh_test_certificate.html&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.hanbit.co.kr/channel/category/category_view.html?cms_code=CMS6163871474&quot; target=&quot;_blank&quot;&gt;http://www.hanbit.co.kr/channel/category/category_view.html?cms_code=CMS6163871474&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;개인 공부하면서 작성한 글이라 잘못된 내용이 있을 수 있습니다. 잘못된 내용은 편하게 말씀해주시면 수정하겠습니다:)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;</content><author><name>rainsound</name></author><summary type="html">localhost에서 페이스북 로그인 HTTPS 적용하기 18년 3월부터 페이스북 로그인과 같은 페이스북 앱을 사용하기 위해선 HTPPS URL이 필수이며, 19년 3월부터는 기존에 사용중인 모든 앱을 HTTPS URL만 사용하도록 마이그레이션해야 합니다.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/img/posts/2018-5-12/1.png" /></entry><entry><title type="html">Jekyll 블로그 plugin 적용하고 page not found(404) 에러 해결하기</title><link href="http://localhost:4000/jekyll-blog/2018/05/02/apply-custom-plugin.html" rel="alternate" type="text/html" title="Jekyll 블로그 plugin 적용하고 page not found(404) 에러 해결하기" /><published>2018-05-02T11:00:33+09:00</published><updated>2018-05-02T11:00:33+09:00</updated><id>http://localhost:4000/jekyll-blog/2018/05/02/apply-custom-plugin</id><content type="html" xml:base="http://localhost:4000/jekyll-blog/2018/05/02/apply-custom-plugin.html">&lt;h2 id=&quot;jekyll-블로그-plugin-적용하고-page-not-found404-에러-해결하기&quot;&gt;Jekyll 블로그 plugin 적용하고 page not found(404) 에러 해결하기&lt;/h2&gt;
 &lt;p&gt;Jekyll 블로그에 &lt;a href=&quot;https://github.com/field-theory/jekyll-category-pages&quot; target=&quot;_blank&quot;&gt;jekyll-category-pages&lt;/a&gt; 플러그인을 가이드를 보고 설치한 후, 로컬에서 정상 작동되는 것을 확인하고 평소처럼 github에 push를 하였는데 post의 링크가 제대로 연결이 안되서 아래처럼 page not found(404) 에러가 발생하였습니다.
 &lt;img src=&quot;/img/posts/2018-5-1/5.png&quot; alt=&quot;그림5&quot; /&gt;&lt;/p&gt;
 
