@@ -181,8 +181,8 @@ local-ssl-server.py
 
 
 ##### 참고 링크  
-- [https://www.akadia.com/services/ssh_test_certificate.html](https://www.akadia.com/services/ssh_test_certificate.html){:target="_blank"}
-- [http://www.hanbit.co.kr/channel/category/category_view.html?cms_code=CMS6163871474](http://www.hanbit.co.kr/channel/category/category_view.html?cms_code=CMS6163871474){:target="_blank"}
+- [https://www.akadia.com](https://www.akadia.com/services/ssh_test_certificate.html){:target="_blank"}
+- [http://www.hanbit.co.kr](http://www.hanbit.co.kr/channel/category/category_view.html?cms_code=CMS6163871474){:target="_blank"}
 
 
 <br><br>
