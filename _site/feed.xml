@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-14T15:56:30+09:00</updated><id>http://localhost:4000/</id><title type="html">rainsound 개발 노트</title><subtitle>개발 공부하면서 까먹지 않기 위해 기록하는 블로그입니다.</subtitle><author><name>rainsound</name></author><entry><title type="html">Django 프로젝트에 Travis-CI 연동 및 Secret Key 암호화</title><link href="http://localhost:4000/deploy/2018/05/14/django-travis-ci.html" rel="alternate" type="text/html" title="Django 프로젝트에 Travis-CI 연동 및 Secret Key 암호화" /><published>2018-05-14T08:50:33+09:00</published><updated>2018-05-14T08:50:33+09:00</updated><id>http://localhost:4000/deploy/2018/05/14/django-travis-ci</id><content type="html" xml:base="http://localhost:4000/deploy/2018/05/14/django-travis-ci.html">&lt;h2 id=&quot;django-프로젝트에-travis-ci-연동-및-secret-key-암호화&quot;&gt;Django 프로젝트에 Travis-CI 연동 및 Secret Key 암호화&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-14T16:00:33+09:00</updated><id>http://localhost:4000/</id><title type="html">rainsound 개발 노트</title><subtitle>개발 공부하면서 까먹지 않기 위해 기록하는 블로그입니다.</subtitle><author><name>rainsound</name></author><entry><title type="html">Django 프로젝트에 Travis-CI 연동 및 Secret Key 암호화</title><link href="http://localhost:4000/deploy/2018/05/14/django-travis-ci.html" rel="alternate" type="text/html" title="Django 프로젝트에 Travis-CI 연동 및 Secret Key 암호화" /><published>2018-05-14T08:50:33+09:00</published><updated>2018-05-14T08:50:33+09:00</updated><id>http://localhost:4000/deploy/2018/05/14/django-travis-ci</id><content type="html" xml:base="http://localhost:4000/deploy/2018/05/14/django-travis-ci.html">&lt;h2 id=&quot;django-프로젝트에-travis-ci-연동-및-secret-key-암호화&quot;&gt;Django 프로젝트에 Travis-CI 연동 및 Secret Key 암호화&lt;/h2&gt;
 &lt;p&gt;Django 프로젝트에 &lt;code class=&quot;highlighter-rouge&quot;&gt;Travis-CI&lt;/code&gt;를 연동하는 방법과 각종 Secret Key를 Travis-CI에서 인식할 수 있도록 암호화, 복호화하는 방법을 다뤄보겠습니다.&lt;/p&gt;
 
 &lt;h3 id=&quot;1-ci란&quot;&gt;1. CI란?&lt;/h3&gt;
@@ -8,15 +8,15 @@
 
 &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Travis-CI&lt;/code&gt;는 &lt;code class=&quot;highlighter-rouge&quot;&gt;CI&lt;/code&gt; 서비스 중 하나입니다. 기본적으로 github 공개 Repository와 연동하는 것은 무료, 비공개 Repository와 연동하는 것은 유료이며 사이트 주소도 다릅니다.&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://travis-ci.org&quot;&gt;https://travis-ci.org&lt;/a&gt; &lt;strong&gt;공개 Repository(무료)&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://travis-ci.com&quot;&gt;https://travis-ci.com&lt;/a&gt; &lt;strong&gt;비공개 Repository(유료)&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://travis-ci.org&quot; target=&quot;_blank&quot;&gt;https://travis-ci.org&lt;/a&gt; &lt;strong&gt;공개 Repository(무료)&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://travis-ci.com&quot; target=&quot;_blank&quot;&gt;https://travis-ci.com&lt;/a&gt; &lt;strong&gt;비공개 Repository(유료)&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;우선 test 해보는 과정이므로 무료로 이용해보겠습니다.
 &lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;2-travis-ci-가입&quot;&gt;2. Travis-CI 가입&lt;/h3&gt;
-&lt;p&gt;먼저 &lt;a href=&quot;https://travis-ci.org&quot;&gt;https://travis-ci.org&lt;/a&gt; 사이트에 접속해서 가입한 후, github과 연동해줍니다.
+&lt;p&gt;먼저 &lt;a href=&quot;https://travis-ci.org&quot; target=&quot;_blank&quot;&gt;https://travis-ci.org&lt;/a&gt; 사이트에 접속해서 가입한 후, github과 연동해줍니다.
 &lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;3-github-repository-생성&quot;&gt;3. Github Repository 생성&lt;/h3&gt;

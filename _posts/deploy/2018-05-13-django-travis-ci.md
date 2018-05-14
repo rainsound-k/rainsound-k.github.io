@@ -20,14 +20,14 @@ Django 프로젝트에 `Travis-CI`를 연동하는 방법과 각종 Secret Key�
 혹은 오픈소스의 master branch를 관리할 때 이 기술을 이용하면 수많은 `pull request`들에 대해 하나하나 test 검증을 할 필요가 없기 때문에 상당히 편리합니다.
 
 `Travis-CI`는 `CI` 서비스 중 하나입니다. 기본적으로 github 공개 Repository와 연동하는 것은 무료, 비공개 Repository와 연동하는 것은 유료이며 사이트 주소도 다릅니다.
-- [https://travis-ci.org](https://travis-ci.org) **공개 Repository(무료)**
-- [https://travis-ci.com](https://travis-ci.com) **비공개 Repository(유료)**
+- [https://travis-ci.org](https://travis-ci.org){:target="_blank"} **공개 Repository(무료)**
+- [https://travis-ci.com](https://travis-ci.com){:target="_blank"} **비공개 Repository(유료)**
 
 우선 test 해보는 과정이므로 무료로 이용해보겠습니다.
 <br><br>
 
 ### 2. Travis-CI 가입
-먼저 [https://travis-ci.org](https://travis-ci.org) 사이트에 접속해서 가입한 후, github과 연동해줍니다.
+먼저 [https://travis-ci.org](https://travis-ci.org){:target="_blank"} 사이트에 접속해서 가입한 후, github과 연동해줍니다.
 <br><br>
 
 ### 3. Github Repository 생성
