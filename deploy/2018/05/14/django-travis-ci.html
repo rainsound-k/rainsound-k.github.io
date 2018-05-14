@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="naver-site-verification" content="1de4763b6c45694b961629fb08ace3e5bfc1023e"/>
+  <title>
+    Django 프로젝트에 Travis-CI 연동 및 Secret Key 암호화 - rainsound 개발 노트
+    
+  </title>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118116411-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-118116411-1');
+  </script>
+  <meta name="description" content="Django 프로젝트에 Travis-CI 연동 및 Secret Key 암호화 Django 프로젝트에 Travis-CI를 연동하는 방법과 각종 Secret Key를 Travis-CI에서 인식할 수 있도록 암호화, 복호화하는 방법을 다뤄보겠습니다.">
+  <link rel="shortcut icon" type="image/png" href="/img/faviconcon.png">
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/vendor/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+  <link rel="canonical" href="http://localhost:4000/deploy/2018/05/14/django-travis-ci.html">
+  <link rel="alternate" type="application/rss+xml" title="rainsound 개발 노트" href="/feed.xml">
+  <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Django 프로젝트에 Travis-CI 연동 및 Secret Key 암호화 | rainsound 개발 노트</title>
+<meta name="generator" content="Jekyll v3.7.3" />
+<meta property="og:title" content="Django 프로젝트에 Travis-CI 연동 및 Secret Key 암호화" />
+<meta name="author" content="rainsound" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Django 프로젝트에 Travis-CI를 연동하는 방법과 Secret Key를 암호화하는 방법을 다룹니다." />
+<meta property="og:description" content="Django 프로젝트에 Travis-CI를 연동하는 방법과 Secret Key를 암호화하는 방법을 다룹니다." />
+<link rel="canonical" href="http://localhost:4000/deploy/2018/05/14/django-travis-ci.html" />
+<meta property="og:url" content="http://localhost:4000/deploy/2018/05/14/django-travis-ci.html" />
+<meta property="og:site_name" content="rainsound 개발 노트" />
+<meta property="og:image" content="http://localhost:4000/img/posts/2018-5-13/1.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-05-14T08:50:33+09:00" />
+<script type="application/ld+json">
+{"url":"http://localhost:4000/deploy/2018/05/14/django-travis-ci.html","image":"http://localhost:4000/img/posts/2018-5-13/1.png","headline":"Django 프로젝트에 Travis-CI 연동 및 Secret Key 암호화","dateModified":"2018-05-14T08:50:33+09:00","datePublished":"2018-05-14T08:50:33+09:00","description":"Django 프로젝트에 Travis-CI를 연동하는 방법과 Secret Key를 암호화하는 방법을 다룹니다.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/deploy/2018/05/14/django-travis-ci.html"},"author":{"@type":"Person","name":"rainsound"},"@type":"BlogPosting","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+  <body>
+
+    <!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="/">rainsound 개발 노트</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      Menu
+      <i class="fa fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="dropdown nav-item">
+          <a href="" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Posts<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li class="dropdown-list">
+              <a href="/posts">All Posts (7)</a>
+            </li>
+            
+            
+            
+              <li class="dropdown-list">
+                <a href="/category/Deploy/index.html">Deploy (4)</a>
+              </li>
+            
+              <li class="dropdown-list">
+                <a href="/category/Jekyll-Blog/index.html">Jekyll-Blog (2)</a>
+              </li>
+            
+              <li class="dropdown-list">
+                <a href="/category/SSL/index.html">SSL (1)</a>
+              </li>
+            
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contact">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+    <!-- Page Header -->
+
+<header class="masthead" style="background-image: url('/img/posts/2018-5-13/1.png')">
+  
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>Django 프로젝트에 Travis-CI 연동 및 Secret Key 암호화</h1>
+            
+            <h2 class="subheading">Django 프로젝트에 Travis-CI를 연동하는 방법과 Secret Key를 암호화하는 방법을 다룹니다.</h2>
+            
+            <span class="meta">Posted on May 14, 2018</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+
+          <h2 id="django-프로젝트에-travis-ci-연동-및-secret-key-암호화">Django 프로젝트에 Travis-CI 연동 및 Secret Key 암호화</h2>
+<p>Django 프로젝트에 <code class="highlighter-rouge">Travis-CI</code>를 연동하는 방법과 각종 Secret Key를 Travis-CI에서 인식할 수 있도록 암호화, 복호화하는 방법을 다뤄보겠습니다.</p>
+
+<h3 id="1-ci란">1. CI란?</h3>
+<p>먼저 <code class="highlighter-rouge">CI</code>가 무엇인지 살펴보면, <code class="highlighter-rouge">Continuous Integration</code>의 약자로 배포나 빌드 할 때 문제를 미리 파악할 수 있도록 이상이 없는지 자동으로 확인해주는 기술입니다. 즉 github에 push할 때마다 정해놓은 test를 통과하는지 자동으로 검증을 해줍니다.</p>
+
+<p>혹은 오픈소스의 master branch를 관리할 때 이 기술을 이용하면 수많은 <code class="highlighter-rouge">pull request</code>들에 대해 하나하나 test 검증을 할 필요가 없기 때문에 상당히 편리합니다.</p>
+
+<p><code class="highlighter-rouge">Travis-CI</code>는 <code class="highlighter-rouge">CI</code> 서비스 중 하나입니다. 기본적으로 github 공개 Repository와 연동하는 것은 무료, 비공개 Repository와 연동하는 것은 유료이며 사이트 주소도 다릅니다.</p>
+<ul>
+  <li><a href="https://travis-ci.org">https://travis-ci.org</a> <strong>공개 Repository(무료)</strong></li>
+  <li><a href="https://travis-ci.com">https://travis-ci.com</a> <strong>비공개 Repository(유료)</strong></li>
+</ul>
+
+<p>우선 test 해보는 과정이므로 무료로 이용해보겠습니다.
+<br /><br /></p>
+
+<h3 id="2-travis-ci-가입">2. Travis-CI 가입</h3>
+<p>먼저 <a href="https://travis-ci.org">https://travis-ci.org</a> 사이트에 접속해서 가입한 후, github과 연동해줍니다.
+<br /><br /></p>
+
+<h3 id="3-github-repository-생성">3. Github Repository 생성</h3>
+<p>기존 프로젝트가 있다면 따로 Repository를 만들 필요없이 그대로 사용하시면 되며, 없는 경우엔 만들어줍니다.
+저는 아래와 같이 <code class="highlighter-rouge">test</code>라는 Repository를 만들었고, 프로젝트 폴더와 연결했습니다. <br />
+<strong>Secret Key를 숨겨야하기 때문에 아직 push는 잠시 보류해주세요!</strong>
+<img src="/img/posts/2018-5-13/1.png" alt="그림1" />
+<br /><br /></p>
+
+<h3 id="4-django-프로젝트의-secret-key-분리">4. Django 프로젝트의 Secret Key 분리</h3>
+<p>Github에 올라가선 안되는 각종 Secret Key들을 따로 폴더를 만들어 관리해줍니다.
+아직까진 Secret Key가 Django 기본 <code class="highlighter-rouge">SECRET_KEY</code>만 있는 상태이므로, 이것만 다른 폴더로 빼서 관리해보겠습니다.</p>
+
+<h4 id="41-secrets-폴더-생성-및-basejson-파일-생성">4.1 .secrets 폴더 생성 및 base.json 파일 생성</h4>
+<p>먼저 루트 폴더와 동일한 위치에 <code class="highlighter-rouge">.secrets</code> 폴더를 생성해주고, 안에 <code class="highlighter-rouge">base.json</code> 파일을 만들어줍니다.
+<img src="/img/posts/2018-5-13/2.png" alt="그림2" />
+<br /></p>
+
+<h4 id="42-basejson-파일에-django-secret_key-입력">4.2 base.json 파일에 Django SECRET_KEY 입력</h4>
+<p><code class="highlighter-rouge">settings.py</code> 파일에 있는 Django <code class="highlighter-rouge">SECRET_KEY</code>를 <code class="highlighter-rouge">base.json</code> 파일에 옮겨줍니다.</p>
+
+<p><code class="highlighter-rouge">.secrets/base.json</code></p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"SECRET_KEY"</span><span class="p">:</span><span class="w"> </span><span class="s2">"각자의 SECRET_KEY 입력해주세요"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+<p><br /></p>
+
+<h4 id="43-settingspy-파일-수정">4.3 settings.py 파일 수정</h4>
+<p>외부 폴더에 있는 <code class="highlighter-rouge">SECRET_KEY</code>를 불러올 수 있도록 <code class="highlighter-rouge">settings.py</code>을 수정해줍니다.</p>
+
+<p><code class="highlighter-rouge">app/config/settings.py</code></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c"># Build paths inside the project like this: os.path.join(BASE_DIR, ...)</span>
+<span class="n">BASE_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">__file__</span><span class="p">)))</span>
+<span class="n">ROOT_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">BASE_DIR</span><span class="p">)</span>
+<span class="n">SECRETS_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ROOT_DIR</span><span class="p">,</span> <span class="s">'.secrets'</span><span class="p">)</span>
+<span class="n">SECRETS_BASE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">SECRETS_DIR</span><span class="p">,</span> <span class="s">'base.json'</span><span class="p">)</span>
+<span class="n">secrets_base</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">SECRETS_BASE</span><span class="p">,</span> <span class="s">'rt'</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+<span class="c"># SECURITY WARNING: keep the secret key used in production secret!</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="n">secrets_base</span><span class="p">[</span><span class="s">'SECRET_KEY'</span><span class="p">]</span>
+<span class="o">...</span>
+
+</code></pre></div></div>
+<p><br /></p>
+
+<h4 id="44-gitignore에-secrets-폴더-추가">4.4 gitignore에 .secrets 폴더 추가</h4>
+<p>Github에 <code class="highlighter-rouge">.secrets</code> 폴더가 올라가는 것을 방지하기 위해 gitignore 파일에 추가해줍니다.</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Custom</span>
+/.secrets
+...
+
+</code></pre></div></div>
+<p><br /></p>
+
+<h4 id="45-requirementstxt-파일-생성">4.5 requirements.txt 파일 생성</h4>
+<p>설치된 pip list를 Travis-CI에서 확인할 수 있도록 <code class="highlighter-rouge">requirements.txt</code> 파일을 만들어줍니다.</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> pip freeze <span class="o">&gt;</span> requirements.txt
+</code></pre></div></div>
+<p><br /><br /></p>
+
+<h3 id="5-travis-ci와-연동">5. Travis-CI와 연동</h3>
+<p>다시 Travis-CI 사이트로 돌아와 <code class="highlighter-rouge">my profile</code>에서  <code class="highlighter-rouge">Sync account</code> 누른 후 새로고침을 하면 아까 생성했던 Repository가 보일 것입니다. 그럼 아래처럼 버튼을 눌러 연결해줍니다.
+<img src="/img/posts/2018-5-13/3.png" alt="그림3" /></p>
+
+<h4 id="51-travisyml-파일-작성">5.1 .travis.yml 파일 작성</h4>
+<p>Django 프로젝트 루트 폴더에 <code class="highlighter-rouge">.travis.yml</code> 파일을 작성해줍니다.<br />
+<em>(python 버전은 프로젝트에 맞게 바꿔주세요!)</em></p>
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">language</span><span class="pi">:</span> <span class="s">python</span>
+<span class="na">python</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s2">"</span><span class="s">3.6"</span>
+<span class="na">install</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">pip install -r requirements.txt</span>
+<span class="na">script</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">python app/manage.py test</span>
+</code></pre></div></div>
+<p>최종 <code class="highlighter-rouge">tree 구조</code>는 아래와 같습니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>travis-ci-test
+	├── .git
+	├── .gitignore
+	├── .python-version
+	├── .travis.yml
+	├── .secrets
+	│   └── base.json
+	└── app
+	    ├── config
+	    │   ├── __init__.py
+	    │   ├── settings.py
+	    │   ├── urls.py
+	    │   └── wsgi.py
+	    └── manage.py
+</code></pre></div></div>
+<p><br /></p>
+
+<h4 id="52-git-push">5.2 git push</h4>
+<p>이제 준비가 끝났으니 프로젝트를 git에 push 해줍니다.</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> git add <span class="nb">.</span>
+<span class="nv">$ </span> git commit <span class="nt">-m</span> <span class="s1">'first commit'</span>
+<span class="nv">$ </span> git push <span class="nt">-u</span> origin master
+</code></pre></div></div>
+<p><br /></p>
+
+<h4 id="53-에러-확인">5.3 에러 확인</h4>
+<p>Travis-CI 사이트로 넘어와서 프로젝트를 눌러보면 아래와 같이 에러가 발생한 것을 확인 할 수 있습니다.
+<img src="/img/posts/2018-5-13/4.png" alt="그림4" />
+에러의 내용은 다음과 같습니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FileNotFoundError: [Errno 2] No such file or directory: '/home/travis/build/rainsound-k/test/.secrets/base.json'
+</code></pre></div></div>
+<p>즉 gitignore에 <code class="highlighter-rouge">.secrets</code> 폴더를 넣어놨기 때문에 <code class="highlighter-rouge">settings.py</code>에서 <code class="highlighter-rouge">SECRET_KEY</code> 값을 참조할 수 없다는 내용입니다. 이 에러를 아래서 해결해보겠습니다.
+<br /><br /></p>
+
+<h3 id="6-secret_key-에러-해결">6. SECRET_KEY 에러 해결</h3>
+<p><code class="highlighter-rouge">SECRET_KEY</code> 값을 참조할 수 있도록 <code class="highlighter-rouge">.secrets</code> 폴더를 <code class="highlighter-rouge">압축 -&gt; 암호화 -&gt; 업로드 -&gt; 복호화 -&gt; 압축해제</code> 하는 방법으로 에러를 해결해보겠습니다.</p>
+
+<h4 id="61-secrets-폴더-압축">6.1 .secrets 폴더 압축</h4>
+<p>아래 명령어로 <code class="highlighter-rouge">.secrets</code> 폴더를 <code class="highlighter-rouge">.secrets.tar</code> 파일로 압축해줍니다.</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> <span class="nb">tar</span> <span class="nt">-cvf</span> secrets.tar .secrets
+</code></pre></div></div>
+<p><br /></p>
+
+<h4 id="62-secretstar-파일-암호화">6.2 .secrets.tar 파일 암호화</h4>
+<ul>
+  <li>터미널에 travis를 설치
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> gem install travis
+</code></pre></div>    </div>
+    <p><em>(위의 gem 명령어가 안 먹힌다면 ruby를 설치해주세요!)</em></p>
+  </li>
+  <li>터미널에 travis 로그인
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> travis login
+</code></pre></div>    </div>
+    <p><em>(Username은 github의 Username 입니다.)</em></p>
+  </li>
+  <li>암호화
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> travis encrypt-file secrets.tar <span class="nt">--add</span>
+</code></pre></div>    </div>
+    <p><br /></p>
+  </li>
+</ul>
+
+<h4 id="63-gitignore에-secretstar-파일-추가">6.3 gitignore에 secrets.tar 파일 추가</h4>
+<p>위의 과정을 마치면 <code class="highlighter-rouge">secrets.tar</code>, <code class="highlighter-rouge">secrets.tar.enc</code> 파일이 프로젝트 폴더에 생긴 것을 확인할 수 있습니다. <br />
+<strong><code class="highlighter-rouge">secrets.tar</code> 파일은 github에 올라가면 안되므로 gitignore에 추가해줍니다.</strong></p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Custom</span>
+/.secrets
+secrets.tar
+...
+
+</code></pre></div></div>
+<p><br /></p>
+
+<h4 id="64-travisyml에-압축해제-명령어-추가">6.4 .travis.yml에 압축해제 명령어 추가</h4>
+<p><code class="highlighter-rouge">.travis.yml</code> 파일을 다시 열어보면, 아래처럼 <code class="highlighter-rouge">before_install</code>에 명령어가 자동으로 추가된 것을 확인할 수 있습니다. 이는 travis에 코드를 올리면 <code class="highlighter-rouge">secrets.tar.enc</code> 파일을 <code class="highlighter-rouge">secrets.tar</code> 파일로 복호화 하라는 명령어입니다.
+<img src="/img/posts/2018-5-13/5.png" alt="그림5" />
+하지만 파일을 복호화한다해도 여전히 압축파일로 남아있기 때문에, 압축해제 명령어를 <code class="highlighter-rouge">before_install</code>에 추가해줍니다.</p>
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">before_install</span><span class="pi">:</span>
+<span class="nn">...</span>
+<span class="pi">-</span> <span class="s">tar xvf secrets.tar</span>
+</code></pre></div></div>
+<p><br /><br /></p>
+
+<h3 id="7-최종-확인">7. 최종 확인</h3>
+<p>모든 준비는 끝났습니다. 이제 github에 push 했을때 에러가 발생 안하는지 확인하면 됩니다. 아래 명령어로 다시 push 해주고 에러 없는 것을 확인하면 끝입니다!</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> git add <span class="nb">.</span>
+<span class="nv">$ </span> git commit <span class="nt">-m</span> <span class="s1">'~~~'</span>
+<span class="nv">$ </span> git push <span class="nt">-u</span> origin master
+</code></pre></div></div>
+<p><img src="/img/posts/2018-5-13/6.png" alt="그림6" /></p>
+
+<p><br /></p>
+
+<hr />
+<p><br /></p>
+
+<blockquote>
+  <p>개인 공부하면서 작성한 글이라 잘못된 내용이 있을 수 있습니다. 잘못된 내용은 편하게 말씀해주시면 수정하겠습니다:)</p>
+</blockquote>
+
+<p><br /></p>
+
+
+          <div class="clearfix">
+            
+            <a class="btn btn-primary float-left" href="/ssl/2018/05/13/apply-localhost-ssl.html" data-toggle="tooltip" data-placement="top" title="localhost에서 페이스북 로그인 HTTPS 적용하기">&larr; 이전<span class="d-none d-md-inline"> 글</span></a>
+            
+            
+          </div>
+          <br><br><br>
+          
+
+<div id="disqus_thread"></div>
+<script>
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://rainsound-k.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+          <br><br><br>
+          <div class="more-posts">
+            <div class="more-category">
+              <h4>'Deploy' 카테고리의 다른 글</h4>
+              <a href="/category/Deploy/index.html" class="more-button">더보기</a>
+            </div>
+            <table>
+              <tbody>
+                
+                
+                  
+                    
+                    
+                      <tr>
+                        <th class="more-posts-title">
+                          <a href="https://rainsound-k.github.io/deploy/2018/05/14/django-travis-ci.html">Django 프로젝트에 Travis-CI 연동 및 Secret Key 암호화</a>
+                        </th>
+                        <td class="more-posts-date">2018. 05. 14</td>
+                      </tr>
+                    
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                    
+                    
+                      <tr>
+                        <th class="more-posts-title">
+                          <a href="https://rainsound-k.github.io/deploy/2018/05/02/instance-setting-and-django-deploy-part2.html">EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (2/2)</a>
+                        </th>
+                        <td class="more-posts-date">2018. 05. 02</td>
+                      </tr>
+                    
+                  
+                
+                  
+                    
+                    
+                      <tr>
+                        <th class="more-posts-title">
+                          <a href="https://rainsound-k.github.io/deploy/2018/04/25/instance-setting-and-django-deploy-part1.html">EC2 인스턴스 세팅과 Nginx + uWSGI로 Django 앱 배포하기 (1/2)</a>
+                        </th>
+                        <td class="more-posts-date">2018. 04. 25</td>
+                      </tr>
+                    
+                  
+                
+                  
+                    
+                    
+                  
+                
+              </tbody>
+            </table>
+          </div>
+          <br><br><br>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Footer -->
+
+<hr>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <ul class="list-inline text-center">
+          
+          
+          
+          <li class="list-inline-item">
+            <a href="https://github.com/rainsound-k">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="copyright text-muted">Copyright &copy; rainsound 2018</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/startbootstrap-clean-blog/js/clean-blog.min.js"></script>
+
+<script src="/assets/scripts.js"></script>
+
+
+
+    <script id="dsq-count-scr" src="//rainsound-k.disqus.com/count.js" async></script>
+  </body>
+
+</html>
