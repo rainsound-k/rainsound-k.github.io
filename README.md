@@ -18,7 +18,7 @@ $ git commit -m '~~~'
 ```shell
 $ bash publish.sh
 ```
-*publish.sh*
+`publish.sh`
 ```shell
 #!/bin/bash
 
