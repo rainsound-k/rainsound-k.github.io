@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="naver-site-verification" content="1de4763b6c45694b961629fb08ace3e5bfc1023e"/>
+  <title>
+    Django ImageField에 이미지 URL로 파일 업로드하기 - rainsound 개발 노트
+    
+  </title>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118116411-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-118116411-1');
+  </script>
+  <meta name="description" content="ImageField에 이미지 URL로 파일 업로드하기 Django 프로젝트에서 ImageField를 사용할 때, 파일이 아닌 이미지의 URL로 파일을 자동으로 생성하고 싶은 순간들이 많은데 하는 방법을 알아보겠습니다.">
+  <link rel="shortcut icon" type="image/png" href="/img/faviconcon.png">
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/vendor/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+  <link rel="canonical" href="http://localhost:4000/django/2018/06/11/django-imagefield-upload-from-url.html">
+  <link rel="alternate" type="application/rss+xml" title="rainsound 개발 노트" href="/feed.xml">
+  <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Django ImageField에 이미지 URL로 파일 업로드하기 | rainsound 개발 노트</title>
+<meta name="generator" content="Jekyll v3.7.3" />
+<meta property="og:title" content="Django ImageField에 이미지 URL로 파일 업로드하기" />
+<meta name="author" content="rainsound" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Django ImageField에 파일이 아닌 이미지 URL로 파일을 업로드하는 방법을 다룹니다." />
+<meta property="og:description" content="Django ImageField에 파일이 아닌 이미지 URL로 파일을 업로드하는 방법을 다룹니다." />
+<link rel="canonical" href="http://localhost:4000/django/2018/06/11/django-imagefield-upload-from-url.html" />
+<meta property="og:url" content="http://localhost:4000/django/2018/06/11/django-imagefield-upload-from-url.html" />
+<meta property="og:site_name" content="rainsound 개발 노트" />
+<meta property="og:image" content="http://localhost:4000/img/posts/2018-6-10/1.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-06-11T09:50:33+09:00" />
+<script type="application/ld+json">
+{"url":"http://localhost:4000/django/2018/06/11/django-imagefield-upload-from-url.html","image":"http://localhost:4000/img/posts/2018-6-10/1.png","headline":"Django ImageField에 이미지 URL로 파일 업로드하기","dateModified":"2018-06-11T09:50:33+09:00","datePublished":"2018-06-11T09:50:33+09:00","description":"Django ImageField에 파일이 아닌 이미지 URL로 파일을 업로드하는 방법을 다룹니다.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/django/2018/06/11/django-imagefield-upload-from-url.html"},"author":{"@type":"Person","name":"rainsound"},"@type":"BlogPosting","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+  <body>
+
+    <!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="/">rainsound 개발 노트</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      Menu
+      <i class="fa fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="dropdown nav-item">
+          <a href="" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Posts<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li class="dropdown-list">
+              <a href="/posts">All Posts (8)</a>
+            </li>
+            
+            
+            
+              <li class="dropdown-list">
+                <a href="/category/Deploy/index.html">Deploy (4)</a>
+              </li>
+            
+              <li class="dropdown-list">
+                <a href="/category/Django/index.html">Django (1)</a>
+              </li>
+            
+              <li class="dropdown-list">
+                <a href="/category/Jekyll-Blog/index.html">Jekyll-Blog (2)</a>
+              </li>
+            
+              <li class="dropdown-list">
+                <a href="/category/SSL/index.html">SSL (1)</a>
+              </li>
+            
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contact">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+    <!-- Page Header -->
+
+<header class="masthead" style="background-image: url('/img/posts/2018-6-10/1.png')">
+  
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>Django ImageField에 이미지 URL로 파일 업로드하기</h1>
+            
+            <h2 class="subheading">Django ImageField에 파일이 아닌 이미지 URL로 파일을 업로드하는 방법을 다룹니다.</h2>
+            
+            <span class="meta">Posted on June 11, 2018</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+
+          <h2 id="imagefield에-이미지-url로-파일-업로드하기">ImageField에 이미지 URL로 파일 업로드하기</h2>
+<p>Django 프로젝트에서 ImageField를 사용할 때, 파일이 아닌 이미지의 URL로 파일을 자동으로 생성하고 싶은 순간들이 많은데 하는 방법을 알아보겠습니다.</p>
+
+<h3 id="1-모델">1. 모델</h3>
+<p>먼저 모델은 아래처럼 간단하게 작성하였습니다. 제 경우 <code class="highlighter-rouge">image_file</code> 필드에 따로 파일을 선택하지 않으면, <code class="highlighter-rouge">purchase_url</code>의 대표 이미지를 크롤링해서 <code class="highlighter-rouge">image_file</code> 필드에 넣으려고 합니다.</p>
+
+<p><code class="highlighter-rouge">models.py</code></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Item</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">purchase_url</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">URLField</span><span class="p">(</span><span class="s">'상품 URL'</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">image_file</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ImageField</span><span class="p">(</span><span class="s">'상품 이미지'</span><span class="p">,</span> <span class="n">upload_to</span><span class="o">=</span><span class="s">'items'</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+<p><br /><br /></p>
+
+<h3 id="2-media_root-설정">2. MEDIA_ROOT 설정</h3>
+<p>이미지가 저장될 위치를 세팅합니다. 저의 경우는 <code class="highlighter-rouge">root</code> 폴더와 동등한 위치에 <code class="highlighter-rouge">.media</code> 폴더를 만들고, 안에 저장시키려고 합니다. 모델에서 <code class="highlighter-rouge">image_file</code> 필드의 <code class="highlighter-rouge">upload_to</code>를 <code class="highlighter-rouge">items</code>로 지정해놓았으니 최종적으로 이미지가 저장되는 위치는 <code class="highlighter-rouge">.media/items/~~~~</code> 가 될 것입니다.</p>
+
+<p><code class="highlighter-rouge">settings.py</code></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BASE_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">__file__</span><span class="p">)))</span>
+<span class="n">ROOT_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">BASE_DIR</span><span class="p">)</span>
+<span class="n">MEDIA_URL</span> <span class="o">=</span> <span class="s">'/media/'</span>
+<span class="n">MEDIA_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ROOT_DIR</span><span class="p">,</span> <span class="s">'.media'</span><span class="p">)</span>
+<span class="o">...</span>
+</code></pre></div></div>
+<p><br /><br /></p>
+
+<h3 id="3-download-및-확장자-추출-util-작성">3. download 및 확장자 추출 util 작성</h3>
+<p>이미지의 URL을 임시파일로 다운받는 로직과 파일의 확장자를 추출하는 로직을 작성합니다.</p>
+
+<p><code class="highlighter-rouge">utils/file.py</code></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+
+<span class="kn">import</span> <span class="nn">magic</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="c"># url로부터 파일을 임시 다운로드</span>
+<span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">binary_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+    <span class="n">temp_file</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
+    <span class="n">temp_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">binary_data</span><span class="p">)</span>
+    <span class="n">temp_file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">temp_file</span>
+
+<span class="c"># 파일 확장자 추출</span>
+<span class="k">def</span> <span class="nf">get_buffer_ext</span><span class="p">(</span><span class="nb">buffer</span><span class="p">):</span>
+    <span class="nb">buffer</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">mime_info</span> <span class="o">=</span> <span class="n">magic</span><span class="o">.</span><span class="n">from_buffer</span><span class="p">(</span><span class="nb">buffer</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">mime</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="nb">buffer</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mime_info</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'/'</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</code></pre></div></div>
+<p><br /><br /></p>
+
+<h3 id="4-save-함수-추가">4. save 함수 추가</h3>
+<p>이제 준비는 끝났고, 저장시 실행될 수 있도록 아래의 save 함수를 모델 파일에 추가합니다.</p>
+
+<p><code class="highlighter-rouge">models.py</code></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
+
+<span class="kn">from</span> <span class="nn">django.core.files</span> <span class="kn">import</span> <span class="n">File</span>
+
+<span class="kn">from</span> <span class="nn">utils.file</span> <span class="kn">import</span> <span class="n">download</span><span class="p">,</span> <span class="n">get_buffer_ext</span> <span class="c"># 위에서 만든 file.py 경로</span>
+
+
+<span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="c"># ImageField에 파일이 없고, url이 존재하는 경우에만 실행</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">purchase_url</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_file</span><span class="p">:</span>
+        <span class="c"># 우선 purchase_url의 대표 이미지를 크롤링하는 로직은 생략하고, 크롤링 결과 이미지 url을 임의대로 설정  </span>
+        <span class="n">item_image_url</span> <span class="o">=</span> <span class="s">'https://cdn.pixabay.com/photo/2016/08/27/11/17/bag-1623898_960_720.jpg'</span>
+
+        <span class="k">if</span> <span class="n">item_image_url</span><span class="p">:</span>
+            <span class="n">temp_file</span> <span class="o">=</span> <span class="n">download</span><span class="p">(</span><span class="n">item_image_url</span><span class="p">)</span>
+            <span class="n">file_name</span> <span class="o">=</span> <span class="s">'{urlparse}.{ext}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="c"># url의 마지막 '/' 내용 중 확장자 제거</span>
+                <span class="c"># ex) url = 'https://~~~~~~/bag-1623898_960_720.jpg'</span>
+                <span class="c">#     -&gt; 'bag-1623898_960_720.jpg'</span>
+                <span class="c">#     -&gt; 'bag-1623898_960_720'</span>
+                <span class="n">urlparse</span><span class="o">=</span><span class="n">urlparse</span><span class="p">(</span><span class="n">item_image_url</span><span class="p">)</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'/'</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'.'</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">ext</span><span class="o">=</span><span class="n">get_buffer_ext</span><span class="p">(</span><span class="n">temp_file</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">image_file</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">File</span><span class="p">(</span><span class="n">temp_file</span><span class="p">))</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+</code></pre></div></div>
+<p><br /><br /></p>
+
+<h3 id="5-최종-확인">5. 최종 확인</h3>
+<p>최종 모델은 아래와 같습니다.</p>
+
+<p><code class="highlighter-rouge">models.py</code></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
+
+<span class="kn">from</span> <span class="nn">django.core.files</span> <span class="kn">import</span> <span class="n">File</span>
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+
+<span class="kn">from</span> <span class="nn">utils.file</span> <span class="kn">import</span> <span class="n">download</span><span class="p">,</span> <span class="n">get_buffer_ext</span> <span class="c"># 위에서 만든 file.py 경로</span>
+
+
+<span class="k">class</span> <span class="nc">Item</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">purchase_url</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">URLField</span><span class="p">(</span><span class="s">'상품 URL'</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">image_file</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ImageField</span><span class="p">(</span><span class="s">'상품 이미지'</span><span class="p">,</span> <span class="n">upload_to</span><span class="o">=</span><span class="s">'items'</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c"># ImageField에 파일이 없고, url이 존재하는 경우에만 실행</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">purchase_url</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_file</span><span class="p">:</span>
+            <span class="c"># 우선 purchase_url의 대표 이미지를 크롤링하는 로직은 생략하고, 크롤링 결과 이미지 url을 임의대로 설정  </span>
+            <span class="n">item_image_url</span> <span class="o">=</span> <span class="s">'https://cdn.pixabay.com/photo/2016/08/27/11/17/bag-1623898_960_720.jpg'</span>
+
+            <span class="k">if</span> <span class="n">item_image_url</span><span class="p">:</span>
+                <span class="n">temp_file</span> <span class="o">=</span> <span class="n">download</span><span class="p">(</span><span class="n">item_image_url</span><span class="p">)</span>
+                <span class="n">file_name</span> <span class="o">=</span> <span class="s">'{urlparse}.{ext}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="c"># url의 마지막 '/' 내용 중 확장자 제거</span>
+                    <span class="c"># ex) url = 'https://~~~~~~/bag-1623898_960_720.jpg'</span>
+                    <span class="c">#     -&gt; 'bag-1623898_960_720.jpg'</span>
+                    <span class="c">#     -&gt; 'bag-1623898_960_720'</span>
+                    <span class="n">urlparse</span><span class="o">=</span><span class="n">urlparse</span><span class="p">(</span><span class="n">item_image_url</span><span class="p">)</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'/'</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'.'</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">ext</span><span class="o">=</span><span class="n">get_buffer_ext</span><span class="p">(</span><span class="n">temp_file</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">image_file</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">File</span><span class="p">(</span><span class="n">temp_file</span><span class="p">))</span>
+                <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</code></pre></div></div>
+<p>실제로 저장을 하게되면 이미지의 주소는 아래처럼 정상적으로 저장되는 것을 확인하실 수 있습니다.
+이미지 주소 : <code class="highlighter-rouge">http://localhost:8000/media/items/bag-1623898_960_720.jpeg</code>
+<img src="/img/posts/2018-6-10/1.png" alt="그림1" width="100%" height="100%" /></p>
+
+<p><br /></p>
+
+<hr />
+<p><br /></p>
+
+<blockquote>
+  <p>개인 공부하면서 작성한 글이라 잘못된 내용이 있을 수 있습니다. 잘못된 내용은 편하게 말씀해주시면 수정하겠습니다:)</p>
+</blockquote>
+
+<p><br /></p>
+
+
+          <div class="clearfix">
+            
+            <a class="btn btn-primary float-left" href="/deploy/2018/05/14/django-travis-ci.html" data-toggle="tooltip" data-placement="top" title="Django 프로젝트에 Travis-CI 연동 및 Secret Key 암호화">&larr; 이전<span class="d-none d-md-inline"> 글</span></a>
+            
+            
+          </div>
+          <br><br><br>
+          
+
+<div id="disqus_thread"></div>
+<script>
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://rainsound-k.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+          <br><br><br>
+          <div class="more-posts">
+            <div class="more-category">
+              <h4>'Django' 카테고리의 다른 글</h4>
+              <a href="/category/Django/index.html" class="more-button">더보기</a>
+            </div>
+            <table>
+              <tbody>
+                
+                
+                  
+                    
+                    
+                      <tr>
+                        <th class="more-posts-title">
+                          <a href="https://rainsound-k.github.io/django/2018/06/11/django-imagefield-upload-from-url.html">Django ImageField에 이미지 URL로 파일 업로드하기</a>
+                        </th>
+                        <td class="more-posts-date">2018. 06. 11</td>
+                      </tr>
+                    
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+              </tbody>
+            </table>
+          </div>
+          <br><br><br>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Footer -->
+
+<hr>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <ul class="list-inline text-center">
+          
+          
+          
+          <li class="list-inline-item">
+            <a href="https://github.com/rainsound-k">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="copyright text-muted">Copyright &copy; rainsound 2018</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/startbootstrap-clean-blog/js/clean-blog.min.js"></script>
+
+<script src="/assets/scripts.js"></script>
+
+
+
+    <script id="dsq-count-scr" src="//rainsound-k.disqus.com/count.js" async></script>
+  </body>
+
+</html>
