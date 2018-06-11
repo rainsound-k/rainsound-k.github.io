@@ -2,6 +2,22 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
     <url>
+      <loc>https://rainsound-k.github.io/django/2018/06/11/django-imagefield-upload-from-url.html</loc>
+      
+        <lastmod>2018-06-11T09:50:33+09:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
       <loc>https://rainsound-k.github.io/deploy/2018/05/14/django-travis-ci.html</loc>
       
         <lastmod>2018-05-14T08:50:33+09:00</lastmod>
